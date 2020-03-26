@@ -11,7 +11,7 @@ router.get('/login', (req, res) => {
 
 // auth logout
 router.get('/logout', (req, res) => {
-    // handled with passport
+    // handled with passports
     req.logout();
     res.redirect('/');
 });
@@ -28,25 +28,3 @@ router.get('/google/callback', passport.authenticate('google'), (req, res) => {
 });
 
 module.exports = router;
-
-// const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-
-// module.exports = (passport) => {
-//     passport.serializeUser((user, done) => {
-//         done(null, user);
-//     });
-//     passport.deserializeUser((user, done) => {
-//         done(null, user);
-//     });
-//     passport.use(new GoogleStrategy({
-//         clientID: "1091678435156-1m8duap8q40vsakohium0758bjuoe9tt.apps.googleusercontent.com",
-//         clientSecret: "d6BcdvBiy1jG7QYhz4uRpUe1",
-//         callbackURL: "http://localhost:3000/api/auth/callback"
-//     },
-//         (token, refreshToken, profile, done) => {
-//             return done(null, {
-//                 profile: profile,
-//                 token: token
-//             });
-//         }));
-// };

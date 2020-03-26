@@ -11,6 +11,8 @@ var keys = require('./config/keys');
 
 var cookieSession = require('cookie-session');
 
+var User = require('./models/User');
+
 // set up EJS
 app.set('view engine', 'ejs');
 
@@ -32,6 +34,50 @@ mongoose.connect(keys.mongodb.dbURI, () => {
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 
+app.get('/find', (req, res) => {
+	const email = req.query.email;
+	console.log(email);
+    if (email) {
+        User.findOne( {email: email}, (err, user) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!user) {
+				console.log('did NOT find user');
+                res.json({});
+            } else {
+				console.log('found user');
+                res.send(user);
+            }
+        });
+	}
+	//console.log(res);
+});
+
+app.get('/save', (req, res) => {
+    console.log('hit save endpoint');
+    const email = req.query.email;
+    var newUser = new User ({
+        name: req.query.name,
+        email: req.query.email,
+        school: req.query.school,
+        major: req.query.major,
+        gradYear: req.query.gradYear,
+        bio: req.query.bio
+    });
+
+    newUser.save((err) => {
+        if (err) {
+            console.log('fail');
+            console.log(err);
+            res.json({'result' : 'fail'});
+        } else {
+            console.log('success');
+            res.json({'result' : 'success'});
+        }
+    })
+})
+
 // create home route
 app.get('/', (req, res) => {
 	res.render('home', { user: req.user });
@@ -40,68 +86,5 @@ app.get('/', (req, res) => {
 app.listen(3000,  () => {
 	console.log('Listening on port 3000');
 });
-
-// // set up BodyParser
-// var bodyParser = require('body-parser');
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// //set up Passport
-// var auth = require('./routes/api/auth');
-// var passport = require('passport');
-// var GoogleStrategy = require('passport-google-oauth20').Strategy;
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// // import the User class from User.js
-// var User = require('./User');
-
-// // set up routes
-// var routes = require('./routes/initialRoutes');
-
-// // set up static folder
-// // app.use(express.static(path.join('./public', public)));
-// app.use('/public', express.static('public'));
-// app.get('/', (req, res) => res.send('API Running'));
-// //app.use('/', routes);
-// //app.get('/', (req, res) => { res.redirect('./routes/initialRoutes.js');  });
-// // app.use('/', (req, res) => { res.redirect('/public/personform.html'); } );
-
-
-
-// /***************************************/
-
-// // route for creating a new user
-// // this is the action of the "create new person" form
-// app.use('/signup', (req, res) => {
-// 	// construct the Person from the form data which is in the request body
-// 	var newUser = new User ({
-// 		firstName: firstName,
-// 		lastName: lastName,
-// 		email: email,
-// 		password: password
-// 	});
-
-// 	// save the person to the database
-// 	newUser.save( (err) => { 
-// 		if (err) {
-// 		    res.type('html').status(200);
-// 		    res.write('uh oh: ' + err);
-// 		    console.log(err);
-// 		    res.end();
-// 		}
-// 		else {
-// 			// display the "successfull created" page using EJS
-// 			// make EJS 
-// 		    res.render('userCreated', {user : newUser});
-// 		}
-// 	} ); 
-// });
-
-// /*************************************************/
-
-// //app.use('/public', express.static('public'));
-
-// //app.use('/', (req, res) => { res.redirect('/public/personform.html'); } );
 
 
