@@ -36,6 +36,50 @@ mongoose.connect(keys.mongodb.dbURI, () => {
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 
+app.get('/find', (req, res) => {
+	const email = req.query.email;
+	console.log(email);
+    if (email) {
+        User.findOne( {email: email}, (err, user) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!user) {
+				console.log('did NOT find user');
+                res.json({});
+            } else {
+				console.log('found user');
+                res.send(user);
+            }
+        });
+	}
+	//console.log(res);
+});
+
+app.get('/save', (req, res) => {
+    console.log('hit save endpoint');
+    const email = req.query.email;
+    var newUser = new User ({
+        name: req.query.name,
+        email: req.query.email,
+        school: req.query.school,
+        major: req.query.major,
+        gradYear: req.query.gradYear,
+        bio: req.query.bio
+    });
+
+    newUser.save((err) => {
+        if (err) {
+            console.log('fail');
+            console.log(err);
+            res.json({'result' : 'fail'});
+        } else {
+            console.log('success');
+            res.json({'result' : 'success'});
+        }
+    })
+})
+
 // create home route
 app.get('/', (req, res) => {
 	res.render('home', { user: req.user });
