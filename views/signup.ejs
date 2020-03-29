@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Profile</title>
+        <style>
+            body{
+                font-family: arial;
+                margin: 0;
+            }
+            nav{
+                background: #ff5353;
+                padding: 20px 10px;
+            }
+            nav ul{
+                max-width: 960px;
+                margin: 0 auto;
+                padding: 0;
+            }
+            nav li{
+                list-style-type: none;
+                display: inline-block;
+                margin: 0 10px 0 0;
+            }
+            nav a{
+                color: #fff;
+                font-size: 18px;
+                background: rgba(255,255,255,0.2);
+                text-decoration: none;
+                padding: 10px;
+                display: block;
+            }
+            main, header{
+                max-width: 960px;
+                margin: 30px auto;
+                padding: 0 10px;
+                color: #333;
+            }
+            main img{
+                width: 40px;
+                margin-right: 10px;
+                position: relative;
+                top: 12px;
+            }
+            main p{
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <% if (user) { %>
+                <li><a href="/auth/logout">Log out</a></li>
+                <% } else { %>
+                <li><a href="/auth/login">Login</a></li>
+                <% } %>
+                <li><a href="/">Homepage</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/aboutUs">About Us</a></li>
+            </ul>
+        </nav>
+        <header>
+            <h1>Welcome, <%= user.name %>!  Looks like you haven't been here before.  Let's create a profile!</h1>
+        </header>
+        <main>
+                <% if (message) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= message %>
+                    </div>
+                <% } %>
+            <form action="/createProfile" method="POST">
+                <label for="name">Name:</label>
+                <input id="name" type="text" name="name" value='<%= user.name %>' readonly>
+                <br/>
+                <label for="email">Email:</label>
+                <input id="email" type="text" name="email" value='<%= user.email %>' readonly>
+                <br/>
+                <label for="school">School:</label>
+                <select id = "school" name = "school" value="Select a school.">
+                    <option value = "--Select a school--">--Select a school--</option>
+                    <option value = "COLLEGE">COLLEGE</option>
+                    <option value = "WHARTON">WHARTON</option>
+                    <option value = "ENGINEERING">ENGINEERING</option>
+                    <option value = "NURSING">NURSING</option>
+                </select>
+                <!-- <label for="school">School:</label>
+                <input id="school" type="text" name="school"> -->
+                <br/>
+                <label for="gradYear">Graduation Year:</label>
+                <input id="gradYear" type="text" name="gradYear">
+                <br/>
+                <label for="major">Major:</label>
+                <input id="major" type="text" name="major">
+                <br/>
+                <label for="bio">Bio:</label>
+                <input id="bio" type="text" name="bio">
+                <br/>
+                <input type="submit" value="Create Account!">
+            </form>
+        </main>
+    </body>
+</html>

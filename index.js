@@ -11,6 +11,10 @@ var keys = require('./config/keys');
 
 var cookieSession = require('cookie-session');
 
+// set up BodyParser
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // set up EJS
 app.set('view engine', 'ejs');
 
@@ -37,71 +41,87 @@ app.get('/', (req, res) => {
 	res.render('home', { user: req.user });
 });
 
+app.get('/find', (req, res) => {
+	const email = req.query.email;
+	console.log(email);
+    if (email) {
+        User.findOne( {email: email}, (err, user) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!user) {
+				console.log('did NOT find user');
+                res.json({});
+            } else {
+				console.log('found user');
+                res.send(user);
+            }
+        });
+	}
+	//console.log(res);
+});
+
+app.get('/save', (req, res) => {
+    console.log('hit save endpoint');
+    const email = req.query.email;
+    var newUser = new User ({
+        name: req.query.name,
+        email: req.query.email,
+        school: req.query.school,
+        major: req.query.major,
+        gradYear: req.query.gradYear,
+        bio: req.query.bio
+    });
+
+    newUser.save((err) => {
+        if (err) {
+            console.log('fail');
+            console.log(err);
+            res.json({'result' : 'fail'});
+        } else {
+            console.log('success');
+            res.json({'result' : 'success'});
+        }
+    })
+});
+
+var User = require('./models/User');
+
+app.post('/createProfile', function(req, res) {
+	console.log('in post func');
+	console.log('gradYear: ' + req.body.gradYear);
+    // if(req.body.school == null || req.body.school == "") {
+    //     // display error and ask to fill out again
+    //     res.render('signup', { user: req.user, message: "Please enter a school." });
+	// } else 
+	if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
+        // display error and ask to fill out again
+        res.render('signup', { user: req.user, message: "Please enter a 4 number year." });
+    } else if(req.body.major == null || req.body.major == "") {
+        // display error and ask to fill out again
+        res.render('signup', { user: req.user, message: "Please enter a major." });
+    } else if(req.body.bio == null || req.body.bio == "") {
+        // display error and ask to fill out again
+        res.render('signup', { user: req.user, message: "Please enter a short bio." });
+    } else {
+		// update fields for user
+		console.log('updating user');
+        var newValues = { $set: {
+            name: req.body.name,
+            email: req.body.email,
+            school: req.body.school,
+            gradYear: req.body.gradYear,
+            major: req.body.major,
+            bio: req.body.bio,
+            isNewUser: false 
+        }};
+        User.updateOne({email: req.body.email}, newValues).then(() => {
+            console.log('Updated - ' + req.body.email);
+            res.redirect('/profile/');
+        });
+    }
+});
+
 app.listen(3000,  () => {
 	console.log('Listening on port 3000');
 });
-
-// // set up BodyParser
-// var bodyParser = require('body-parser');
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-
-// //set up Passport
-// var auth = require('./routes/api/auth');
-// var passport = require('passport');
-// var GoogleStrategy = require('passport-google-oauth20').Strategy;
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// // import the User class from User.js
-// var User = require('./User');
-
-// // set up routes
-// var routes = require('./routes/initialRoutes');
-
-// // set up static folder
-// // app.use(express.static(path.join('./public', public)));
-// app.use('/public', express.static('public'));
-// app.get('/', (req, res) => res.send('API Running'));
-// //app.use('/', routes);
-// //app.get('/', (req, res) => { res.redirect('./routes/initialRoutes.js');  });
-// // app.use('/', (req, res) => { res.redirect('/public/personform.html'); } );
-
-
-
-// /***************************************/
-
-// // route for creating a new user
-// // this is the action of the "create new person" form
-// app.use('/signup', (req, res) => {
-// 	// construct the Person from the form data which is in the request body
-// 	var newUser = new User ({
-// 		firstName: firstName,
-// 		lastName: lastName,
-// 		email: email,
-// 		password: password
-// 	});
-
-// 	// save the person to the database
-// 	newUser.save( (err) => { 
-// 		if (err) {
-// 		    res.type('html').status(200);
-// 		    res.write('uh oh: ' + err);
-// 		    console.log(err);
-// 		    res.end();
-// 		}
-// 		else {
-// 			// display the "successfull created" page using EJS
-// 			// make EJS 
-// 		    res.render('userCreated', {user : newUser});
-// 		}
-// 	} ); 
-// });
-
-// /*************************************************/
-
-// //app.use('/public', express.static('public'));
-
-// //app.use('/', (req, res) => { res.redirect('/public/personform.html'); } );
-
-

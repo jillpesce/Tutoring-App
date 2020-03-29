@@ -20,24 +20,25 @@ passport.use(
         clientID: keys.google.clientID,
         clientSecret: keys.google.clientSecret
     }, async (accessToken, refreshToken, profile, done) => {
-        console.log("passport callback function fired");
-        console.log(profile); 
-
         // check if user already exists in DB
-        User.findOne({googleId: profile.id}).then((currentUser) => {
+        console.log('checking if user exists');
+        console.log(profile);
+        User.findOne({email: profile.emails[0].value}).then((currentUser) => {
             if(currentUser){
                 // already have a user
-                console.log('user exists already: '+ currentUser);
+                console.log('user exists already: ' + currentUser);
                 done(null, currentUser);
             } else {
                 // create user in DB
                 console.log('user DOES NOT exist');
                 new User({
-                    firstName: profile.name.givenName,
-                    lastName: profile.name.familyName,
-                    googleId: profile.id,
-                    email: profile._json.email,
-                    picture: profile.photos[0].value
+                    name: profile.displayName,
+                    email: profile.emails[0].value,
+                    school: null,
+                    major: null,
+                    gradYear: null,
+                    picture: profile.photos[0].value, 
+                    isNewUser: true
                 }).save().then((newUser) => {
                     console.log('new user created: ' + newUser);
                     done(null, newUser);
