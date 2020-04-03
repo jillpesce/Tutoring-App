@@ -188,4 +188,8 @@ public class RemoteDataSource {
             return result;
         }
     }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 }

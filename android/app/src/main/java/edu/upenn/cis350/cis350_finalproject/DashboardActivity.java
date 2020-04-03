@@ -28,9 +28,16 @@ public class DashboardActivity extends AppCompatActivity {
         String email = getIntent().getStringExtra("EMAIL");
 
         //get the user from the database
+<<<<<<< Updated upstream
         RemoteDataSource ds = new RemoteDataSource();
         this.user = ds.findUser(email);
         Log.d("USER_DASHBOARD", user.toString());
+=======
+        user = createFakeUserForNow();
+//        RemoteDataSource ds = new RemoteDataSource();
+//        this.user = ds.findUser(email);
+//        Log.d("USER_DASHBOARD", user.toString());
+>>>>>>> Stashed changes
 
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -52,6 +59,9 @@ public class DashboardActivity extends AppCompatActivity {
                     selectedFragment = new ProfileFragment();
                     ((ProfileFragment) selectedFragment).setUser(user);
                     break;
+                case R.id.nav_schedule:
+                    selectedFragment = new TimeslotsFragment();
+                    ((TimeslotsFragment) selectedFragment).setUser(user);
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
                     selectedFragment).commit();
