@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<title>Scores</title>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+    <div>
+        <%- include("partials/nav-bar.ejs") %>
+    </div>
+    <header>
+        <h1>Enter your test scores below!</h1>
+    </header>
+    <main>
+        <form name="scores-form" method="POST" action="/scores/save">
+            <label>Score:</label>
+            <input type="number" name="inputScore" >
+            <br/>
+            <input type="submit" value="Input Score!">
+        </form> 
+        
+        
+        <h2>Your Scores:</h2>
+        <ul id="scores">
+            <% for (var i = 0; i < user.scores.length; i++) { %>
+                <li>
+                    <%= user.scores[i] %>
+                </li>
+                <% } %>
+            </ul>
+        </main>
+    </body>
+    </html>

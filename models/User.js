@@ -9,6 +9,7 @@ var userSchema = new Schema({
     major: String,
     gradYear: String,
     bio: String,
+    scores: Array,
     isTutor: Boolean, 
     isNewUser: Boolean
 });
