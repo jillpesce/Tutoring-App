@@ -23,11 +23,14 @@ app.use(cookieSession({
 	keys: [keys.session.cookieKey]
 }));
 
+//public styles folder
+app.use(express.static('public'));
+
 // initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// conncet to mongodb
+// connect to mongodb
 mongoose.connect(keys.mongodb.dbURI, () => {
 	console.log('connected to mongodb');
 });
@@ -82,7 +85,11 @@ app.get('/save', (req, res) => {
 
 // create home route
 app.get('/', (req, res) => {
-	res.render('home', { user: req.user });
+    if (req.user && req.user.isTutor) {
+        res.render('tutor-home', { user: req.user });
+    } else {
+        res.render('tutee-home', { user: req.user });
+    }
 });
 
 app.get('/find', (req, res) => {
@@ -140,7 +147,7 @@ app.post('/createProfile', function(req, res) {
 	// } else 
 	if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
         // display error and ask to fill out again
-        res.render('signup', { user: req.user, message: "Please enter a 4 number year." });
+        res.render('signup', { user: req.user, message: "Please enter a 4 digit year." });
     } else if(req.body.major == null || req.body.major == "") {
         // display error and ask to fill out again
         res.render('signup', { user: req.user, message: "Please enter a major." });
@@ -165,7 +172,16 @@ app.post('/createProfile', function(req, res) {
         });
     }
 });
-
+//Post toggle tutor status
+app.post('/toggleTutor', function(req, res) {
+        var newValues = { $set: {
+            isTutor: !req.user.isTutor 
+        }};
+    User.updateOne({email: req.user.email}, newValues).then(() => {
+        console.log('Is ' + req.user.email + ' a tutor? ' + req.user.isTutor);
+        res.redirect('/');
+    });
+});
 app.listen(3000,  () => {
 	console.log('Listening on port 3000');
 });

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<title>Tutoring App</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<body>
+    <nav>
+        <ul>            
+            <li><a href="/">Homepage</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/aboutUs">About Us</a></li>
+            <% if (user) { %>
+                <li>
+                    <form action="/toggleTutor" method="post">
+                        <input type="submit" name="toggle" value="Switch to <%=user.isTutor ? "Tutee" : "Tutor"%> Mode" />
+                    </form>
+                </li>
+                <li><a href="/auth/logout">Log out</a></li>
+                <% } else { %>
+                    <li><a href="/auth/login">Login</a></li>
+                    <% } %>
+                </ul>
+            </nav>
+        </body>
+        </html>
