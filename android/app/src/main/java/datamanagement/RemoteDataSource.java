@@ -167,8 +167,6 @@ public class RemoteDataSource {
         for (String s : courses) {
             urlString += "&course=" +s;
         }
-//
-//        urlString.replaceAll(" ", "_");
 
         HttpSaveRequest saveRequest = new HttpSaveRequest();
         try {
@@ -224,7 +222,8 @@ public class RemoteDataSource {
             String urlString = strings[0];
             String result = "";
             try {
-                URL url = new URL(urlString);
+                URL url = new URL("http://localhost:3000/makeTimeslot?email=pchloe@seas.upenn.edu&name=Chloe%20Prezelski&date=2020031408");
+                Log.d("url at connect", "" + url);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setReadTimeout(15000);
@@ -232,6 +231,7 @@ public class RemoteDataSource {
                 conn.connect();
 
                 int responsecode = conn.getResponseCode();
+                Log.d("RESPONSE CODE", "Unexpected status code: " + responsecode);
                 if (responsecode != 200) {
                     Log.d("RESPONSE CODE", "Unexpected status code: " + responsecode);
                 } else {
@@ -256,5 +256,28 @@ public class RemoteDataSource {
             }
             return result;
         }
+    }
+
+    public Timeslot[] getAllTimeslots() {
+        try {
+            User user = null;
+            //String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
+            // we're going to have to change this!
+            String urlString = "http://localhost:3000/getAllTimeSlots";
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+                JSONObject data = (JSONObject) parser.parse(result);
+                Log.d("DATA:", "" + data);
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

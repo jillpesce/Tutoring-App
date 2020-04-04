@@ -68,19 +68,31 @@ public class NewTimeslotActivity extends AppCompatActivity {
         month = picker.getMonth();
         day = picker.getDayOfMonth();
         year = picker.getYear();
-        hour = Integer.parseInt(t.getSelectedItem().toString().substring(0,2));
 
-        handleNewTimeslot(tutorEmail, month, day, year, hour);
+        handleNewTimeslot(tutorEmail, month, day, year, t.getSelectedItem().toString().substring(0,2));
     }
 
-    private void handleNewTimeslot(String email, int month, int day, int year, int hour) {
+    private void handleNewTimeslot(String email, int m, int d, int year, String hour) {
         if (emptyOrNull(email)) {
             Toast.makeText(getApplicationContext(), "Please fill in all required fields",
                     Toast.LENGTH_LONG).show();
             return;
         } else {
             //save timeslot to database
+
+            String month = "" + m;
+            String day = "" + d;
+
+            if (m < 10) {
+                month = "0" + month;
+            }
+
+            if (d < 10) {
+                day = "0" + day;
+            }
+
             String date = "" + year + month + day + hour;
+            Log.d("DATE", date);
             RemoteDataSource ds = new RemoteDataSource();
             Timeslot t = new Timeslot(email, date, courses, tutorName);
             ds.saveNewTimeslot(t);

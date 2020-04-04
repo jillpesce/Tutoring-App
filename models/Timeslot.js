@@ -5,7 +5,7 @@ var timeslotScheme = new Schema({
     tutorEmail: String,
     tutorName: String, 
     date: String,
-    courses: [],
+    courses: [String],
 });
 
 // export userSchema as a class called User

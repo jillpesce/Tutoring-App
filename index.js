@@ -186,20 +186,30 @@ app.post('/toggleTutor', function(req, res) {
 // save a new timeslot
 app.get('/makeTimeslot', (req, res) => {
     console.log('hit save timeslot endpoint');
-    var courses;
-    if (req.query.course.length > 1) {
-        courses = req.query.course;
-    } else if (req.query.course.length = 1) {
-        courses = [req.query.course];
-    } else {
-        courses = [];
+    console.log('with email' + req.query.email);
+    console.log('with date' + req.query.date);
+    console.log('with name' + req.query.name);
+    var courses = [];
+
+    if (req.query.course) {
+        if (req.query.course.length > 1) {
+            courses = req.query.course;
+        } else if (req.query.course.length = 1) {
+            courses = [req.query.course];
+        } else {
+            courses = [];
+        }
     }
+    
     var newTimeslot = new Timeslot ({
         tutorEmail: req.query.email,
         tutorName: req.query.name, 
         date: req.query.date,
         courses: courses,
     });
+
+    console.log(newTimeslot);
+
     newTimeslot.save((err) => {
         if (err) {
             console.log('fail');
@@ -239,6 +249,23 @@ app.get('/bookAppointment', (req, res) => {
 });
 
 var Appointment = require('./models/Appointment');
+
+app.get('/getAllTimeslots', (req, res) => {
+	console.log("getting all Timeslots");
+    Timeslot.find((err, all) => {
+        if (err) {
+            console.log(err);
+            res.json({});
+        } else if (!all) {
+            console.log('did NOT find timeslots');
+            res.json({});
+        } else {
+            console.log('found timeslots');
+            console.log(all);
+            res.send(all);
+        }
+    });
+});
 
 app.listen(3000,  () => {
 	console.log('Listening on port 3000');
