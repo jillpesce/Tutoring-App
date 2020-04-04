@@ -45,4 +45,5 @@ public class ProfileFragment extends Fragment {
         Log.d("PROFILE", "frag:" + user.getName());
         //setUserFields();
     }
+
 }

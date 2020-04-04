@@ -1,6 +1,7 @@
 package edu.upenn.cis350.cis350_finalproject;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,20 @@ public class TimeslotsFragment extends Fragment {
 
         lv = (ListView) view.findViewById(R.id.timeslots);
 
-        lv.setAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, ts));
+        lv.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ts));
+        Log.d("hey", "we in dis biiish");
+
+        Button button = (Button) view.findViewById(R.id.new_time);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), NewTimeslotActivity.class);
+                i.putExtra("EMAIL", user.getEmail());
+                i.putExtra("COURSES", new String[0]); // need to change this
+                getActivity().startActivity(i);
+            }
+        });
 
         return view;
 
@@ -86,11 +99,9 @@ public class TimeslotsFragment extends Fragment {
         //setUserFields();
     }
 
-//    public void onTimeslotSelected(View v) {
-//        EditText name = findViewById(R.id.name_edt);
-//    }
+    public void onAddNewTimeslot(View v) {
 
-//    private void populateTimeslots() {
-//    }
+    }
+
 
 }

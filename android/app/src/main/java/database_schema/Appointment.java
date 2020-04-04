@@ -5,11 +5,11 @@ import java.util.Date;
 public class Appointment implements Comparable {
     private String tor;
     private String tee;
-    private Date date; // start date + time, appointments all 1 hr increments
+    private String date; // start date + time, appointments all 1 hr increments, YYYYMMDDHH
     private String cl;
     private Boolean confirmed;
 
-    public Appointment(String a, String b, Date d, String c) {
+    public Appointment(String a, String b, String d, String c) {
         tor = a;
         tee = b;
         date = d;
@@ -29,7 +29,7 @@ public class Appointment implements Comparable {
         return cl;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -47,8 +47,8 @@ public class Appointment implements Comparable {
 
     @Override
     public int compareTo(Object o) {
-        Date d1 = this.date;
-        Date d2 = ((Timeslot) o).getDate();
+        String d1 = this.date;
+        String d2 = ((Timeslot) o).getDate();
         if(d1.compareTo(d2) > 0) {
             return 1;
         } else if(d1.compareTo(d2) < 0) {

@@ -15,10 +15,12 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Scanner;
 import java.net.*;
 import java.util.concurrent.ExecutionException;
 
+import database_schema.Timeslot;
 import database_schema.User;
 
 public class RemoteDataSource {
@@ -145,6 +147,30 @@ public class RemoteDataSource {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    /**
+     *
+     * @param u -- User we want to save to the database
+     * @return true if the save is successful and false otherwise.
+     */
+    public boolean saveNewTimeslot(Timeslot t) {
+//        String tutorEmail = t.getTutor();
+//        Date date = t.getDate();
+//        String urlString = "http://localhost:3000/saveTime?email=" + email + "&name=" + name + "&school="
+//                + school + "&major=" + major + "&bio=" + bio + "&gradYear=" + gradYear;
+//        HttpSaveRequest saveRequest = new HttpSaveRequest();
+//        try {
+//            String result = saveRequest.execute(urlString).get();
+//            if (result.equals("success")) {
+//                return true;
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
         return false;
     }
 
