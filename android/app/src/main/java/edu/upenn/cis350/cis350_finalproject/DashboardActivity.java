@@ -10,10 +10,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 
+import java.util.ArrayList;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 
@@ -26,11 +30,11 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         String email = getIntent().getStringExtra("EMAIL");
-
         //get the user from the database
-        RemoteDataSource ds = new RemoteDataSource();
-        this.user = ds.findUser(email);
-        Log.d("USER_DASHBOARD", user.toString());
+        // TODO actually get the saved user's email
+        //RemoteDataSource ds = new RemoteDataSource();
+        //this.user = ds.findUser(email);
+        this.user = createFakeUserForNow();
 
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -47,14 +51,21 @@ public class DashboardActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
             Fragment selectedFragment = null;
+            FragmentManager fm = getSupportFragmentManager();
             switch(item.getItemId()) {
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
                     ((ProfileFragment) selectedFragment).setUser(user);
                     break;
+                case R.id.nav_schedule:
+                    selectedFragment = new TimeslotsFragment();
+                    ((TimeslotsFragment) selectedFragment).setUser(user);
+                    break;
+                case R.id.nav_search:
+                    selectedFragment = new SearchFragment();
+                    break;
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
-                    selectedFragment).commit();
+            fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
             return true;
         }
     };

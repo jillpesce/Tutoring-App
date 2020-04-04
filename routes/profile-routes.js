@@ -1,4 +1,5 @@
 var router = require('express').Router();
+var User = require('../models/User');
 
 var authCheck = (req, res, next) => {
     if(!req.user) {
@@ -20,6 +21,17 @@ router.get('/', authCheck, (req, res) => {
 router.get('/editProfile', authCheck, (req, res) => {
     console.log('in edit profile');
     res.render('editProfile', { user: req.user, message: "" });
+});
+
+router.get('/search', (req, res) => {
+    const searchName = req.query.name;
+    User.find( { $text: { $search: searchName } }, function(err, users) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        res.json(users);
+    });
 });
 
 module.exports = router;

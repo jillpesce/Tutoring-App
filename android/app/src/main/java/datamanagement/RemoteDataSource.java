@@ -15,11 +15,12 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.net.*;
 import java.util.concurrent.ExecutionException;
 
-import database_schema.User;
+import database_schema.*;
 
 public class RemoteDataSource {
     private String host;
@@ -27,7 +28,7 @@ public class RemoteDataSource {
 
     public RemoteDataSource() {
         // use Node Express defaults
-        host = "localhost";
+        host = "10.0.2.2";
         port = 3000;
     }
 
@@ -45,9 +46,7 @@ public class RemoteDataSource {
     public User findUser(String email) {
         try {
             User user = null;
-            //String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
-            // we're going to have to change this!
-            String urlString = "http://10.0.2.2:3000/find?email=" + email;
+            String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
             HttpFindRequest findRequest = new HttpFindRequest();
             String result = findRequest.execute(urlString).get();
             if (result != null) {
@@ -64,6 +63,37 @@ public class RemoteDataSource {
             e.printStackTrace();
         }
         return null;
+    }
+    /**
+     *
+     * @param name -- name of the user we are trying to find
+     * @return ArrayList containing User objects from the database response.
+     * Return an empty ArrayList if the user does not exist.
+     */
+    public ArrayList<User> searchUsers(String name) {
+        try {
+            User user = null;
+            String urlString = "http://" + this.host + ":" + port + "/profile/search?name=" + name;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                ArrayList<User> users = new ArrayList<User>();
+                JSONParser parser = new JSONParser();
+                JSONArray jsonUsers = (JSONArray) parser.parse(result);
+                for(Object objUser : jsonUsers) {
+                    JSONObject jsonUser = (JSONObject) objUser;
+                    users.add(createUser(jsonUser));
+                }
+                return users;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<User>();
     }
 
     public class HttpFindRequest extends AsyncTask<String, Void, String> {
@@ -131,8 +161,7 @@ public class RemoteDataSource {
         String major = u.getMajor();
         String bio = u.getBio();
         String gradYear = u.getGradYear();
-        //String urlString = "http://10.0.2.2:3000/save?email=" + email;
-        String urlString = "http://10.0.2.2:3000/save?email=" + email + "&name=" + name + "&school="
+        String urlString = "http://" + this.host + ":" + this.port + "/save?email=" + email + "&name=" + name + "&school="
                 + school + "&major=" + major + "&bio=" + bio + "&gradYear=" + gradYear;
         HttpSaveRequest saveRequest = new HttpSaveRequest();
         try {

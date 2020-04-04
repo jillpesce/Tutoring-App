@@ -3,6 +3,9 @@ var express = require('express');
 var app = express();
 var authRoutes =  require('./routes/auth-routes');
 var profileRoutes =  require('./routes/profile-routes');
+var scoresRoutes =  require('./routes/scores-routes');
+
+var User = require('./models/User');
 
 var passportSetup = require('./config/passport-setup');
 var passport = require('passport');
@@ -20,70 +23,40 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.use(cookieSession({
-	maxAge: 24 * 60 * 60 * 1000,
-	keys: [keys.session.cookieKey]
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: [keys.session.cookieKey]
 }));
+
+//public styles folder
+app.use(express.static('public'));
 
 // initialize passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-// conncet to mongodb
+// connect to mongodb
 mongoose.connect(keys.mongodb.dbURI, () => {
-	console.log('connected to mongodb');
+    console.log('connected to mongodb');
 });
+
+// mongoose.connect(keys.mongodb.dbURI, {
+//     useUnifiedTopology: true,
+//     useNewUrlParser: true})
+//     .then(() => console.log("connected to mongodb"))
+//     .catch(err => console.error("An error has occured", err));
 
 //set up routes
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
-
-app.get('/find', (req, res) => {
-	const email = req.query.email;
-	console.log(email);
-    if (email) {
-        User.findOne( {email: email}, (err, user) => {
-            if (err) {
-                console.log(err);
-                res.json({});
-            } else if (!user) {
-				console.log('did NOT find user');
-                res.json({});
-            } else {
-				console.log('found user');
-                res.send(user);
-            }
-        });
-	}
-	//console.log(res);
-});
-
-app.get('/save', (req, res) => {
-    console.log('hit save endpoint');
-    const email = req.query.email;
-    var newUser = new User ({
-        name: req.query.name,
-        email: req.query.email,
-        school: req.query.school,
-        major: req.query.major,
-        gradYear: req.query.gradYear,
-        bio: req.query.bio
-    });
-
-    newUser.save((err) => {
-        if (err) {
-            console.log('fail');
-            console.log(err);
-            res.json({'result' : 'fail'});
-        } else {
-            console.log('success');
-            res.json({'result' : 'success'});
-        }
-    })
-})
+app.use('/scores', scoresRoutes);
 
 // create home route
 app.get('/', (req, res) => {
-	res.render('home', { user: req.user });
+    if (req.user && req.user.isTutor) {
+        res.render('tutor-home', { user: req.user });
+    } else {
+        res.render('tutee-home', { user: req.user });
+    }
 });
 
 app.get('/aboutUs', (req, res) => {
@@ -92,18 +65,18 @@ app.get('/aboutUs', (req, res) => {
 });
 
 app.get('/find', (req, res) => {
-	const email = req.query.email;
-	console.log(email);
+    const email = req.query.email;
+    console.log(email);
     if (email) {
         User.findOne( {email: email}, (err, user) => {
             if (err) {
                 console.log(err);
                 res.json({});
             } else if (!user) {
-				console.log('did NOT find user');
+                console.log('did NOT find user');
                 res.json({});
             } else {
-				console.log('found user');
+                console.log('found user');
                 res.send(user);
             }
         });
@@ -121,7 +94,7 @@ app.get('/save', (req, res) => {
         gradYear: req.query.gradYear,
         bio: req.query.bio
     });
-
+    
     newUser.save((err) => {
         if (err) {
             console.log('fail');
@@ -134,16 +107,14 @@ app.get('/save', (req, res) => {
     })
 });
 
-var User = require('./models/User');
 
 app.post('/createProfile', function(req, res) {
     if(req.body.school == "--Select a school--") {
         // display error and ask to fill out again
         res.render('signup', { user: req.user, message: "Please select a school." });
-	} else 
-	if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
+	} else if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
         // display error and ask to fill out again
-        res.render('signup', { user: req.user, message: "Please enter a 4 number year." });
+        res.render('signup', { user: req.user, message: "Please enter a 4 digit year." });
     } else if(req.body.major == null || req.body.major == "") {
         // display error and ask to fill out again
         res.render('signup', { user: req.user, message: "Please enter a major." });
@@ -151,8 +122,8 @@ app.post('/createProfile', function(req, res) {
         // display error and ask to fill out again
         res.render('signup', { user: req.user, message: "Please enter a short bio." });
     } else {
-		// update fields for user
-		console.log('updating user');
+        // update fields for user
+        console.log('updating user');
         var newValues = { $set: {
             name: req.body.name,
             email: req.body.email,
@@ -165,8 +136,19 @@ app.post('/createProfile', function(req, res) {
         User.updateOne({email: req.body.email}, newValues).then(() => {
             console.log('Updated - ' + req.body.email);
             res.redirect('/profile/');
-        });
-    }
+		});
+	}
+});
+
+//Post toggle tutor status
+app.post('/toggleTutor', function(req, res) {
+    var newValues = { $set: {
+        isTutor: !req.user.isTutor 
+    }};
+    User.updateOne({email: req.user.email}, newValues).then(() => {
+        console.log('Is ' + req.user.email + ' a tutor? ' + req.user.isTutor);
+        res.redirect('/');
+    });
 });
 
 app.post('/editProfile', function(req, res) {
@@ -198,5 +180,5 @@ app.post('/editProfile', function(req, res) {
 });
 
 app.listen(3000,  () => {
-	console.log('Listening on port 3000');
+    console.log('Listening on port 3000');
 });

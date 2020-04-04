@@ -37,7 +37,9 @@ passport.use(
                     school: null,
                     major: null,
                     gradYear: null,
-                    picture: profile.photos[0].value, 
+                    picture: profile.photos[0].value,
+                    scores: [],
+                    isTutor: false,
                     isNewUser: true
                 }).save().then((newUser) => {
                     console.log('new user created: ' + newUser);
