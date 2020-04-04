@@ -56,8 +56,34 @@ public class Date implements Comparable {
         }
     }
 
+    public String getTimeString() {
+        switch (hour) {
+            case 8: return "8:00 AM";
+            case 9: return "9:00 AM";
+            case 10: return "10:00 AM";
+            case 11: return "11:00 AM";
+            case 12: return "12:00 PM";
+            case 13: return "1:00 PM";
+            case 14: return "2:00 PM";
+            case 15: return "3:00 PM";
+            case 16: return "4:00 PM";
+            case 17: return "5:00 PM";
+            case 18: return "6:00 PM";
+            case 19: return "7:00 PM";
+            case 20: return "8:00 PM";
+            case 21: return "9:00 PM";
+            case 22: return "10:00 PM";
+            case 23: return "11:00 PM";
+            default: return "default Month";
+        }
+    }
+
+    public String getFullDescription() {
+        return (this.getMonthString() + " " + day +", "+year +" at " +getTimeString());
+    }
+
     public String getDateDescription() {
-        return (this.getMonthString() + " " + day +", "+year +" at " +hour + ":00");
+        return (this.getMonthString() + " " + day +", "+year);
     }
 
     @Override

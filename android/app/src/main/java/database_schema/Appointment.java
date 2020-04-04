@@ -10,12 +10,12 @@ public class Appointment implements Comparable {
     private String date; // start date + time, appointments all 1 hr increments, YYYYMMDDHH
     private Boolean confirmed;
 
-    public Appointment(String a, String b, String d, String c, String e, String f) {
-        tutorName = a;
-        tuteeName = b;
+    public Appointment(String tutorN, String tuteeN, String d, String tutorE, String tuteeE) {
+        tutorName = tutorN;
+        tuteeName = tuteeN;
         date = d;
-        torEmail = e;
-        teeEmail = f;
+        torEmail = tutorE;
+        teeEmail = tuteeE;
         confirmed = false;
     }
 

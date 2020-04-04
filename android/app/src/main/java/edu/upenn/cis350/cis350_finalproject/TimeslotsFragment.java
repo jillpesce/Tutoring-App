@@ -110,7 +110,7 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
         int counter = 0;
         for (Timeslot t : setTimeslots) {
             Date d = new Date(t.getDate());
-            desc[counter] = d.getDateDescription() + " with " + t.getTutorName();
+            desc[counter] = d.getFullDescription() + " with " + t.getTutorName();
             counter ++;
         }
 
@@ -126,7 +126,14 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-
+        Intent i = new Intent(getActivity(), RequestAppointmentActivity.class);
+        Timeslot t = setTimeslots.get(position);
+        i.putExtra("TUTEE_EMAIL", user.getEmail());
+        i.putExtra("TUTEE_NAME", user.getName());
+        i.putExtra("TUTOR_EMAIL", t.getTutor());
+        i.putExtra("TUTOR_NAME", t.getTutorName());
+        i.putExtra("DATE", t.getDate());
+        getActivity().startActivity(i);
     }
 
 
