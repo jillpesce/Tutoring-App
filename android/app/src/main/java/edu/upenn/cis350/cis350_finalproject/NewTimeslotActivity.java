@@ -13,6 +13,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import database_schema.Timeslot;
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 
@@ -31,14 +32,14 @@ public class NewTimeslotActivity extends AppCompatActivity {
         Spinner spinner = findViewById(R.id.timeslot_spinner);
         spinner.setOnItemSelectedListener(new SpinnerListener());
 
-        picker=(DatePicker)findViewById(R.id.datePicker1);
-        btnGet=(Button)findViewById(R.id.button1);
-        btnGet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tvw.setText("Selected Date: "+ picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear());
-            }
-        });
+//        picker=(DatePicker)findViewById(R.id.datePicker1);
+//        btnGet=(Button)findViewById(R.id.button1);
+//        btnGet.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                tvw.setText("Selected Date: "+ picker.getDayOfMonth()+"/"+ (picker.getMonth() + 1)+"/"+picker.getYear());
+//            }
+//        });
     }
 
     public class SpinnerListener implements OnItemSelectedListener {
@@ -68,9 +69,9 @@ public class NewTimeslotActivity extends AppCompatActivity {
         EditText major = findViewById(R.id.major_edt);
         EditText bio = findViewById(R.id.bio_edt);
 
-        handleProfileCreation(name.getText().toString(), email.getText().toString(),
-                school.getSelectedItem().toString(), graduationYear.getText().toString(),
-                major.getText().toString(), bio.getText().toString());
+//        handleProfileCreation(name.getText().toString(), email.getText().toString(),
+//                school.getSelectedItem().toString(), graduationYear.getText().toString(),
+//                major.getText().toString(), bio.getText().toString());
     }
 
     /**
@@ -85,24 +86,19 @@ public class NewTimeslotActivity extends AppCompatActivity {
      * a Toast should appear promoting the user to fill in all required information. If is it, then
      * it initiate a request to save the user to the database and start the Dashboard Activity.
      */
-    private void handleProfileCreation(String name, String email, String school, String gradYear,
-                                       String major, String bio) {
-        if (emptyOrNull(name) || emptyOrNull(email) || emptyOrNull(school) || emptyOrNull(gradYear)
-                || emptyOrNull(major)) {
+    private void handleNewTimeslot(String name, String month, String day, String year, String time) {
+        if (emptyOrNull(name) || emptyOrNull(month) || emptyOrNull(day) || emptyOrNull(time)) {
             Toast.makeText(getApplicationContext(), "Please fill in all required fields",
                     Toast.LENGTH_LONG).show();
             return;
-        } else if (!validYearFormat(gradYear)) {
-            Toast.makeText(getApplicationContext(),
-                    "Graduation Year should be of the format: yyyy", Toast.LENGTH_LONG).show();
         } else {
-            //save user to database
+            //save timeslot to database
             RemoteDataSource ds = new RemoteDataSource();
-            User u = new User(email, name, school, major, gradYear, bio);
-            ds.saveUser(u);
-            Intent intent = new Intent();
-            intent.putExtra("USER", u);
-            finish();
+//            Timeslot t = new Timeslot()
+//            ds.saveUser(u);
+//            Intent intent = new Intent();
+//            intent.putExtra("USER", u);
+//            finish();
         }
     }
 
