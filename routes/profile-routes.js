@@ -17,4 +17,9 @@ router.get('/', authCheck, (req, res) => {
     res.render('profile', { user: req.user });
 });
 
+router.get('/editProfile', authCheck, (req, res) => {
+    console.log('in edit profile');
+    res.render('editProfile', { user: req.user, message: "" });
+});
+
 module.exports = router;

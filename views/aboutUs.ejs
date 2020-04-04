@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <title>About Us</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">TutoringApp</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                <% if (user) { %>
+                    <li class="nav-item active"><a class="nav-link" href="/auth/logout">Log out</a><span class="sr-only">(current)</span></li>
+                <% } else { %>
+                    <li class="nav-item active"><a class="nav-link" href="/auth/login">Login</a><span class="sr-only">(current)</span></li>
+                <% } %>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Homepage</a><span class="sr-only">(current)</span>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/profile/">Profile</a><span class="sr-only">(current)</span>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/aboutUs">About Us</a><span class="sr-only">(current)</span>
+                </li>
+                </ul>
+            </div>
+        </nav>
+        <header class="p-5">
+            <h1>About us.</h1>
+        </header>
+        <main class="pl-5">
+            <p>Lots of students at Penn find themselves struggling with academics without a lot of ample support. 
+                Office hours are incredible resources, but often are flooded with students and it is hard to get 
+                one-on-one time if students have multiple questions or need extended time to tackle specific concepts. 
+                Penn offers a lot of great resources in terms of tutoring, but the process is too rigid, inconvenient 
+                to join, and is not convenient in terms of times available. We wanted to create a tutoring app that 
+                allows tutors to list available times they are free, and have students sign up for slots whenever they 
+                need—like appointments. Students who are struggling with their academics and need one-on-one help, but 
+                do not have the means for weekly tutoring will benefit with this more flexible system, as well as students 
+                who are looking to make some extra cash who have a good handle on the material.</p>
+                <br> 
+                <br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card">
+                        <img src="http://localhost:3000/img/julie.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <br>
+                            <h4 class="card-title">Julie Chen</h4>
+                            <p class="card-text">Julie is a junior studying computer science and operations management. She went to 20 concerts in 2019!</p>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                        <img src="http://localhost:3000/img/caro.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <br>
+                            <h4 class="card-title">Caroline Murphy</h5>
+                            <p class="card-text">Caroline is a junior studying computer science. She is currently working on building a life size paper mache horse :)</p>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                        <img src="http://localhost:3000/img/selina.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                                <br>
+                                <h4 class="card-title">Selina Nie</h5>
+                            <p class="card-text">Selina is a junior studying computer science and design.  She can tie a shoe in less than a second :o</p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card">
+                        <img src="http://localhost:3000/img/jill.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <br>
+                            <h4 class="card-title">Jill Pesce</h5>
+                            <p class="card-text">Jill is a junior studying computer science.  She can juggle while listing the elements of the periodic table :D</p>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card">
+                        <img src="http://localhost:3000/img/chloe.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <br>
+                            <h4 class="card-title">Chloe Prezelski</h5>
+                            <p class="card-text">Chloe is a junior studying computer science.  She knows the 50 states and capitals song by heart :p</p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+        </main>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

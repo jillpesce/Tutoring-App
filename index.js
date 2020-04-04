@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // set up EJS
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
 app.use(cookieSession({
 	maxAge: 24 * 60 * 60 * 1000,
@@ -85,6 +86,11 @@ app.get('/', (req, res) => {
 	res.render('home', { user: req.user });
 });
 
+app.get('/aboutUs', (req, res) => {
+	console.log("in aboutUs route");
+	res.render('aboutUs', { user: req.user });
+});
+
 app.get('/find', (req, res) => {
 	const email = req.query.email;
 	console.log(email);
@@ -102,7 +108,6 @@ app.get('/find', (req, res) => {
             }
         });
 	}
-	//console.log(res);
 });
 
 app.get('/save', (req, res) => {
@@ -132,12 +137,10 @@ app.get('/save', (req, res) => {
 var User = require('./models/User');
 
 app.post('/createProfile', function(req, res) {
-	console.log('in post func');
-	console.log('gradYear: ' + req.body.gradYear);
-    // if(req.body.school == null || req.body.school == "") {
-    //     // display error and ask to fill out again
-    //     res.render('signup', { user: req.user, message: "Please enter a school." });
-	// } else 
+    if(req.body.school == "--Select a school--") {
+        // display error and ask to fill out again
+        res.render('signup', { user: req.user, message: "Please select a school." });
+	} else 
 	if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
         // display error and ask to fill out again
         res.render('signup', { user: req.user, message: "Please enter a 4 number year." });
@@ -161,6 +164,34 @@ app.post('/createProfile', function(req, res) {
         }};
         User.updateOne({email: req.body.email}, newValues).then(() => {
             console.log('Updated - ' + req.body.email);
+            res.redirect('/profile/');
+        });
+    }
+});
+
+app.post('/editProfile', function(req, res) {
+	console.log('in editProf func');
+	if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
+        // display error and ask to fill out again
+        res.render('editProfile', { user: req.user, message: "Please enter a 4 number year." });
+    } else if(req.body.major == null || req.body.major == "") {
+        // display error and ask to fill out again
+        res.render('editProfile', { user: req.user, message: "Please enter a major." });
+    } else if(req.body.bio == null || req.body.bio == "") {
+        // display error and ask to fill out again
+        res.render('editProfile', { user: req.user, message: "Please enter a short bio." });
+    } else {
+		// update fields for user
+		console.log('updating user');
+        var newValues = { $set: {
+            name: req.body.name,
+            school: req.body.school,
+            gradYear: req.body.gradYear,
+            major: req.body.major,
+            bio: req.body.bio
+        }};
+        User.updateOne({email: req.user.email}, newValues).then(() => {
+            console.log('edited profile for - ' + req.body.email);
             res.redirect('/profile/');
         });
     }

@@ -2,102 +2,59 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Profile</title>
-        <style>
-            body{
-                font-family: arial;
-                margin: 0;
-            }
-            nav{
-                background: #ff5353;
-                padding: 20px 10px;
-            }
-            nav ul{
-                max-width: 960px;
-                margin: 0 auto;
-                padding: 0;
-            }
-            nav li{
-                list-style-type: none;
-                display: inline-block;
-                margin: 0 10px 0 0;
-            }
-            nav a{
-                color: #fff;
-                font-size: 18px;
-                background: rgba(255,255,255,0.2);
-                text-decoration: none;
-                padding: 10px;
-                display: block;
-            }
-            main, header{
-                max-width: 960px;
-                margin: 30px auto;
-                padding: 0 10px;
-                color: #333;
-            }
-            main img{
-                width: 40px;
-                margin-right: 10px;
-                position: relative;
-                top: 12px;
-            }
-            main p{
-                display: inline-block;
-            }
-        </style>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <title>Sign Up</title>
     </head>
-    <body>
-        <nav>
-            <ul>
-                <% if (user) { %>
-                <li><a href="/auth/logout">Log out</a></li>
-                <% } else { %>
-                <li><a href="/auth/login">Login</a></li>
-                <% } %>
-                <li><a href="/">Homepage</a></li>
-                <li><a href="/profile">Profile</a></li>
-                <li><a href="/aboutUs">About Us</a></li>
-            </ul>
-        </nav>
+    <body class="p-5">
         <header>
             <h1>Welcome, <%= user.name %>!  Looks like you haven't been here before.  Let's create a profile!</h1>
         </header>
         <main>
-                <% if (message) { %>
-                    <div class="alert alert-danger" role="alert">
-                        <%= message %>
-                    </div>
-                <% } %>
+            <% if (message) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= message %>
+                </div>
+            <% } %>
             <form action="/createProfile" method="POST">
-                <label for="name">Name:</label>
-                <input id="name" type="text" name="name" value='<%= user.name %>' readonly>
-                <br/>
-                <label for="email">Email:</label>
-                <input id="email" type="text" name="email" value='<%= user.email %>' readonly>
-                <br/>
-                <label for="school">School:</label>
-                <select id = "school" name = "school" value="Select a school.">
-                    <option value = "--Select a school--">--Select a school--</option>
-                    <option value = "COLLEGE">COLLEGE</option>
-                    <option value = "WHARTON">WHARTON</option>
-                    <option value = "ENGINEERING">ENGINEERING</option>
-                    <option value = "NURSING">NURSING</option>
-                </select>
-                <!-- <label for="school">School:</label>
-                <input id="school" type="text" name="school"> -->
-                <br/>
-                <label for="gradYear">Graduation Year:</label>
-                <input id="gradYear" type="text" name="gradYear">
-                <br/>
-                <label for="major">Major:</label>
-                <input id="major" type="text" name="major">
-                <br/>
-                <label for="bio">Bio:</label>
-                <input id="bio" type="text" name="bio">
-                <br/>
-                <input type="submit" value="Create Account!">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input class="form-control" id="name" type="text" name="name" value='<%= user.name %>' readonly>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input class="form-control" id="email" type="text" name="email" value='<%= user.email %>' readonly>
+                </div>
+                <div>
+                    <label for="school">School</label>
+                    <select class="form-control" id = "school" name = "school" value="Select a school.">
+                        <option value = "--Select a school--">--Select a school--</option>
+                        <option value = "COLLEGE">COLLEGE</option>
+                        <option value = "WHARTON">WHARTON</option>
+                        <option value = "ENGINEERING">ENGINEERING</option>
+                        <option value = "NURSING">NURSING</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="major">Major</label>
+                    <input class="form-control" id="major" type="text" name="major" placeholder="Enter your major">
+                </div>
+                <div class="form-group">
+                        <label for="gradYear">Graduation Year</label>
+                        <input class="form-control" id="gradYear" type="text" name="gradYear" placeholder="Enter your graduation year">
+                </div>
+                <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <input class="form-control" id="bio" type="text" name="bio" placeholder="Enter a short bio about yourself">
+                </div>
+                <button type="submit" class="btn btn-primary">Create account!</button>
             </form>
         </main>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </body>
 </html>
