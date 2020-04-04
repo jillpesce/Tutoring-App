@@ -182,6 +182,62 @@ app.post('/toggleTutor', function(req, res) {
         res.redirect('/');
     });
 });
+
+// save a new timeslot
+app.get('/saveTimeslot', (req, res) => {
+    console.log('hit save timeslot endpoint');
+    var courses;
+    if (req.query.course.length != 1) {
+        courses = req.query.course;
+    } else {
+        courses = [req.query.course];
+    }
+    var newTimeslot = new Timeslot ({
+        tutorEmail: req.query.email,
+        tutorName: req.query.name, 
+        date: req.query.date,
+        courses: courses,
+    });
+    newTimeslot.save((err) => {
+        if (err) {
+            console.log('fail');
+            console.log(err);
+            res.json({'result' : 'fail'});
+        } else {
+            console.log('success');
+            res.json({'result' : 'success'});
+        }
+    })
+});
+
+var Timeslot = require('./models/Timeslot');
+
+// save a new appointment request
+app.get('/saveAppointment', (req, res) => {
+    console.log('hit save appt endpoint');
+    var newAppointment = new Appointment ({
+        tutorEmail: req.query.tutoremail,
+        tutorName: req.query.tutorname, 
+        tuteeEmail: req.query.tuteeemail,
+        tuteeName: req.query.tuteename, 
+        date: req.query.date,
+        confirmed: false
+    });
+
+    newAppointment.save((err) => {
+        if (err) {
+            console.log('fail');
+            console.log(err);
+            res.json({'result' : 'fail'});
+        } else {
+            console.log('success');
+            res.json({'result' : 'success'});
+        }
+    })
+});
+
+var Appointment = require('./models/Appointment');
+
 app.listen(3000,  () => {
 	console.log('Listening on port 3000');
 });

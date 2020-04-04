@@ -155,21 +155,29 @@ public class RemoteDataSource {
      * @return true if the save is successful and false otherwise.
      */
     public boolean saveNewTimeslot(Timeslot t) {
-//        String tutorEmail = t.getTutor();
-//        Date date = t.getDate();
-//        String urlString = "http://localhost:3000/saveTime?email=" + email + "&name=" + name + "&school="
-//                + school + "&major=" + major + "&bio=" + bio + "&gradYear=" + gradYear;
-//        HttpSaveRequest saveRequest = new HttpSaveRequest();
-//        try {
-//            String result = saveRequest.execute(urlString).get();
-//            if (result.equals("success")) {
-//                return true;
-//            }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
+        String tutorEmail = t.getTutor();
+        String tutorName = t.getTutorName();
+        String date = t.getDate();
+        String[] courses = t.getCourses();
+
+        String urlString = "http://localhost:3000/saveTimeslot?email=" + tutorEmail + "&name=" + tutorName + "&date="
+                + date;
+
+        for (String s : courses) {
+            urlString += "&course=" +s;
+        }
+
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
@@ -180,21 +188,26 @@ public class RemoteDataSource {
      * @return true if the save is successful and false otherwise.
      */
     public boolean saveNewAppt(Appointment a) {
-//        String tutorEmail = t.getTutor();
-//        Date date = t.getDate();
-//        String urlString = "http://localhost:3000/saveTime?email=" + email + "&name=" + name + "&school="
-//                + school + "&major=" + major + "&bio=" + bio + "&gradYear=" + gradYear;
-//        HttpSaveRequest saveRequest = new HttpSaveRequest();
-//        try {
-//            String result = saveRequest.execute(urlString).get();
-//            if (result.equals("success")) {
-//                return true;
-//            }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        } catch (ExecutionException e) {
-//            e.printStackTrace();
-//        }
+        String tutorName = a.getTutor();
+        String tuteeName = a.getTutee();
+        String tutorEmail = a.getTutorEmail();
+        String tuteeEmail = a.getTuteeEmail();
+        String date = a.getDate();
+
+        String urlString = "http://localhost:3000/saveAppointment?tutoremail=" + tutorEmail + "&tutorname=" + tutorName + "&date="
+                + date + "&tuteename=" + tuteeName + "&tuteeemail=" + tuteeEmail;
+
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

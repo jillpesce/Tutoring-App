@@ -4,9 +4,9 @@ import database_schema.Date;
 
 public class Appointment implements Comparable {
     private String tutorName;
-    private String torEmail;
+    private String tutorEmail;
     private String tuteeName;
-    private String teeEmail;
+    private String tuteeEmail;
     private String date; // start date + time, appointments all 1 hr increments, YYYYMMDDHH
     private Boolean confirmed;
 
@@ -14,8 +14,8 @@ public class Appointment implements Comparable {
         tutorName = tutorN;
         tuteeName = tuteeN;
         date = d;
-        torEmail = tutorE;
-        teeEmail = tuteeE;
+        tutorEmail = tutorE;
+        tuteeEmail = tuteeE;
         confirmed = false;
     }
 
@@ -26,6 +26,10 @@ public class Appointment implements Comparable {
     public String getTutee() {
         return tuteeName;
     }
+
+    public String getTutorEmail() { return tutorEmail; }
+
+    public String getTuteeEmail() { return tuteeEmail; }
 
     public String getDate() {
         return date;
