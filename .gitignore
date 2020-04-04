@@ -1,0 +1,10 @@
+android/app/.idea
+.idea
+.project
+anndroid/app/.project
+.DS_Store
+local.properties
+gradle*
+.classpath
+*.prefs
+android/app/src/main/gen
