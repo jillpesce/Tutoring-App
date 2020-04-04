@@ -5,7 +5,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,7 +30,6 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         String email = getIntent().getStringExtra("EMAIL");
-
         //get the user from the database
         RemoteDataSource ds = new RemoteDataSource();
         this.user = ds.findUser(email);
@@ -45,17 +49,24 @@ public class DashboardActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
             Fragment selectedFragment = null;
+            FragmentManager fm = null;
             switch(item.getItemId()) {
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
                     ((ProfileFragment) selectedFragment).setUser(user);
+                    fm = getSupportFragmentManager();
+                    fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+                    break;
+                case R.id.nav_schedule:
+                    selectedFragment = new TimeslotsFragment();
+                    ((TimeslotsFragment) selectedFragment).setUser(user);
+                    fm = getSupportFragmentManager();
+                    fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     break;
                 case R.id.nav_search:
                     selectedFragment = new SearchFragment();
                     break;
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,
-                    selectedFragment).commit();
             return true;
         }
     };
