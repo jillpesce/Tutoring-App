@@ -5,15 +5,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.SearchView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
-
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 
@@ -30,7 +29,7 @@ public class DashboardActivity extends AppCompatActivity {
         //get the user from the database
         RemoteDataSource ds = new RemoteDataSource();
         this.user = ds.findUser(email);
-        Log.d("USER_DASHBOARD", user.toString());
+        //Log.d("USER_DASHBOARD", user.toString());
 
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -51,6 +50,9 @@ public class DashboardActivity extends AppCompatActivity {
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
                     ((ProfileFragment) selectedFragment).setUser(user);
+                    break;
+                case R.id.nav_search:
+                    selectedFragment = new SearchFragment();
                     break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,

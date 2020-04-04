@@ -5,6 +5,8 @@ var authRoutes =  require('./routes/auth-routes');
 var profileRoutes =  require('./routes/profile-routes');
 var scoresRoutes =  require('./routes/scores-routes');
 
+var User = require('./models/User');
+
 var passportSetup = require('./config/passport-setup');
 var passport = require('passport');
 var mongoose = require('mongoose');
@@ -41,50 +43,6 @@ app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 app.use('/scores', scoresRoutes);
 
-app.get('/find', (req, res) => {
-    const email = req.query.email;
-    console.log(email);
-    if (email) {
-        User.findOne( {email: email}, (err, user) => {
-            if (err) {
-                console.log(err);
-                res.json({});
-            } else if (!user) {
-                console.log('did NOT find user');
-                res.json({});
-            } else {
-                console.log('found user');
-                res.send(user);
-            }
-        });
-    }
-    //console.log(res);
-});
-
-app.get('/save', (req, res) => {
-    console.log('hit save endpoint');
-    const email = req.query.email;
-    var newUser = new User ({
-        name: req.query.name,
-        email: req.query.email,
-        school: req.query.school,
-        major: req.query.major,
-        gradYear: req.query.gradYear,
-        bio: req.query.bio
-    });
-    
-    newUser.save((err) => {
-        if (err) {
-            console.log('fail');
-            console.log(err);
-            res.json({'result' : 'fail'});
-        } else {
-            console.log('success');
-            res.json({'result' : 'success'});
-        }
-    })
-})
-
 // create home route
 app.get('/', (req, res) => {
     if (req.user && req.user.isTutor) {
@@ -111,7 +69,6 @@ app.get('/find', (req, res) => {
             }
         });
     }
-    //console.log(res);
 });
 
 app.get('/save', (req, res) => {
@@ -138,7 +95,6 @@ app.get('/save', (req, res) => {
     })
 });
 
-var User = require('./models/User');
 
 app.post('/createProfile', function(req, res) {
     console.log('in post func');
@@ -184,18 +140,7 @@ app.post('/toggleTutor', function(req, res) {
         res.redirect('/');
     });
 });
-//Post new score
-app.post('/scores/save', (req, res) => {
-    req.user.scores.push(req.body.inputScore);
-    console.log(req.user.scores);
-    var newValues = { $set: {
-        scores: req.user.scores
-    }};
-    User.updateOne({email: req.user.email}, newValues).then(() => {
-        console.log('New scores = ' + req.user.scores);
-        res.redirect('/scores');
-    });
-});
+
 app.listen(3000,  () => {
     console.log('Listening on port 3000');
 });
