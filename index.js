@@ -184,13 +184,15 @@ app.post('/toggleTutor', function(req, res) {
 });
 
 // save a new timeslot
-app.get('/saveTimeslot', (req, res) => {
+app.get('/makeTimeslot', (req, res) => {
     console.log('hit save timeslot endpoint');
     var courses;
-    if (req.query.course.length != 1) {
+    if (req.query.course.length > 1) {
         courses = req.query.course;
-    } else {
+    } else if (req.query.course.length = 1) {
         courses = [req.query.course];
+    } else {
+        courses = [];
     }
     var newTimeslot = new Timeslot ({
         tutorEmail: req.query.email,
@@ -213,9 +215,9 @@ app.get('/saveTimeslot', (req, res) => {
 var Timeslot = require('./models/Timeslot');
 
 // save a new appointment request
-app.get('/saveAppointment', (req, res) => {
+app.get('/bookAppointment', (req, res) => {
     console.log('hit save appt endpoint');
-    var newAppointment = new Appointment ({
+    var newAppointment = new Appointment({
         tutorEmail: req.query.tutoremail,
         tutorName: req.query.tutorname, 
         tuteeEmail: req.query.tuteeemail,

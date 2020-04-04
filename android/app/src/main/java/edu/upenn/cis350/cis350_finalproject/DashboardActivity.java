@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 
+import database_schema.Timeslot;
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 

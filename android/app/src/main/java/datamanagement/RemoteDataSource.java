@@ -155,27 +155,33 @@ public class RemoteDataSource {
      * @return true if the save is successful and false otherwise.
      */
     public boolean saveNewTimeslot(Timeslot t) {
+        Log.d("SAVE NEW", "Timeslot");
         String tutorEmail = t.getTutor();
         String tutorName = t.getTutorName();
         String date = t.getDate();
         String[] courses = t.getCourses();
 
-        String urlString = "http://localhost:3000/saveTimeslot?email=" + tutorEmail + "&name=" + tutorName + "&date="
+        String urlString = "http://localhost:3000/makeTimeslot?email=" + tutorEmail + "&name=" + tutorName + "&date="
                 + date;
 
         for (String s : courses) {
             urlString += "&course=" +s;
         }
+//
+//        urlString.replaceAll(" ", "_");
 
         HttpSaveRequest saveRequest = new HttpSaveRequest();
         try {
             String result = saveRequest.execute(urlString).get();
             if (result.equals("success")) {
+                Log.d("success:", "yeehaw");
                 return true;
             }
         } catch (InterruptedException e) {
+            Log.d("INTERRUPTION ERROR:", "" +e);
             e.printStackTrace();
         } catch (ExecutionException e) {
+            Log.d("EXECUTION ERROR:", ""+ e);
             e.printStackTrace();
         }
         return false;
@@ -194,7 +200,7 @@ public class RemoteDataSource {
         String tuteeEmail = a.getTuteeEmail();
         String date = a.getDate();
 
-        String urlString = "http://localhost:3000/saveAppointment?tutoremail=" + tutorEmail + "&tutorname=" + tutorName + "&date="
+        String urlString = "http://localhost:3000/bookAppointment?tutoremail=" + tutorEmail + "&tutorname=" + tutorName + "&date="
                 + date + "&tuteename=" + tuteeName + "&tuteeemail=" + tuteeEmail;
 
         HttpSaveRequest saveRequest = new HttpSaveRequest();

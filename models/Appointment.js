@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema; 
 
-var AppointmentScheme = new Schema({
+var appointmentScheme = new Schema({
     tutorEmail: String,
     tutorName: String, 
     tuteeEmail: String,
@@ -13,4 +13,4 @@ var AppointmentScheme = new Schema({
 // export userSchema as a class called User
 var Appointment = mongoose.model('appointment', appointmentScheme);
 
-module.exports = User;
+module.exports = Appointment;

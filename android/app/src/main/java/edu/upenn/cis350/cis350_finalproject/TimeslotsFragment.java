@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import database_schema.User;
+import datamanagement.RemoteDataSource;
 
 public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     ListView lv;
@@ -55,36 +56,6 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
         });
 
         return view;
-
-//        User u = new User("snie@seas.upenn.edu", "Selina Nie", "SEAS", "CIS", "2021", "we out here bois");
-//        Tutor a = new Tutor(u);
-//        Date d = new Date();
-//        String[] courses = {"CIS 121", "NETS 150"};
-//        ts.add(new Timeslot(a, d, courses));
-//
-//            String[] timeslots = {"March 18, 2020 at 6:00PM", "March 18, 2020 at 6:30PM", "March 18, 2020 at 7:00PM", "March 18, 2020 at 7:30PM"};
-//
-//            ArrayList<String> ts = new ArrayList<String>(Arrays.asList(timeslots));
-//            ArrayAdapter<String> tsAdapter = new ArrayAdapter<String>(getActivity(),3, ts); //strings to be diplayed
-//
-//            ListView listView = (ListView) RootView.findViewById(R.id.timeslots);
-//            listView.setAdapter(tsAdapter);
-//
-//        LinearLayout mainLayout = (LinearLayout) findViewById(R.id.listLayout);
-//        LayoutInflater li =  (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        for (int i = 0; i < ts.size();  i++){
-//            View tempView = li.inflate(R.layout.fragment_view_timeslots, null);
-//            TextView textMain = (TextView) tempView.findViewById(R.id.timeslot_text);
-//            textMain.setText("" + ts.get(i).getDate());
-//
-//            TextView textTutor = (TextView) tempView.findViewById(R.id.timeslot_detail);
-//            textTutor.setText(ts.get(i).getTutor().getName() +" tutoring " +ts.get(i).getCourses());
-//
-//            mainLayout.addView(tempView);
-//        }
-
-
-//        view = RootView;
     }
 
     public void setUser(User user) {

@@ -11,4 +11,4 @@ var timeslotScheme = new Schema({
 // export userSchema as a class called User
 var Timeslot = mongoose.model('timeslot', timeslotScheme);
 
-module.exports = User;
+module.exports = Timeslot;
