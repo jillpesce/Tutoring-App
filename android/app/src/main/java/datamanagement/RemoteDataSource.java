@@ -156,6 +156,10 @@ public class RemoteDataSource {
             String result = "";
             try {
                 URL url = new URL(urlString);
+<<<<<<< Updated upstream
+=======
+                Log.d("url at connect", "" + url);
+>>>>>>> Stashed changes
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setReadTimeout(15000);
@@ -188,4 +192,28 @@ public class RemoteDataSource {
             return result;
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    public Timeslot[] getAllTimeslots() {
+        try {
+            User user = null;
+            String urlString = "http://" + this.host + ":" + port + "/getAllTimeSlots=";
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+                JSONObject data = (JSONObject) parser.parse(result);
+                Log.d("DATA:", "" + data);
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+>>>>>>> Stashed changes
 }
