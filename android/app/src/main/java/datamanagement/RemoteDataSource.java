@@ -131,8 +131,8 @@ public class RemoteDataSource {
         String major = u.getMajor();
         String bio = u.getBio();
         String gradYear = u.getGradYear();
-        //String urlString = "http://10.0.2.2:3000/save?email=" + email;
-        String urlString = "http://10.0.2.2:3000/save?email=" + email + "&name=" + name + "&school="
+        //String urlString = "http://localhost:3000/save?email=" + email;
+        String urlString = "http://localhost:3000/save?email=" + email + "&name=" + name + "&school="
                 + school + "&major=" + major + "&bio=" + bio + "&gradYear=" + gradYear;
         HttpSaveRequest saveRequest = new HttpSaveRequest();
         try {
@@ -188,8 +188,4 @@ public class RemoteDataSource {
             return result;
         }
     }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 }

@@ -4,18 +4,18 @@ import java.util.Date;
 import java.text.*;
 
 public class Timeslot implements Comparable {
-    private Tutor tor;
+    private String tutorEmail;
     private Date date; // start date + time, appointments all 30 min increments
     private String[] courses;
 
-    public Timeslot(Tutor a,Date d, String[] s) {
-        tor = a;
+    public Timeslot(String a,Date d, String[] s) {
+        tutorEmail = a;
         date = d;
         courses = s;
     }
 
-    public Tutor getTutor() {
-        return tor;
+    public String getTutor() {
+        return tutorEmail;
     }
 
     public Date getDate() {
