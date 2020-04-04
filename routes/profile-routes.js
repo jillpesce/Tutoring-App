@@ -18,6 +18,11 @@ router.get('/', authCheck, (req, res) => {
     res.render('profile', { user: req.user });
 });
 
+router.get('/editProfile', authCheck, (req, res) => {
+    console.log('in edit profile');
+    res.render('editProfile', { user: req.user, message: "" });
+});
+
 router.get('/search', (req, res) => {
     const searchName = req.query.name;
     User.find( { $text: { $search: searchName } }, function(err, users) {
@@ -26,8 +31,7 @@ router.get('/search', (req, res) => {
             return res.sendStatus(500);
         }
         res.json(users);
-    } );
-
+    });
 });
 
 module.exports = router;

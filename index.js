@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // set up EJS
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000,
@@ -58,6 +59,11 @@ app.get('/', (req, res) => {
     }
 });
 
+app.get('/aboutUs', (req, res) => {
+	console.log("in aboutUs route");
+	res.render('aboutUs', { user: req.user });
+});
+
 app.get('/find', (req, res) => {
     const email = req.query.email;
     console.log(email);
@@ -74,7 +80,7 @@ app.get('/find', (req, res) => {
                 res.send(user);
             }
         });
-    }
+	}
 });
 
 app.get('/save', (req, res) => {
@@ -103,13 +109,10 @@ app.get('/save', (req, res) => {
 
 
 app.post('/createProfile', function(req, res) {
-    console.log('in post func');
-    console.log('gradYear: ' + req.body.gradYear);
-    // if(req.body.school == null || req.body.school == "") {
-    //     // display error and ask to fill out again
-    //     res.render('signup', { user: req.user, message: "Please enter a school." });
-    // } else 
-    if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
+    if(req.body.school == "--Select a school--") {
+        // display error and ask to fill out again
+        res.render('signup', { user: req.user, message: "Please select a school." });
+	} else if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
         // display error and ask to fill out again
         res.render('signup', { user: req.user, message: "Please enter a 4 digit year." });
     } else if(req.body.major == null || req.body.major == "") {
@@ -133,9 +136,10 @@ app.post('/createProfile', function(req, res) {
         User.updateOne({email: req.body.email}, newValues).then(() => {
             console.log('Updated - ' + req.body.email);
             res.redirect('/profile/');
-        });
-    }
+		});
+	}
 });
+
 //Post toggle tutor status
 app.post('/toggleTutor', function(req, res) {
     var newValues = { $set: {
@@ -145,6 +149,34 @@ app.post('/toggleTutor', function(req, res) {
         console.log('Is ' + req.user.email + ' a tutor? ' + req.user.isTutor);
         res.redirect('/');
     });
+});
+
+app.post('/editProfile', function(req, res) {
+	console.log('in editProf func');
+	if(req.body.gradYear == null || (req.body.gradYear).length != 4) {
+        // display error and ask to fill out again
+        res.render('editProfile', { user: req.user, message: "Please enter a 4 number year." });
+    } else if(req.body.major == null || req.body.major == "") {
+        // display error and ask to fill out again
+        res.render('editProfile', { user: req.user, message: "Please enter a major." });
+    } else if(req.body.bio == null || req.body.bio == "") {
+        // display error and ask to fill out again
+        res.render('editProfile', { user: req.user, message: "Please enter a short bio." });
+    } else {
+		// update fields for user
+		console.log('updating user');
+        var newValues = { $set: {
+            name: req.body.name,
+            school: req.body.school,
+            gradYear: req.body.gradYear,
+            major: req.body.major,
+            bio: req.body.bio
+        }};
+        User.updateOne({email: req.user.email}, newValues).then(() => {
+            console.log('edited profile for - ' + req.body.email);
+            res.redirect('/profile/');
+        });
+    }
 });
 
 app.listen(3000,  () => {

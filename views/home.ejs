@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <title>Profile</title>
+
+        <title>Home</title>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -24,7 +25,7 @@
                     <a class="nav-link" href="/">Homepage</a><span class="sr-only">(current)</span>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="/profile">Profile</a><span class="sr-only">(current)</span>
+                    <a class="nav-link" href="/profile/">Profile</a><span class="sr-only">(current)</span>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="/aboutUs">About Us</a><span class="sr-only">(current)</span>
@@ -32,25 +33,14 @@
                 </ul>
             </div>
         </nav>
-
-        <div class="container">
-            <div class="row align-items-center my-5">
-                <div class="col-lg-7">
-                    <img class="img-fluid rounded mb-4 mb-lg-0" src="<%= user.picture %>" alt="">
-                    </div>
-                    <div class="col-lg-5">
-                    <h1 class="font-weight-light"> <%= user.name %></h1>
-                    <h4> <%= user.bio %> </h4>
-                    <ul style="list-style-type:none;">
-                        <li>School: <%= user.school %> </li>
-                        <li>Major: <%= user.major %> </li>
-                        <li>Graduation Year: <%= user.gradYear %> </li>
-                    </ul>
-                    <a type="button" class="btn btn-primary" href='editProfile'>Edit profile</a>
-                </div>
-            </div>
+        <div class="p-5">
+            <header>
+                <h1>Welcome to our Tutoring App!</h1>
+            </header>
+            <main>
+                <p>CIS 350 project for Jill, Julie, Chloe, Selina, and Caroline</p>
+            </main>
         </div>
-        
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
