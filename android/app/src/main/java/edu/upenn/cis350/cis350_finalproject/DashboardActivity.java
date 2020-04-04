@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import database_schema.Timeslot;
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 

@@ -16,6 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.net.*;
 import java.util.concurrent.ExecutionException;
@@ -177,6 +178,72 @@ public class RemoteDataSource {
         return false;
     }
 
+    /**
+     *
+     * @param u -- User we want to save to the database
+     * @return true if the save is successful and false otherwise.
+     */
+    public boolean saveNewTimeslot(Timeslot t) {
+        Log.d("SAVE NEW", "Timeslot");
+        String tutorEmail = t.getTutor();
+        String tutorName = t.getTutorName();
+        String date = t.getDate();
+        String[] courses = t.getCourses();
+
+        String urlString = "http://localhost:3000/makeTimeslot?email=" + tutorEmail + "&name=" + tutorName + "&date="
+                + date;
+
+        for (String s : courses) {
+            urlString += "&course=" +s;
+        }
+
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                Log.d("success:", "yeehaw");
+                return true;
+            }
+        } catch (InterruptedException e) {
+            Log.d("INTERRUPTION ERROR:", "" +e);
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            Log.d("EXECUTION ERROR:", ""+ e);
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    /**
+     *
+     * @param u -- User we want to save to the database
+     * @return true if the save is successful and false otherwise.
+     */
+    public boolean saveNewAppt(Appointment a) {
+        String tutorName = a.getTutor();
+        String tuteeName = a.getTutee();
+        String tutorEmail = a.getTutorEmail();
+        String tuteeEmail = a.getTuteeEmail();
+        String date = a.getDate();
+
+        String urlString = "http://localhost:3000/bookAppointment?tutoremail=" + tutorEmail + "&tutorname=" + tutorName + "&date="
+                + date + "&tuteename=" + tuteeName + "&tuteeemail=" + tuteeEmail;
+
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public class HttpSaveRequest extends AsyncTask<String, Void, String> {
 
         @Override
@@ -184,7 +251,8 @@ public class RemoteDataSource {
             String urlString = strings[0];
             String result = "";
             try {
-                URL url = new URL(urlString);
+                URL url = new URL("http://localhost:3000/makeTimeslot?email=pchloe@seas.upenn.edu&name=Chloe%20Prezelski&date=2020031408");
+                Log.d("url at connect", "" + url);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setReadTimeout(15000);
@@ -192,6 +260,7 @@ public class RemoteDataSource {
                 conn.connect();
 
                 int responsecode = conn.getResponseCode();
+                Log.d("RESPONSE CODE", "Unexpected status code: " + responsecode);
                 if (responsecode != 200) {
                     Log.d("RESPONSE CODE", "Unexpected status code: " + responsecode);
                 } else {
@@ -216,5 +285,28 @@ public class RemoteDataSource {
             }
             return result;
         }
+    }
+
+    public Timeslot[] getAllTimeslots() {
+        try {
+            User user = null;
+            //String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
+            // we're going to have to change this!
+            String urlString = "http://localhost:3000/getAllTimeSlots";
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+                JSONObject data = (JSONObject) parser.parse(result);
+                Log.d("DATA:", "" + data);
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

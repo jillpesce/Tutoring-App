@@ -1,6 +1,9 @@
 
 package database_schema;
 
+import java.util.*;
+import java.text.*;
+
 public class Tutee {
     private User user;
 
@@ -11,7 +14,5 @@ public class Tutee {
     public String getName() {
         return user.getName();
     }
-
-
 
 }
