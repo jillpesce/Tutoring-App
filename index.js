@@ -177,6 +177,7 @@ app.post('/editProfile', function(req, res) {
             res.redirect('/profile/');
         });
     }
+});
 
 // save a new timeslot
 app.get('/makeTimeslot', (req, res) => {
