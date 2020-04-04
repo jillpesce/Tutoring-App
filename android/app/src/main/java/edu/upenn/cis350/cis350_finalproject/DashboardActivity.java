@@ -29,7 +29,11 @@ public class DashboardActivity extends AppCompatActivity {
         //get the user from the database
         RemoteDataSource ds = new RemoteDataSource();
         this.user = ds.findUser(email);
+<<<<<<< HEAD
         //Log.d("USER_DASHBOARD", user.toString());
+=======
+//        Log.d("USER_DASHBOARD", user.toString());
+>>>>>>> b93ea8a236275b896ee0acf9948dc5fdc013b138
 
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);

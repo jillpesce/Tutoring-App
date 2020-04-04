@@ -38,6 +38,12 @@ mongoose.connect(keys.mongodb.dbURI, () => {
     console.log('connected to mongodb');
 });
 
+// mongoose.connect(keys.mongodb.dbURI, {
+//     useUnifiedTopology: true,
+//     useNewUrlParser: true})
+//     .then(() => console.log("connected to mongodb"))
+//     .catch(err => console.error("An error has occured", err));
+
 //set up routes
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);

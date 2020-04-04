@@ -20,7 +20,7 @@ import java.util.Scanner;
 import java.net.*;
 import java.util.concurrent.ExecutionException;
 
-import database_schema.User;
+import database_schema.*;
 
 public class RemoteDataSource {
     private String host;
@@ -217,4 +217,27 @@ public class RemoteDataSource {
             return result;
         }
     }
+
+    public boolean saveApptRequest(Appointment a) {
+        String tutee = a.getTutee().getName();
+        String tutor = a.getTutor().getName();
+
+        String course = a.getCourse();
+
+        String urlString = "http://10.0.2.2:3000/save?email=" + email + "&name=" + name + "&school="
+                + school + "&major=" + major + "&bio=" + bio + "&gradYear=" + gradYear;
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
