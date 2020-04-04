@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main_timeslots_fragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:padding="30dp"
+        android:gravity="center"
+        android:id="@+id/timeslots_title"
+        android:text="All Open Timeslots"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeslots"
+        android:layout_below="@id/timeslots_title"
+        android:layout_centerHorizontal="true" />
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="30dp">-->
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="20dp"-->
+<!--            android:padding="10dp"-->
+<!--            android:text="All Open Appointments"/>-->
+
+<!--        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_width="fill_parent"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:id="@+id/listLayout"-->
+<!--            android:clickable="true"-->
+<!--            >-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="200dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_marginLeft="3dp"-->
+<!--                        android:layout_marginTop="3dp"-->
+<!--                        android:layout_width="200dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textSize="16dp"-->
+<!--                        android:id="@+id/timeslot_text"-->
+<!--                        android:text="March 18, 2020 at 6:00PM">-->
+<!--                    </TextView>-->
+
+<!--                    <TextView-->
+<!--                        android:layout_marginLeft="3dp"-->
+<!--                        android:layout_width="200dp"-->
+<!--                        android:layout_height="14dp"-->
+<!--                        android:textSize="12dp"-->
+<!--                        android:id="@+id/timeslot_detail"-->
+<!--                        android:text="with Selina Nie">-->
+<!--                    </TextView>-->
+
+<!--                </LinearLayout>-->
+
+<!--                <Button-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="50dp"-->
+<!--                    android:text="Book"-->
+<!--                    android:id="@+id/timeslot_button"-->
+<!--                    android:onClick="onTimeslotSelected"/>-->
+<!--            </LinearLayout>-->
+
+
+<!--        </LinearLayout>-->
+
+
+<!--    </LinearLayout>-->
+
+</RelativeLayout>

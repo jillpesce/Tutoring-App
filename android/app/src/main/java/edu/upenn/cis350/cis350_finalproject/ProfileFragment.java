@@ -1,6 +1,7 @@
 package edu.upenn.cis350.cis350_finalproject;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class ProfileFragment extends Fragment {
 
     public void setUser(User user) {
         this.user = user;
+        Log.d("PROFILE", "frag:" + user.getName());
         //setUserFields();
     }
 }
