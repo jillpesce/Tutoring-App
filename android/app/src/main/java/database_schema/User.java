@@ -1,6 +1,7 @@
 package database_schema;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class User implements Serializable {
     private String email;
@@ -9,6 +10,7 @@ public class User implements Serializable {
     private String major;
     private String gradYear;
     private String bio;
+    private ArrayList<Course> courses;
 
     public User(String email, String name, String school, String major, String gradYear, String bio)
     {
@@ -18,6 +20,7 @@ public class User implements Serializable {
         this.major = major;
         this.gradYear = gradYear;
         this.bio = bio;
+        this.courses = new ArrayList<Course>();
     }
 
     public String getName() { return this.name; }
@@ -32,9 +35,21 @@ public class User implements Serializable {
 
     public String getBio() { return this.bio; }
 
+    public ArrayList<Course> getCourses() { return this.courses; }
+
+    public void addCourse(Course c) { courses.add(c); }
+
+    public boolean hasCourse(Course c) {
+        for (int i = 0; i < courses.size(); i++) {
+            if (c.getName().equals(courses.get(i).getName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
-        String result = "User({\n email:" + this.email + "\nname: " + this.name + "\n})";
-        return result;
+        return "User({\n email:" + this.email + "\nname: " + this.name + "\n})";
     }
 }

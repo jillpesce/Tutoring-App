@@ -11,7 +11,8 @@ var userSchema = new Schema({
     bio: String,
     scores: Array,
     isTutor: Boolean, 
-    isNewUser: Boolean
+    isNewUser: Boolean,
+    courses: Array
 });
 
 // export userSchema as a class called User

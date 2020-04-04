@@ -39,6 +39,7 @@ passport.use(
                     gradYear: null,
                     picture: profile.photos[0].value,
                     scores: [],
+                    courses: [],
                     isTutor: false,
                     isNewUser: true
                 }).save().then((newUser) => {

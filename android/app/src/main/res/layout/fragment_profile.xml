@@ -69,5 +69,23 @@
             android:layout_height="wrap_content"
             android:text="Graduation Year: "
             android:padding="10dp"/>
+        <TextView
+            android:id="@+id/profile_courses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Graduation Year: "
+            android:padding="10dp"/>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown" />
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SUBMIT"
+            android:onClick="onSubmitButtonClick"/>
     </LinearLayout>
 </RelativeLayout>
