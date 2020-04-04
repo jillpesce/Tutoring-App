@@ -180,7 +180,7 @@ public class RemoteDataSource {
 
     /**
      *
-     * @param u -- User we want to save to the database
+     * @param t -- User we want to save to the database
      * @return true if the save is successful and false otherwise.
      */
     public boolean saveNewTimeslot(Timeslot t) {
@@ -190,7 +190,7 @@ public class RemoteDataSource {
         String date = t.getDate();
         String[] courses = t.getCourses();
 
-        String urlString = "http://localhost:3000/makeTimeslot?email=" + tutorEmail + "&name=" + tutorName + "&date="
+        String urlString = "http://" + this.host + ":" + this.port + "/makeTimeslot?email=" + tutorEmail + "&name=" + tutorName + "&date="
                 + date;
 
         for (String s : courses) {
@@ -217,7 +217,7 @@ public class RemoteDataSource {
 
     /**
      *
-     * @param u -- User we want to save to the database
+     * @param a -- User we want to save to the database
      * @return true if the save is successful and false otherwise.
      */
     public boolean saveNewAppt(Appointment a) {
@@ -227,7 +227,7 @@ public class RemoteDataSource {
         String tuteeEmail = a.getTuteeEmail();
         String date = a.getDate();
 
-        String urlString = "http://localhost:3000/bookAppointment?tutoremail=" + tutorEmail + "&tutorname=" + tutorName + "&date="
+        String urlString = "http://" + this.host + ":" + this.port + "/bookAppointment?tutoremail=" + tutorEmail + "&tutorname=" + tutorName + "&date="
                 + date + "&tuteename=" + tuteeName + "&tuteeemail=" + tuteeEmail;
 
         HttpSaveRequest saveRequest = new HttpSaveRequest();
@@ -251,7 +251,7 @@ public class RemoteDataSource {
             String urlString = strings[0];
             String result = "";
             try {
-                URL url = new URL("http://localhost:3000/makeTimeslot?email=pchloe@seas.upenn.edu&name=Chloe%20Prezelski&date=2020031408");
+                URL url = new URL(urlString);
                 Log.d("url at connect", "" + url);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
@@ -292,7 +292,7 @@ public class RemoteDataSource {
             User user = null;
             //String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
             // we're going to have to change this!
-            String urlString = "http://localhost:3000/getAllTimeSlots";
+            String urlString = "http://" + this.host + ":" + this.port + "/getAllTimeSlots";
             HttpFindRequest findRequest = new HttpFindRequest();
             String result = findRequest.execute(urlString).get();
             if (result != null) {
