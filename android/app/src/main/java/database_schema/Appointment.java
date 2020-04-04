@@ -1,32 +1,30 @@
 package database_schema;
 
-import java.util.Date;
+import database_schema.Date;
 
 public class Appointment implements Comparable {
-    private String tor;
-    private String tee;
+    private String tutorName;
+    private String torEmail;
+    private String tuteeName;
+    private String teeEmail;
     private String date; // start date + time, appointments all 1 hr increments, YYYYMMDDHH
-    private String cl;
     private Boolean confirmed;
 
-    public Appointment(String a, String b, String d, String c) {
-        tor = a;
-        tee = b;
+    public Appointment(String a, String b, String d, String c, String e, String f) {
+        tutorName = a;
+        tuteeName = b;
         date = d;
-        cl = c;
+        torEmail = e;
+        teeEmail = f;
         confirmed = false;
     }
 
     public String getTutor() {
-        return tor;
+        return tutorName;
     }
 
     public String getTutee() {
-        return tee;
-    }
-
-    public String getCourse() {
-        return cl;
+        return tuteeName;
     }
 
     public String getDate() {

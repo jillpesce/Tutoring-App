@@ -28,6 +28,8 @@
             android:usesCleartextTraffic="true"/>
         <activity android:name="NewTimeslotActivity"
             android:usesCleartextTraffic="true"/>
+        <activity android:name="RequestAppointmentActivity"
+            android:usesCleartextTraffic="true"/>
     </application>
 
 </manifest>

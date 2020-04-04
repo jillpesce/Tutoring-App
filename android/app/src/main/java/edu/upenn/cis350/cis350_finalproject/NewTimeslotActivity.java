@@ -22,6 +22,7 @@ import datamanagement.RemoteDataSource;
 
 public class NewTimeslotActivity extends AppCompatActivity {
     String tutorEmail;
+    String tutorName;
     int month;
     int day;
     int year;
@@ -35,6 +36,7 @@ public class NewTimeslotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_timeslot);
         tutorEmail = getIntent().getStringExtra("EMAIL");
+        tutorName = getIntent().getStringExtra("NAME");
         courses = getIntent().getStringArrayExtra("COURSES");
 
         Spinner spinner = findViewById(R.id.timeslot_spinner);
@@ -80,7 +82,7 @@ public class NewTimeslotActivity extends AppCompatActivity {
             //save timeslot to database
             String date = "" + year + month + day + hour;
             RemoteDataSource ds = new RemoteDataSource();
-            Timeslot t = new Timeslot(email, date, courses);
+            Timeslot t = new Timeslot(email, date, courses, tutorName);
             ds.saveNewTimeslot(t);
             finish();
         }

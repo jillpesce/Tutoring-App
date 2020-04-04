@@ -1,17 +1,19 @@
 package database_schema;
+import database_schema.Date;
 
-import java.util.Date;
 import java.text.*;
 
 public class Timeslot implements Comparable {
     private String tutorEmail;
+    private String tutorName;
     private String date; // start date + time, appointments all 30 min increments
     private String[] courses;
 
-    public Timeslot(String a,String d, String[] s) {
+    public Timeslot(String a,String d, String[] s, String n) {
         tutorEmail = a;
         date = d;
         courses = s;
+        tutorName = n;
     }
 
     public String getTutor() {
@@ -23,6 +25,8 @@ public class Timeslot implements Comparable {
     }
 
     public String[] getCourses() { return courses; }
+
+    public String getTutorName() { return tutorName; }
 
     @Override
     public int compareTo(Object o) {
