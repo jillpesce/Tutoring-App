@@ -45,7 +45,6 @@ public class Appointment implements Comparable {
         confirmed = false;
     }
 
-}
     @Override
     public int compareTo(Object o) {
         Date d1 = this.date;

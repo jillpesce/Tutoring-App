@@ -31,8 +31,10 @@ public class DashboardActivity extends AppCompatActivity {
 
         String email = getIntent().getStringExtra("EMAIL");
         //get the user from the database
-        RemoteDataSource ds = new RemoteDataSource();
-        this.user = ds.findUser(email);
+        // TODO actually get the saved user's email
+        //RemoteDataSource ds = new RemoteDataSource();
+        //this.user = ds.findUser(email);
+        this.user = createFakeUserForNow();
 
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -49,24 +51,21 @@ public class DashboardActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
             Fragment selectedFragment = null;
-            FragmentManager fm = null;
+            FragmentManager fm = getSupportFragmentManager();
             switch(item.getItemId()) {
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
                     ((ProfileFragment) selectedFragment).setUser(user);
-                    fm = getSupportFragmentManager();
-                    fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     break;
                 case R.id.nav_schedule:
                     selectedFragment = new TimeslotsFragment();
                     ((TimeslotsFragment) selectedFragment).setUser(user);
-                    fm = getSupportFragmentManager();
-                    fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     break;
                 case R.id.nav_search:
                     selectedFragment = new SearchFragment();
                     break;
             }
+            fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
             return true;
         }
     };
