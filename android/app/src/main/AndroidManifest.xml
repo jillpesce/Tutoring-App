@@ -30,6 +30,8 @@
             android:usesCleartextTraffic="true"/>
         <activity android:name="RequestAppointmentActivity"
             android:usesCleartextTraffic="true"/>
+        <activity android:name="AppointmentActivity"
+            android:usesCleartextTraffic="true"/>
     </application>
 
 </manifest>

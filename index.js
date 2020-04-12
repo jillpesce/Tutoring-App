@@ -283,6 +283,46 @@ app.get('/getAllTimeslots', (req, res) => {
     });
 });
 
+app.get('/findTuteeAppointments', (req, res) => {
+    const tuteeEmail = req.query.tuteeEmail;
+    console.log("trying to find confirmed tutee appointments with " + tuteeEmail);
+    if (tuteeEmail) {
+        Appointment.find( {tuteeEmail: tuteeEmail, confirmed: true}, (err, appts) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!appts) {
+                console.log('no appointments');
+                res.json({});
+            } else {
+                console.log('appointments exists');
+                console.log(appts);
+                res.send(appts);
+            }
+        });
+	}
+});
+
+app.get('/findTutorAppointments', (req, res) => {
+    const tutorEmail = req.query.tutorEmail;
+    console.log("trying to find confirmed tutee appointments with " + tutorEmail);
+    if (tutorEmail) {
+        Appointment.find( {tutorEmail: tutorEmail, confirmed: true}, (err, appts) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!appts) {
+                console.log('no appointments');
+                res.json({});
+            } else {
+                console.log('appointments exists');
+                console.log(appts);
+                res.send(appts);
+            }
+        });
+	}
+});
+
 app.listen(3000,  () => {
     console.log('Listening on port 3000');
 });

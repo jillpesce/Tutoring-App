@@ -367,4 +367,81 @@ public class RemoteDataSource {
         }
         return null;
     }
+
+    public List<Appointment> getTuteeAppointments(String email) {
+        try {
+            String urlString = "http://" + this.host + ":" + this.port + "/findTuteeAppointments?tuteeEmail=" +email;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+
+                JSONArray appts = (JSONArray) parser.parse(result);
+                List<Appointment> ap = new ArrayList<Appointment>();
+                Iterator<JSONObject> iter = appts.iterator();
+
+                while (iter.hasNext()) {
+
+                    JSONObject data = (JSONObject)iter.next();
+
+                    String tuteeName = (String)data.get("tuteeName");
+                    String tuteeEmail = (String)data.get("tuteeEmail");
+                    String tutorName = (String)data.get("tutorName");
+                    String tutorEmail = (String)data.get("tutorEmail");
+                    String date = (String)data.get("date");
+                    Boolean confirmed = (Boolean)data.get("confirmed");
+
+                    Appointment a = new Appointment(tutorName, tuteeName, date, tutorEmail, tuteeEmail);
+                    ap.add(a);
+                }
+                return ap;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Appointment> getTutorAppointments(String email) {
+        try {
+            String urlString = "http://" + this.host + ":" + this.port + "/findTutorAppointments?tutorEmail=" +email;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+
+                JSONArray appts = (JSONArray) parser.parse(result);
+                List<Appointment> ap = new ArrayList<Appointment>();
+                Iterator<JSONObject> iter = appts.iterator();
+
+                while (iter.hasNext()) {
+
+                    JSONObject data = (JSONObject)iter.next();
+
+                    String tuteeName = (String)data.get("tuteeName");
+                    String tuteeEmail = (String)data.get("tuteeEmail");
+                    String tutorName = (String)data.get("tutorName");
+                    String tutorEmail = (String)data.get("tutorEmail");
+                    String date = (String)data.get("date");
+                    Boolean confirmed = (Boolean)data.get("confirmed");
+
+                    Appointment a = new Appointment(tutorName, tuteeName, date, tutorEmail, tuteeEmail);
+                    ap.add(a);
+                }
+
+                return ap;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

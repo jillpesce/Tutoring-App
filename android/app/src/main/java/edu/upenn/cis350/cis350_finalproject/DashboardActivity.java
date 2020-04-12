@@ -37,6 +37,11 @@ public class DashboardActivity extends AppCompatActivity {
         //this.user = ds.findUser(email);
         this.user = createFakeUserForNow();
 
+        AppointmentsTuteeFragment selectedFragment = new AppointmentsTuteeFragment();
+        FragmentManager fm = getSupportFragmentManager();
+        selectedFragment.setUser(user);
+        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
@@ -54,6 +59,10 @@ public class DashboardActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
             FragmentManager fm = getSupportFragmentManager();
             switch(item.getItemId()) {
+                case R.id.nav_home:
+                    selectedFragment = new AppointmentsTuteeFragment();
+                    ((AppointmentsTuteeFragment) selectedFragment).setUser(user);
+                    break;
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
                     ((ProfileFragment) selectedFragment).setUser(user);
