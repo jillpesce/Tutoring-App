@@ -225,16 +225,16 @@ app.get('/findTimeslot', (req, res) => {
     const date = req.query.date;
     console.log("trying to find timeslot with " + email +", " +date);
     if (email) {
-        Timeslot.findOne( {tutorEmail: email}, (err, user) => {
+        Timeslot.findOne( {tutorEmail: email, date: date}, (err, timeslot) => {
             if (err) {
                 console.log(err);
                 res.json({});
-            } else if (!user) {
-                console.log('did NOT find user');
-                res.json({});
+            } else if (!timeslot) {
+                console.log('timeslot does not exist');
+                res.json({'result':'fail'});
             } else {
-                console.log('found user');
-                res.send(user);
+                console.log('timeslot exists');
+                res.send({'result': 'true'});
             }
         });
 	}

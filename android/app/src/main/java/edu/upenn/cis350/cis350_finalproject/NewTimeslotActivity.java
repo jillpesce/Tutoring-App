@@ -2,6 +2,7 @@ package edu.upenn.cis350.cis350_finalproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,7 @@ public class NewTimeslotActivity extends AppCompatActivity {
     int hour;
     DatePicker picker;
     String[] courses;
+    private long lastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,10 @@ public class NewTimeslotActivity extends AppCompatActivity {
      * Called when submit button is pressed. Initiates request to create a profile.
      */
     public void onSubmitButtonClicked(View v) {
+        if (SystemClock.elapsedRealtime() - lastClickTime < 1000){
+            return;
+        }
+        lastClickTime = SystemClock.elapsedRealtime();
         Spinner t = findViewById(R.id.timeslot_spinner);
         month = picker.getMonth();
         day = picker.getDayOfMonth();

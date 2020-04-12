@@ -191,49 +191,60 @@ public class RemoteDataSource {
         String date = t.getDate();
         String[] courses = t.getCourses();
 
-        String urlString = "http://" + this.host + ":" + this.port + "/makeTimeslot?email=" + tutorEmail + "&name=" + tutorName + "&date="
-                + date;
+        if (timeslotExists(tutorEmail,date)) {
+            return false;
+        } else {
+            Log.d("MAKING NEW TIMESLOT"," yeet");
+            String urlString = "http://" + this.host + ":" + this.port + "/makeTimeslot?email=" + tutorEmail + "&name=" + tutorName + "&date="
+                    + date;
 
-        for (String s : courses) {
-            urlString += "&course=" +s;
-        }
-
-        HttpSaveRequest saveRequest = new HttpSaveRequest();
-        try {
-            String result = saveRequest.execute(urlString).get();
-            if (result.equals("success")) {
-                Log.d("success:", "yeehaw");
-                return true;
+            for (String s : courses) {
+                urlString += "&course=" + s;
             }
-        } catch (InterruptedException e) {
-            Log.d("INTERRUPTION ERROR:", "" +e);
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            Log.d("EXECUTION ERROR:", ""+ e);
-            e.printStackTrace();
+
+            HttpSaveRequest saveRequest = new HttpSaveRequest();
+            try {
+                String result = saveRequest.execute(urlString).get();
+                if (result.equals("success")) {
+                    Log.d("success:", "yeehaw");
+                    return true;
+                }
+            } catch (InterruptedException e) {
+                Log.d("INTERRUPTION ERROR:", "" + e);
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                Log.d("EXECUTION ERROR:", "" + e);
+                e.printStackTrace();
+            }
+            return false;
         }
-        return false;
     }
 
-    private boolean findTimeslot(String tutorEmail, String date) {
+    private boolean timeslotExists(String tutorEmail, String date) {
         try {
-            String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
+            String urlString = "http://" + this.host + ":" + port + "/findTimeslot?email=" + tutorEmail+"&date=" +date;
             HttpFindRequest findRequest = new HttpFindRequest();
             String result = findRequest.execute(urlString).get();
+
+            Log.d("STRING RESULT", result);
             if (result != null) {
                 JSONParser parser = new JSONParser();
                 JSONObject data = (JSONObject) parser.parse(result);
-                user = createUser(data);
+
+                if (data.get("result").equals("true")) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
-            return user;
         } catch (InterruptedException e) {
 
-        } catch (ExecutionException e){
+        } catch (ExecutionException e) {
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
 
@@ -282,7 +293,6 @@ public class RemoteDataSource {
                 conn.connect();
 
                 int responsecode = conn.getResponseCode();
-                Log.d("RESPONSE CODE", "Unexpected status code: " + responsecode);
                 if (responsecode != 200) {
                     Log.d("RESPONSE CODE", "Unexpected status code: " + responsecode);
                 } else {
