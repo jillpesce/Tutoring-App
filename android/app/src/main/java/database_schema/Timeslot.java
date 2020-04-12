@@ -41,4 +41,9 @@ public class Timeslot implements Comparable {
         }
     }
 
+    @Override
+    public String toString() {
+        return "Timeslot: " + tutorName +" @ " + date + " with courses " +courses;
+    }
+
 }

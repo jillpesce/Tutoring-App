@@ -220,6 +220,26 @@ app.get('/makeTimeslot', (req, res) => {
 
 var Timeslot = require('./models/Timeslot');
 
+app.get('/findTimeslot', (req, res) => {
+    const email = req.query.email;
+    const date = req.query.date;
+    console.log("trying to find timeslot with " + email +", " +date);
+    if (email) {
+        Timeslot.findOne( {tutorEmail: email}, (err, user) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!user) {
+                console.log('did NOT find user');
+                res.json({});
+            } else {
+                console.log('found user');
+                res.send(user);
+            }
+        });
+	}
+});
+
 // save a new appointment request
 app.get('/bookAppointment', (req, res) => {
     console.log('hit save appt endpoint');

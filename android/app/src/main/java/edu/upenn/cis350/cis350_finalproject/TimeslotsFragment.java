@@ -26,7 +26,7 @@ import datamanagement.RemoteDataSource;
 public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     ListView lv;
     View view;
-    Timeslot[] ts;
+//    Timeslot[] ts;
     List<Timeslot> setTimeslots;
     String tuteeUser;
 //    String[] timeslotStrings = [];
@@ -55,6 +55,10 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
             }
         });
 
+        RemoteDataSource ds = new RemoteDataSource();
+        setTimeslots = ds.getAllTimeslots();
+        Collections.sort(setTimeslots);
+
         return view;
     }
 
@@ -67,17 +71,18 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Timeslot t1 = new Timeslot("snie@seas.upenn.edu", "2020041310", new String[0],"Selina Nie" );
-        Timeslot t2 = new Timeslot("juliechn@seas.upenn.edu", "2020041210", new String[0],"Julie Chen" );
+//        Timeslot t1 = new Timeslot("snie@seas.upenn.edu", "2020041310", new String[0],"Selina Nie" );
+//        Timeslot t2 = new Timeslot("juliechn@seas.upenn.edu", "2020041210", new String[0],"Julie Chen" );
+//
+//        ts = new Timeslot[2];
+//        ts[0] = t1;
+//        ts[1] = t2;
+//
+//        setTimeslots = new ArrayList<Timeslot>(Arrays.asList(ts));
 
-        ts = new Timeslot[2];
-        ts[0] = t1;
-        ts[1] = t2;
+//        Collections.sort(setTimeslots);
 
-        setTimeslots = new ArrayList<Timeslot>(Arrays.asList(ts));
-        Collections.sort(setTimeslots);
-
-        String[] desc = new String[ts.length];
+        String[] desc = new String[setTimeslots.size()];
         int counter = 0;
         for (Timeslot t : setTimeslots) {
             Date d = new Date(t.getDate());

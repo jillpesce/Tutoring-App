@@ -5,9 +5,7 @@ import android.util.Log;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
-
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.json.simple.*;
 
@@ -17,9 +15,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.net.*;
 import java.util.concurrent.ExecutionException;
+import java.util.Iterator;
 
 import database_schema.*;
 
@@ -102,6 +102,7 @@ public class RemoteDataSource {
         @Override
         protected String doInBackground(String... strings) {
             String urlString = strings[0];
+            Log.d("FIND REQUEST:", urlString);
             String result;
             try {
                 URL url = new URL(urlString);
@@ -214,6 +215,27 @@ public class RemoteDataSource {
         return false;
     }
 
+    private boolean findTimeslot(String tutorEmail, String date) {
+        try {
+            String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+                JSONObject data = (JSONObject) parser.parse(result);
+                user = createUser(data);
+            }
+            return user;
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /**
      *
@@ -287,7 +309,7 @@ public class RemoteDataSource {
         }
     }
 
-    public Timeslot[] getAllTimeslots() {
+    public List<Timeslot> getAllTimeslots() {
         try {
             User user = null;
             //String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
@@ -297,8 +319,34 @@ public class RemoteDataSource {
             String result = findRequest.execute(urlString).get();
             if (result != null) {
                 JSONParser parser = new JSONParser();
-                JSONObject data = (JSONObject) parser.parse(result);
-                Log.d("DATA:", "" + data);
+                JSONArray timeslots = (JSONArray) parser.parse(result);
+                List<Timeslot> ts = new ArrayList<Timeslot>();
+                Iterator<JSONObject> iter = timeslots.iterator();
+
+                while (iter.hasNext()) {
+
+                    JSONObject data = (JSONObject)iter.next();
+
+                    JSONArray temp = (JSONArray)data.get("courses");
+                    Iterator<String> it = temp.iterator();
+                    List<String> co = new ArrayList<String>();
+
+                    while (it.hasNext()) {
+                        String s = (String)it.next();
+                        co.add(s);
+                    }
+
+                    String[] courses = co.toArray(new String[0]);
+                    String tutorName = (String)data.get("tutorName");
+                    String tutorEmail = (String)data.get("tutorEmail");
+                    String date = (String)data.get("date");
+
+                    Timeslot t = new Timeslot(tutorEmail, date, courses, tutorName);
+                    Log.d("NEW TIMESLOT:",t.toString());
+                    ts.add(t);
+                }
+
+                return ts;
             }
         } catch (InterruptedException e) {
 
