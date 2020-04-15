@@ -3,32 +3,43 @@
 <title>Scores</title>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- <link rel="stylesheet" type="text/css" href="/css/style.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"> </script>
 </head>
 <body>
-    <div>
-        <%- include("partials/nav-bar.ejs") %>
-    </div>
-    <header>
-        <h1>Enter your test scores below!</h1>
-    </header>
-    <main>
-        <form name="scores-form" method="POST" action="/scores/save">
-            <label>Score:</label>
-            <input type="number" name="inputScore" >
-            <br/>
-            <input type="submit" value="Input Score!">
-        </form> 
-        
-        
-        <h2>Your Scores:</h2>
-        <ul id="scores">
-            <% for (var i = 0; i < user.scores.length; i++) { %>
-                <li>
-                    <%= user.scores[i] %>
-                </li>
-                <% } %>
-            </ul>
+    <%- include("partials/nav-bar.ejs") %>
+    <div class='p-5'>
+        <header>
+            <h1>Enter your test scores below!</h1>
+        </header>
+        <main>
+            <form name="scores-form" method="POST" action="/scores/save">
+                <div class="form-group">
+                    <label for="inputScore">Score</label>
+                    <input class="form-control" id="inputScore" type="number" name="inputScore">
+                </div>
+                <div>
+                    <label for="course">Course</label>
+                    <select class="form-control" id = "course" name = "course" value="course">
+                        <% for (var i = 0; i < user.courses.length; i++) { %>
+                            <option value = "<%=user.courses[i]%>"><%= user.courses[i] %></option>
+                        <% } %>
+                    </select>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Input Score and See Your Progress!</button>
+            </form> 
+            
         </main>
-    </body>
-    </html>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>

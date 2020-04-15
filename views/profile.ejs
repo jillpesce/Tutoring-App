@@ -7,32 +7,7 @@
         <title>Profile</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">TutoringApp</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                <% if (user) { %>
-                    <li class="nav-item active"><a class="nav-link" href="/auth/logout">Log out</a><span class="sr-only">(current)</span></li>
-                <% } else { %>
-                    <li class="nav-item active"><a class="nav-link" href="/auth/login">Login</a><span class="sr-only">(current)</span></li>
-                <% } %>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Homepage</a><span class="sr-only">(current)</span>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/profile">Profile</a><span class="sr-only">(current)</span>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/aboutUs">About Us</a><span class="sr-only">(current)</span>
-                </li>
-                </ul>
-            </div>
-        </nav>
-
+        <%- include("partials/nav-bar.ejs") %>
         <div class="container">
             <div class="row align-items-center my-5">
                 <div class="col-lg-7">

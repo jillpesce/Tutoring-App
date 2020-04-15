@@ -8,35 +8,11 @@
         <title>About Us</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">TutoringApp</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                <% if (user) { %>
-                    <li class="nav-item active"><a class="nav-link" href="/auth/logout">Log out</a><span class="sr-only">(current)</span></li>
-                <% } else { %>
-                    <li class="nav-item active"><a class="nav-link" href="/auth/login">Login</a><span class="sr-only">(current)</span></li>
-                <% } %>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Homepage</a><span class="sr-only">(current)</span>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/profile/">Profile</a><span class="sr-only">(current)</span>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/aboutUs">About Us</a><span class="sr-only">(current)</span>
-                </li>
-                </ul>
-            </div>
-        </nav>
+        <%- include("partials/nav-bar.ejs") %>
         <header class="p-5">
             <h1>About us.</h1>
         </header>
-        <main class="pl-5">
+        <main class="pl-5 pb-5 pr-5">
             <p>Lots of students at Penn find themselves struggling with academics without a lot of ample support. 
                 Office hours are incredible resources, but often are flooded with students and it is hard to get 
                 one-on-one time if students have multiple questions or need extended time to tackle specific concepts. 
@@ -50,7 +26,7 @@
                 <br>
                 <div class="row">
                     <div class="col-sm-4">
-                        <div class="card">
+                        <div class="card" style="height: 100%">
                         <img src="http://localhost:3000/img/julie.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                             <br>
@@ -60,7 +36,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="card">
+                        <div class="card" style="height: 100%">
                         <img src="http://localhost:3000/img/caro.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                             <br>
@@ -70,7 +46,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="card">
+                        <div class="card" style="height: 100%">
                         <img src="http://localhost:3000/img/selina.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                                 <br>
@@ -83,7 +59,7 @@
                 <br>
                 <div class="row">
                     <div class="col-sm-4">
-                        <div class="card">
+                        <div class="card" style="height: 100%">
                         <img src="http://localhost:3000/img/jill.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                             <br>
@@ -93,7 +69,7 @@
                         </div>
                     </div>
                     <div class="col-sm-4">
-                        <div class="card">
+                        <div class="card" style="height: 100%">
                         <img src="http://localhost:3000/img/chloe.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                             <br>
