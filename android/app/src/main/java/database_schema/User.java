@@ -11,6 +11,7 @@ public class User implements Serializable {
     private String gradYear;
     private String bio;
     private ArrayList<Course> courses;
+    private boolean isTutor;
 
     public User(String email, String name, String school, String major, String gradYear, String bio)
     {
@@ -21,6 +22,7 @@ public class User implements Serializable {
         this.gradYear = gradYear;
         this.bio = bio;
         this.courses = new ArrayList<Course>();
+        this.isTutor = false;
     }
 
     public String getName() { return this.name; }
@@ -36,6 +38,12 @@ public class User implements Serializable {
     public String getBio() { return this.bio; }
 
     public ArrayList<Course> getCourses() { return this.courses; }
+
+    public boolean getIsTutor() { return this.isTutor; }
+
+    public void setIsTutor(boolean isTutor) {
+        this.isTutor = isTutor;
+    }
 
     public void addCourse(Course c) { courses.add(c); }
 
