@@ -38,6 +38,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         TextView gradYear = RootView.findViewById(R.id.profile_gradYear);
         TextView email = RootView.findViewById(R.id.profile_email);
         TextView courses = RootView.findViewById(R.id.profile_courses);
+        TextView toggle = RootView.findViewById(R.id.toggle_button);
 
         Spinner spin = (Spinner) RootView.findViewById(R.id.spinner);
         spin.setOnItemSelectedListener(this);
@@ -70,6 +71,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         gradYear.setText("Graduation Year: " + user.getGradYear());
         email.setText("Email: " + user.getEmail());
         courses.setText("Courses: " + parseCourses(user.getCourses()));
+        toggle.setText("Toggle to " + (user.getIsTutor() ? "Tutee" : "Tutor"));
         return RootView;
     }
 
@@ -125,6 +127,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         }
         return names;
     }
+
 
     public void setUser(User user) {
         this.user = user;

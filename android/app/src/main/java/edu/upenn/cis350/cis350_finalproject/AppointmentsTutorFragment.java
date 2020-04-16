@@ -37,7 +37,7 @@ public class AppointmentsTutorFragment extends Fragment implements OnItemClickLi
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_tutee_appointments, container, false);
+        view = inflater.inflate(R.layout.fragment_tutor_appointments, container, false);
 
         RemoteDataSource ds = new RemoteDataSource();
         tutorAppts = ds.getTutorAppointments(user.getEmail());

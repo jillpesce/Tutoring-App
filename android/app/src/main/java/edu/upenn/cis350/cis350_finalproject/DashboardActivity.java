@@ -60,8 +60,13 @@ public class DashboardActivity extends AppCompatActivity {
             FragmentManager fm = getSupportFragmentManager();
             switch(item.getItemId()) {
                 case R.id.nav_home:
-                    selectedFragment = new AppointmentsTuteeFragment();
-                    ((AppointmentsTuteeFragment) selectedFragment).setUser(user);
+                    if (user.getIsTutor()) {
+                        selectedFragment = new AppointmentsTutorFragment();
+                        ((AppointmentsTutorFragment) selectedFragment).setUser(user);
+                    } else {
+                        selectedFragment = new AppointmentsTuteeFragment();
+                        ((AppointmentsTuteeFragment) selectedFragment).setUser(user);
+                    }
                     break;
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
@@ -84,5 +89,11 @@ public class DashboardActivity extends AppCompatActivity {
         Intent signOutIntent = new Intent();
         setResult(RESULT_OK, signOutIntent);
         finish();
+    }
+
+    public void onToggleButtonClick(View v) {
+        user.setIsTutor(!user.getIsTutor());
+        String text = "Toggle to " + (user.getIsTutor() ? "Tutee" : "Tutor");
+        ((TextView) v).setText(text);
     }
 }
