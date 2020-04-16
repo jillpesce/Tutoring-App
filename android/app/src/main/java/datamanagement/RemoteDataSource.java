@@ -286,11 +286,13 @@ public class RemoteDataSource {
             try {
                 URL url = new URL(urlString);
                 Log.d("url at connect", "" + url);
+                Log.d("POINT", "point 2");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setReadTimeout(15000);
                 conn.setConnectTimeout(15000);
                 conn.connect();
+                Log.d("POINT", "point 3");
 
                 int responsecode = conn.getResponseCode();
                 if (responsecode != 200) {
@@ -302,6 +304,7 @@ public class RemoteDataSource {
                     if (in.hasNext()) {
                         JSONObject data = (JSONObject) parser.parse(in.nextLine());
                         result = (String) data.get("result");
+                        Log.d("RESULT", result);
                     }
                     in.close();
                 }
@@ -443,5 +446,31 @@ public class RemoteDataSource {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String cancelAppointment(Appointment ap) {
+        String status = "failed";
+        try {
+            String urlString = "http://" + this.host + ":" + this.port +
+                    "/cancelAppointment?tutorEmail=" + ap.getTutorEmail()
+                    + "&tuteeEmail=" + ap.getTuteeEmail() + "&date=" + ap.getDate();
+            Log.d("POINT", "point1");
+            HttpSaveRequest saveRequest = new HttpSaveRequest();
+            String result = saveRequest.execute(urlString).get();
+
+//            if (result != null) {
+//                JSONParser parser = new JSONParser();
+//                JSONObject data = (JSONObject) parser.parse(result);
+//                status = (String) data.get("status");
+//                if (!status.equals("success")) {
+//                    status = "error";
+//                }
+//            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return status;
     }
 }

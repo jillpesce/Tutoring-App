@@ -3,6 +3,7 @@ package edu.upenn.cis350.cis350_finalproject;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -58,5 +59,14 @@ public class AppointmentActivity extends AppCompatActivity {
 
     private void handleApptCancelation() {
         // TODO: Chloe
+        RemoteDataSource rd = new RemoteDataSource();
+        Appointment app = new Appointment(this.tutorName, this.tuteeName, this.dateAndTime,
+                this.tutorEmail, this.tuteeEmail);
+        String result = rd.cancelAppointment(app);
+        if (result.equals("success")) {
+            Toast.makeText(getApplicationContext(), "Appointment Cancelled",
+                    Toast.LENGTH_LONG).show();
+        }
+
     }
 }
