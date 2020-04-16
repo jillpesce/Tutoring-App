@@ -68,8 +68,7 @@ public class AppointmentsTutorFragment extends Fragment implements OnItemClickLi
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, desc);
 
-        lv = (ListView) view.findViewById(R.id.tutee_appointments);
-
+        lv = (ListView) view.findViewById(R.id.tutor_appointments);
         lv.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, desc));
         lv.setOnItemClickListener(this);
     }

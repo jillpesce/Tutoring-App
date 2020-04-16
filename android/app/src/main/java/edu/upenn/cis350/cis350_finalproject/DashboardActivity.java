@@ -73,8 +73,13 @@ public class DashboardActivity extends AppCompatActivity {
                     ((ProfileFragment) selectedFragment).setUser(user);
                     break;
                 case R.id.nav_schedule:
-                    selectedFragment = new TimeslotsFragment();
-                    ((TimeslotsFragment) selectedFragment).setUser(user);
+                    if (user.getIsTutor()) {
+                        selectedFragment = new TutorTimeslotsFragment();
+                        ((TutorTimeslotsFragment) selectedFragment).setUser(user);
+                    } else {
+                        selectedFragment = new TimeslotsFragment();
+                        ((TimeslotsFragment) selectedFragment).setUser(user);
+                    }
                     break;
                 case R.id.nav_search:
                     selectedFragment = new SearchFragment();
@@ -93,6 +98,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void onToggleButtonClick(View v) {
         user.setIsTutor(!user.getIsTutor());
+        Log.d("toggle", "" + user.getIsTutor());
         String text = "Toggle to " + (user.getIsTutor() ? "Tutee" : "Tutor");
         ((TextView) v).setText(text);
     }
