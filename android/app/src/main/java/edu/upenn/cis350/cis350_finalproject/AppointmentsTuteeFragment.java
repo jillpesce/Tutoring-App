@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +41,11 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
 
         RemoteDataSource ds = new RemoteDataSource();
         tuteeAppts = ds.getTuteeAppointments(user.getEmail());
-        Collections.sort(tuteeAppts);
+        if (tuteeAppts != null) {
+            Collections.sort(tuteeAppts);
+        } else {
+            tuteeAppts = new ArrayList<Appointment>();
+        }
         return view;
     }
 
