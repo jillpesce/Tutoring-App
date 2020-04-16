@@ -1,29 +1,29 @@
 package edu.upenn.cis350.cis350_finalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
-import android.content.*;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import java.util.*;
-
-import androidx.fragment.app.Fragment;
-import database_schema.Timeslot;
-import database_schema.Tutor;
-import database_schema.Date;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import java.util.Collections;
+import java.util.List;
+
+import database_schema.Date;
+import database_schema.Timeslot;
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 
-public class TimeslotsFragment extends Fragment implements OnItemClickListener {
+public class TutorTimeslotsFragment extends Fragment {
     ListView lv;
     View view;
 //    Timeslot[] ts;
@@ -40,23 +40,32 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
         // need to pass TUTEE
         // String tuteeUser = getIntent().getStringExtra("TUTEE");
 
-        view = inflater.inflate(R.layout.fragment_view_timeslots, container, false);
+        view = inflater.inflate(R.layout.fragment_tutor_view_timeslots, container, false);
 
-//        Button button = (Button) view.findViewById(R.id.new_time);
-//        button.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getActivity(), NewTimeslotActivity.class);
-//                i.putExtra("EMAIL", user.getEmail());
-//                i.putExtra("NAME", user.getName());
-//                i.putExtra("COURSES", new String[0]); // need to change this
-//                getActivity().startActivity(i);
-//            }
-//        });
+        Button button = (Button) view.findViewById(R.id.new_time);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), NewTimeslotActivity.class);
+                i.putExtra("EMAIL", user.getEmail());
+                i.putExtra("NAME", user.getName());
+                i.putExtra("COURSES", new String[0]); // need to change this
+                getActivity().startActivity(i);
+            }
+        });
 
         RemoteDataSource ds = new RemoteDataSource();
         setTimeslots = ds.getAllTimeslots();
+
+
+        for (Timeslot t : setTimeslots) {
+
+            if (!t.getTutor().equals(user.getEmail())) {
+                setTimeslots.remove(t);
+            }
+        }
+
         Collections.sort(setTimeslots);
 
         return view;
@@ -97,20 +106,20 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
         lv = (ListView) view.findViewById(R.id.timeslots);
 
         lv.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, desc));
-        lv.setOnItemClickListener(this);
+//        lv.setOnItemClickListener(this);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
-        Intent i = new Intent(getActivity(), RequestAppointmentActivity.class);
-        Timeslot t = setTimeslots.get(position);
-        i.putExtra("TUTEE_EMAIL", user.getEmail());
-        i.putExtra("TUTEE_NAME", user.getName());
-        i.putExtra("TUTOR_EMAIL", t.getTutor());
-        i.putExtra("TUTOR_NAME", t.getTutorName());
-        i.putExtra("DATE", t.getDate());
-        getActivity().startActivity(i);
-    }
+//    @Override
+//    public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+//        Intent i = new Intent(getActivity(), RequestAppointmentActivity.class);
+//        Timeslot t = setTimeslots.get(position);
+//        i.putExtra("TUTEE_EMAIL", user.getEmail());
+//        i.putExtra("TUTEE_NAME", user.getName());
+//        i.putExtra("TUTOR_EMAIL", t.getTutor());
+//        i.putExtra("TUTOR_NAME", t.getTutorName());
+//        i.putExtra("DATE", t.getDate());
+//        getActivity().startActivity(i);
+//    }
 
 
 }
