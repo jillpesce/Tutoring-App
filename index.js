@@ -273,10 +273,10 @@ app.get('/cancelAppointment', (req, res) => {
         {tutorEmail: tutorEmail, tuteeEmail: tuteeEmail, date: data}, (err) => {
             if (err) {
                 console.log(err);
-                res.json({'status' : 'failed'});
+                res.json({'result' : 'failed'});
             } else {
                 console.log('success');
-                res.json({'status' : 'success'});
+                res.json({'result' : 'success'});
             }
     });
 });

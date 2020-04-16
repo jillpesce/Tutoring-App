@@ -82,4 +82,5 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
         i.putExtra("DATE", a.getDate());
         getActivity().startActivity(i);
     }
+
 }

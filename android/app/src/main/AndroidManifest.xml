@@ -32,6 +32,8 @@
             android:usesCleartextTraffic="true"/>
         <activity android:name="AppointmentActivity"
             android:usesCleartextTraffic="true"/>
+        <activity android:name=".OtherUserProfileActivity"
+            android:usesCleartextTraffic="true"/>
     </application>
 
 </manifest>

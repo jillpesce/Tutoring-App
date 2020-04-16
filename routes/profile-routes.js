@@ -34,4 +34,16 @@ router.get('/search', (req, res) => {
     });
 });
 
+router.get('/getAllUsers', (req, res) => {
+    console.log('hit getAllUsers endpoint');
+    User.find((err, allUsers) => {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        } else {
+            res.json(allUsers);
+        }
+    })
+});
+
 module.exports = router;

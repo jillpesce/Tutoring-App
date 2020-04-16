@@ -97,6 +97,35 @@ public class RemoteDataSource {
         return new ArrayList<User>();
     }
 
+    /**
+     * @return allUsersFromTheDatabase
+     */
+    public List<User> getAllUsers() {
+        try {
+            User user = null;
+            String urlString = "http://" + this.host + ":" + port + "/profile/getAllUsers?";
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                ArrayList<User> users = new ArrayList<User>();
+                JSONParser parser = new JSONParser();
+                JSONArray jsonUsers = (JSONArray) parser.parse(result);
+                for(Object objUser : jsonUsers) {
+                    JSONObject jsonUser = (JSONObject) objUser;
+                    users.add(createUser(jsonUser));
+                }
+                return users;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<User>();
+    }
+
     public class HttpFindRequest extends AsyncTask<String, Void, String> {
 
         @Override
