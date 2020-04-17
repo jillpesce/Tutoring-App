@@ -181,6 +181,34 @@ public class RemoteDataSource {
 
     /**
      *
+     * @param u -- user that we want to add new course to
+     * @return true if the save is successful and false otherwise.
+     */
+    public boolean addCourse(User u) {
+        String email = u.getEmail();
+        String name = u.getName();
+        String school = u.getSchool();
+        String major = u.getMajor();
+        String bio = u.getBio();
+        String gradYear = u.getGradYear();
+        String urlString = "http://" + this.host + ":" + this.port + "/addCourse?email=" + email +
+                "&updatedCourses=" + u.getCourses();
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     *
      * @param t -- User we want to save to the database
      * @return true if the save is successful and false otherwise.
      */
