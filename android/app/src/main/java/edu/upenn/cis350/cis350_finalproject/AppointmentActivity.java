@@ -67,6 +67,5 @@ public class AppointmentActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Appointment Cancelled",
                     Toast.LENGTH_LONG).show();
         }
-
     }
 }
