@@ -33,6 +33,8 @@
         <activity android:name="AppointmentActivity"
             android:usesCleartextTraffic="true"/>
         <activity android:name="FiltersActivity"
+        	android:usesCleartextTraffic="true"/>
+        <activity android:name=".OtherUserProfileActivity"
             android:usesCleartextTraffic="true"/>
     </application>
 

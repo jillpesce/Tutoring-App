@@ -3,14 +3,15 @@ package database_schema;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
     private String email;
     private String name;
     private String school;
     private String major;
     private String gradYear;
     private String bio;
-    private ArrayList<Course> courses;
+    private ArrayList<String> courses;
+    private boolean isTutor;
 
     public User(String email, String name, String school, String major, String gradYear, String bio)
     {
@@ -20,7 +21,8 @@ public class User implements Serializable {
         this.major = major;
         this.gradYear = gradYear;
         this.bio = bio;
-        this.courses = new ArrayList<Course>();
+        this.courses = new ArrayList<String>();
+        this.isTutor = false;
     }
 
     public String getName() { return this.name; }
@@ -35,13 +37,19 @@ public class User implements Serializable {
 
     public String getBio() { return this.bio; }
 
-    public ArrayList<Course> getCourses() { return this.courses; }
+    public ArrayList<String> getCourses() { return this.courses; }
 
-    public void addCourse(Course c) { courses.add(c); }
+    public boolean getIsTutor() { return this.isTutor; }
 
-    public boolean hasCourse(Course c) {
+    public void setIsTutor(boolean isTutor) {
+        this.isTutor = isTutor;
+    }
+
+    public void addCourse(String c) { courses.add(c); }
+
+    public boolean hasCourse(String c) {
         for (int i = 0; i < courses.size(); i++) {
-            if (c.getName().equals(courses.get(i).getName())){
+            if (c.equals(courses.get(i))){
                 return true;
             }
         }
@@ -51,5 +59,10 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User({\n email:" + this.email + "\nname: " + this.name + "\n})";
+    }
+
+    @Override
+    public int compareTo(User u) {
+        return this.getName().compareTo(u.getName());
     }
 }

@@ -97,6 +97,35 @@ public class RemoteDataSource {
         return new ArrayList<User>();
     }
 
+    /**
+     * @return allUsersFromTheDatabase
+     */
+    public List<User> getAllUsers() {
+        try {
+            User user = null;
+            String urlString = "http://" + this.host + ":" + port + "/profile/getAllUsers?";
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                ArrayList<User> users = new ArrayList<User>();
+                JSONParser parser = new JSONParser();
+                JSONArray jsonUsers = (JSONArray) parser.parse(result);
+                for(Object objUser : jsonUsers) {
+                    JSONObject jsonUser = (JSONObject) objUser;
+                    users.add(createUser(jsonUser));
+                }
+                return users;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<User>();
+    }
+
     public class HttpFindRequest extends AsyncTask<String, Void, String> {
 
         @Override
@@ -165,6 +194,34 @@ public class RemoteDataSource {
         String gradYear = u.getGradYear();
         String urlString = "http://" + this.host + ":" + this.port + "/save?email=" + email + "&name=" + name + "&school="
                 + school + "&major=" + major + "&bio=" + bio + "&gradYear=" + gradYear;
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param u -- user that we want to add new course to
+     * @return true if the save is successful and false otherwise.
+     */
+    public boolean addCourse(User u) {
+        String email = u.getEmail();
+        String name = u.getName();
+        String school = u.getSchool();
+        String major = u.getMajor();
+        String bio = u.getBio();
+        String gradYear = u.getGradYear();
+        String urlString = "http://" + this.host + ":" + this.port + "/addCourse?email=" + email +
+                "&updatedCourses=" + u.getCourses();
         HttpSaveRequest saveRequest = new HttpSaveRequest();
         try {
             String result = saveRequest.execute(urlString).get();
@@ -286,11 +343,13 @@ public class RemoteDataSource {
             try {
                 URL url = new URL(urlString);
                 Log.d("url at connect", "" + url);
+                Log.d("POINT", "point 2");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setReadTimeout(15000);
                 conn.setConnectTimeout(15000);
                 conn.connect();
+                Log.d("POINT", "point 3");
 
                 int responsecode = conn.getResponseCode();
                 if (responsecode != 200) {
@@ -302,6 +361,7 @@ public class RemoteDataSource {
                     if (in.hasNext()) {
                         JSONObject data = (JSONObject) parser.parse(in.nextLine());
                         result = (String) data.get("result");
+                        Log.d("RESULT", result);
                     }
                     in.close();
                 }
@@ -443,5 +503,31 @@ public class RemoteDataSource {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String cancelAppointment(Appointment ap) {
+        String status = "failed";
+        try {
+            String urlString = "http://" + this.host + ":" + this.port +
+                    "/cancelAppointment?tutorEmail=" + ap.getTutorEmail()
+                    + "&tuteeEmail=" + ap.getTuteeEmail() + "&date=" + ap.getDate();
+            Log.d("POINT", "point1");
+            HttpSaveRequest saveRequest = new HttpSaveRequest();
+            String result = saveRequest.execute(urlString).get();
+
+//            if (result != null) {
+//                JSONParser parser = new JSONParser();
+//                JSONObject data = (JSONObject) parser.parse(result);
+//                status = (String) data.get("status");
+//                if (!status.equals("success")) {
+//                    status = "error";
+//                }
+//            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return status;
     }
 }

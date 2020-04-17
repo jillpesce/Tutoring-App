@@ -12,7 +12,11 @@ var userSchema = new Schema({
     scores: Array,
     isTutor: Boolean, 
     isNewUser: Boolean,
-    courses: Array
+    courses: Array, 
+    ratingsAsTutor: Array,
+    ratingsAsTutee: Array,
+    appointmentsAsTutor: Array,
+    appointmentsAsTutee: Array
 });
 
 // export userSchema as a class called User

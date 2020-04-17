@@ -87,5 +87,12 @@
             android:layout_weight="1"
             android:text="SUBMIT"
             android:onClick="onSubmitButtonClick"/>
+        <Button
+            android:id="@+id/toggle_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Toggle"
+            android:onClick="onToggleButtonClick"/>
     </LinearLayout>
 </RelativeLayout>

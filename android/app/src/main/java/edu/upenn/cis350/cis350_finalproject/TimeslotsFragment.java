@@ -54,7 +54,11 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
 
         RemoteDataSource ds = new RemoteDataSource();
         setTimeslots = ds.getAllTimeslots();
-        Collections.sort(setTimeslots);
+        if (setTimeslots != null) {
+            Collections.sort(setTimeslots);
+        } else {
+            setTimeslots = new ArrayList<>();
+        }
 
         return view;
     }

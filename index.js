@@ -107,6 +107,28 @@ app.get('/save', (req, res) => {
     })
 });
 
+app.get('/addCourse', (req, res) => {
+    // console.log('added course');
+    // const email = req.query.email;
+    // const updatedCourses = req.query.updatedCourses;
+    // console.log(updatedCourses);
+    // console.log(email);
+
+    // User.updateOne({email: req.query.email}, updatedCourses).then(() => {
+    //     console.log('Updated - ' + email  + ' with the courses ' + updatedCourses);
+    //     res.redirect('/profile/');
+    // });
+
+    console.log('adding course');
+    var newValues = { $set: {
+        courses: req.query.updatedCourses
+    }};
+    User.updateOne({email: req.query.email}, newValues).then(() => {
+        console.log('Updated - ' + req.query.email);
+        res.redirect('/profile/');
+    });
+});
+
 
 app.post('/createProfile', function(req, res) {
     if(req.body.school == "--Select a school--") {
@@ -170,7 +192,8 @@ app.post('/editProfile', function(req, res) {
             school: req.body.school,
             gradYear: req.body.gradYear,
             major: req.body.major,
-            bio: req.body.bio
+            bio: req.body.bio,
+            courses: req.body.courses
         }};
         User.updateOne({email: req.user.email}, newValues).then(() => {
             console.log('edited profile for - ' + req.body.email);
@@ -262,6 +285,23 @@ app.get('/bookAppointment', (req, res) => {
             res.json({'result' : 'success'});
         }
     })
+});
+
+app.get('/cancelAppointment', (req, res) => {
+    console.log('hit cancel appt endpoint');
+    var tutorEmail = req.query.tutorEmail;
+    var tuteeEmail = req.query.tuteeEmail;
+    var data = req.query.date;
+    Appointment.findOneAndDelete( 
+        {tutorEmail: tutorEmail, tuteeEmail: tuteeEmail, date: data}, (err) => {
+            if (err) {
+                console.log(err);
+                res.json({'result' : 'failed'});
+            } else {
+                console.log('success');
+                res.json({'result' : 'success'});
+            }
+    });
 });
 
 var Appointment = require('./models/Appointment');
