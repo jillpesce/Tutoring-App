@@ -72,8 +72,8 @@ public class AppointmentActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
 
-        Intent i = new Intent(this, DashboardActivity.class);
-        i.putExtra("EMAIL", currUser.getEmail());
-        startActivity(i);
+        Intent i = new Intent();
+        setResult(RESULT_OK, i);
+        finish();
     }
 }

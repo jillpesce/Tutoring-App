@@ -83,6 +83,6 @@ public class AppointmentsTutorFragment extends Fragment implements OnItemClickLi
         i.putExtra("TUTOR_NAME", a.getTutor());
         i.putExtra("DATE", a.getDate());
         i.putExtra("CURR_EMAIL", user.getEmail());
-        getActivity().startActivity(i);
+        getActivity().startActivityForResult(i, 2);
     }
 }

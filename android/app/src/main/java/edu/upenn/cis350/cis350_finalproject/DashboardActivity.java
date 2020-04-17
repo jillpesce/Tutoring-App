@@ -1,5 +1,6 @@
 package edu.upenn.cis350.cis350_finalproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import database_schema.Timeslot;
 import database_schema.User;
 import datamanagement.RemoteDataSource;
@@ -40,7 +43,7 @@ public class DashboardActivity extends AppCompatActivity {
         AppointmentsTuteeFragment selectedFragment = new AppointmentsTuteeFragment();
         FragmentManager fm = getSupportFragmentManager();
         selectedFragment.setUser(user);
-        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment, "appt_tutee_frag").commit();
 
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -50,6 +53,27 @@ public class DashboardActivity extends AppCompatActivity {
         User user = new User("pchloe@seas.upenn.edu", "Chloe Prezelski", "SEAS",
                 "CIS", "2021", "This is my bio.");
         return user;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == 1) && (resultCode == Activity.RESULT_OK)) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("appt_tutee_frag");
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(currentFragment);
+            fragmentTransaction.attach(currentFragment);
+            fragmentTransaction.commit();
+            Log.d("REFRESH", "Should have been refreshed");
+        } else if ((requestCode == 2) && (resultCode == Activity.RESULT_OK)) {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("appt_tutor_frag");
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(currentFragment);
+            fragmentTransaction.attach(currentFragment);
+            fragmentTransaction.commit();
+            Log.d("REFRESH", "Should have been refreshed");
+        }
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -63,30 +87,38 @@ public class DashboardActivity extends AppCompatActivity {
                     if (user.getIsTutor()) {
                         selectedFragment = new AppointmentsTutorFragment();
                         ((AppointmentsTutorFragment) selectedFragment).setUser(user);
+                        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment,
+                                "appt_tutor_frag").commit();
                     } else {
                         selectedFragment = new AppointmentsTuteeFragment();
                         ((AppointmentsTuteeFragment) selectedFragment).setUser(user);
+                        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment,
+                                "appt_tutee_frag").commit();
                     }
                     break;
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
                     ((ProfileFragment) selectedFragment).setUser(user);
+                    fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     break;
                 case R.id.nav_schedule:
                     if (user.getIsTutor()) {
                         selectedFragment = new TutorTimeslotsFragment();
                         ((TutorTimeslotsFragment) selectedFragment).setUser(user);
+                        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     } else {
                         selectedFragment = new TimeslotsFragment();
                         ((TimeslotsFragment) selectedFragment).setUser(user);
+                        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     }
                     break;
                 case R.id.nav_search:
                     selectedFragment = new SearchFragment();
                     ((SearchFragment) selectedFragment).setUser(user);
+                    fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     break;
             }
-            fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+//            fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
             return true;
         }
     };
