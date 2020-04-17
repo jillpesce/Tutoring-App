@@ -26,10 +26,8 @@ import datamanagement.RemoteDataSource;
 public class AppointmentsTuteeFragment extends Fragment implements OnItemClickListener {
     ListView lv;
     View view;
-//    Timeslot[] ts;
     List<Appointment> tuteeAppts;
     String tuteeUser;
-//    String[] timeslotStrings = [];
     User user = null;
 
     @Nullable
@@ -51,7 +49,6 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
 
     public void setUser(User user) {
         this.user = user;
-        //setUserFields();
     }
 
     @Override
@@ -85,4 +82,5 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
         i.putExtra("DATE", a.getDate());
         getActivity().startActivity(i);
     }
+
 }

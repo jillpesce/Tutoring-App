@@ -287,6 +287,23 @@ app.get('/bookAppointment', (req, res) => {
     })
 });
 
+app.get('/cancelAppointment', (req, res) => {
+    console.log('hit cancel appt endpoint');
+    var tutorEmail = req.query.tutorEmail;
+    var tuteeEmail = req.query.tuteeEmail;
+    var data = req.query.date;
+    Appointment.findOneAndDelete( 
+        {tutorEmail: tutorEmail, tuteeEmail: tuteeEmail, date: data}, (err) => {
+            if (err) {
+                console.log(err);
+                res.json({'result' : 'failed'});
+            } else {
+                console.log('success');
+                res.json({'result' : 'success'});
+            }
+    });
+});
+
 var Appointment = require('./models/Appointment');
 
 app.get('/getAllTimeslots', (req, res) => {

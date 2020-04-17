@@ -3,7 +3,7 @@ package database_schema;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Serializable {
+public class User implements Serializable, Comparable<User> {
     private String email;
     private String name;
     private String school;
@@ -59,5 +59,10 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User({\n email:" + this.email + "\nname: " + this.name + "\n})";
+    }
+
+    @Override
+    public int compareTo(User u) {
+        return this.getName().compareTo(u.getName());
     }
 }
