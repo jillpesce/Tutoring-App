@@ -13,6 +13,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 

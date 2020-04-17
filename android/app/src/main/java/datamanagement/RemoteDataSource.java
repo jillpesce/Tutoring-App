@@ -502,4 +502,60 @@ public class RemoteDataSource {
         }
         return status;
     }
+
+    /**
+     *
+     * @param u -- User we want to save to the database
+     * @return true if the save is successful and false otherwise.
+     */
+    public boolean saveRating(User u, int rating) {
+        Log.d("saveRating", "saving rating! in app");
+        String email = u.getEmail();
+        String urlString = "http://" + this.host + ":" + this.port + "/saveRating?email=" + email + "&rating=" + rating;
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * @return allUsersFromTheDatabase
+     */
+    public ArrayList<Integer> getUserRatings(User u) {
+        try {
+            String email = u.getEmail();
+            String urlString = "http://" + this.host + ":" + port + "/getRatings?email=" + email;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+
+                JSONParser parser = new JSONParser();
+                JSONObject ratingsJSON = (JSONObject) parser.parse(result);
+                JSONArray ratingsArray = (JSONArray)ratingsJSON.get("ratings");
+                ArrayList<Integer> r = new ArrayList<Integer>();
+                Iterator<Integer> it = ratingsArray.iterator();
+
+                while (it.hasNext()) {
+                    int i = Integer.parseInt("" + it.next());
+                    r.add(i);
+                }
+                return r;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Integer>();
+    }
 }

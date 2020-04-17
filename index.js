@@ -39,12 +39,6 @@ mongoose.connect(keys.mongodb.dbURI, () => {
     console.log('connected to mongodb');
 });
 
-// mongoose.connect(keys.mongodb.dbURI, {
-//     useUnifiedTopology: true,
-//     useNewUrlParser: true})
-//     .then(() => console.log("connected to mongodb"))
-//     .catch(err => console.error("An error has occured", err));
-
 //set up routes
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
@@ -338,6 +332,67 @@ app.get('/findTutorAppointments', (req, res) => {
             }
         });
 	}
+});
+
+app.get('/getRatings', (req, res) => {
+    console.log('hit getRatings endpoint');
+    User.findOne( {email: req.query.email}, (err, user) => {
+        if (err) {
+            console.log('hit ERROR in getRatings');
+            console.log(err);
+            res.json({});
+        } else if (!user) {
+            console.log('did NOT find user');
+            res.json({});
+        } else {
+            console.log('found user');
+            console.log('users ratings', user.ratings);
+            console.log('users name', user.name);
+            console.log('users bio', user.bio);
+            res.json({'ratings' : user.ratings})
+        }
+    });
+});
+
+app.get('/saveRating', (req, res) => {
+    console.log('hit saveRating endpoint');
+    console.log('users email', req.query.email);
+    const rating = req.query.rating;
+    console.log('rating' + rating);
+    //const oldRatings = [];
+    User.findOne( {email: req.query.email}, (err, user) => {
+        if (err) {
+            console.log(err);
+        } else if (!user) {
+            console.log('did NOT find user');
+        } else {
+            console.log("USER: ", user);
+            console.log('found user');
+            console.log('users ratings', user.ratings);
+            console.log('users name', user.name);
+            console.log('users bio', user.bio);
+            ratings = user.ratings;
+            //oldRatings.push(user.ratings);
+
+            console.log("old Ratings: ", ratings);
+            ratings.push(parseInt(rating));
+            console.log("newRatings: ", ratings);
+            var newValues = { $set: {
+                ratings: ratings
+            }};
+            User.updateOne({email: req.query.email}, newValues).then((err) => {
+                if (err) {
+                    console.log('ratings update fail');
+                    console.log(err);
+                    res.json({'result' : 'fail'});
+                } else {
+                    console.log('ratings updated for ' + email);
+                    res.json({'result' : 'success'});
+                }
+            });
+        }
+    });
+    
 });
 
 app.listen(3000,  () => {

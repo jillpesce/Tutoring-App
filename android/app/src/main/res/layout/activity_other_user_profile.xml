@@ -59,12 +59,35 @@
             android:layout_height="wrap_content"
             android:text="Graduation Year: "
             android:padding="10dp"/>
+        <TextView
+            android:id="@+id/profile_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating: 0"
+            android:padding="10dp"/>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:numStars="5"
+            android:stepSize="1"/>
+
+        <Button
+            android:id="@+id/rateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rate"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:onClick="onRateButtonClicked"/>
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:onClick="onBackButtonClicked"/>
+    android:id="@+id/button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Back"
+    android:onClick="onBackButtonClicked"/>
+
 </RelativeLayout>

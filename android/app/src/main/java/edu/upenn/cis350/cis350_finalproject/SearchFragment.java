@@ -36,6 +36,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     ArrayAdapter<String> adapter;
     String[] userNames;
     static final int OtherUserProfile_ID = 1;
+    User currentUser;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,7 +88,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         String text = adapter.getItem(position);
         String email = text.substring(text.indexOf(":") + 2);
         intent.putExtra("PROFILE USER", email);
+        intent.putExtra("CURR USER EMAIL", currentUser.getEmail());
         getActivity().startActivityForResult(intent, OtherUserProfile_ID);
+    }
+
+    public void setUser(User u) {
+        this.currentUser = u;
     }
 
 }

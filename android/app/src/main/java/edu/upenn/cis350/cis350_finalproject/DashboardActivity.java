@@ -83,6 +83,7 @@ public class DashboardActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_search:
                     selectedFragment = new SearchFragment();
+                    ((SearchFragment) selectedFragment).setUser(user);
                     break;
             }
             fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
