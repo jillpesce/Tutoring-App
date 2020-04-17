@@ -4,6 +4,7 @@ var app = express();
 var authRoutes =  require('./routes/auth-routes');
 var profileRoutes =  require('./routes/profile-routes');
 var scoresRoutes =  require('./routes/scores-routes');
+var homeRoutes =  require('./routes/home-routes');
 
 var User = require('./models/User');
 
@@ -49,15 +50,8 @@ mongoose.connect(keys.mongodb.dbURI, () => {
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 app.use('/scores', scoresRoutes);
+app.use('/', homeRoutes);
 
-// create home route
-app.get('/', (req, res) => {
-    if (req.user && req.user.isTutor) {
-        res.render('tutor-home', { user: req.user });
-    } else {
-        res.render('tutee-home', { user: req.user });
-    }
-});
 
 app.get('/aboutUs', (req, res) => {
 	console.log("in aboutUs route");
@@ -340,7 +334,7 @@ app.get('/findTuteeAppointments', (req, res) => {
                 res.send(appts);
             }
         });
-	}
+    }
 });
 
 app.get('/findTutorAppointments', (req, res) => {
