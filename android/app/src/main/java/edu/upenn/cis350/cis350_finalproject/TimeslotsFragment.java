@@ -42,18 +42,6 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
 
         view = inflater.inflate(R.layout.fragment_view_timeslots, container, false);
 
-//        Button button = (Button) view.findViewById(R.id.new_time);
-//        button.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getActivity(), NewTimeslotActivity.class);
-//                i.putExtra("EMAIL", user.getEmail());
-//                i.putExtra("NAME", user.getName());
-//                i.putExtra("COURSES", new String[0]); // need to change this
-//                getActivity().startActivity(i);
-//            }
-//        });
 
         RemoteDataSource ds = new RemoteDataSource();
         setTimeslots = ds.getAllTimeslots();
@@ -74,17 +62,6 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        Timeslot t1 = new Timeslot("snie@seas.upenn.edu", "2020041310", new String[0],"Selina Nie" );
-//        Timeslot t2 = new Timeslot("juliechn@seas.upenn.edu", "2020041210", new String[0],"Julie Chen" );
-//
-//        ts = new Timeslot[2];
-//        ts[0] = t1;
-//        ts[1] = t2;
-//
-//        setTimeslots = new ArrayList<Timeslot>(Arrays.asList(ts));
-
-//        Collections.sort(setTimeslots);
 
         String[] desc = new String[setTimeslots.size()];
         int counter = 0;
