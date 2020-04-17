@@ -552,6 +552,23 @@ public class RemoteDataSource {
         return null;
     }
 
+    public boolean deleteTimeslot(String tutorEmail, String date) {
+        String urlString = "http://" + this.host + ":" + this.port + "/deleteTimeslot?tutorEmail=" + tutorEmail + "&date=" + date;
+
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public String cancelAppointment(Appointment ap) {
         String status = "failed";
         try {

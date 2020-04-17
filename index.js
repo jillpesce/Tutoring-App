@@ -337,6 +337,23 @@ app.get('/getTutorTimeslots', (req, res) => {
 	}
 });
 
+app.get('/deleteTimeslot', (req, res) => {
+    const tutorEmail = req.query.tutorEmail;
+    const time = req.query.date;
+    console.log("deleting timeslot with " + tutorEmail +", " +time);
+    if (tutorEmail && time) {
+        Timeslot.deleteMany( {tutorEmail: tutorEmail, date: time}, function(err, result) {
+            if (err) {
+                console.log("error:" + err)
+                res.send(err);
+            } else {
+                console.log("success:" + result)
+                res.send(result);
+            }
+        });
+	}
+});
+
 app.get('/findTuteeAppointments', (req, res) => {
     const tuteeEmail = req.query.tuteeEmail;
     console.log("trying to find confirmed tutee appointments with " + tuteeEmail);
@@ -375,6 +392,46 @@ app.get('/findTutorAppointments', (req, res) => {
             }
         });
 	}
+});
+
+app.get('/findFilteredTimeslots', (req, res) => {
+    const tutorEmail = req.query.tutorEmail;
+    const classes = req.query.classes;
+
+    console.log("trying to find filtered timeslots");
+    if (tutorEmail && classes) {
+        Timeslot.find( {tutorEmail: tutorEmail,  }, (err, appts) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!appts) {
+                console.log('no filtered timeslots');
+                res.json({});
+            } else {
+                console.log('filtered timeslots exists');
+                console.log(appts);
+                res.send(appts);
+            }
+        });
+	} else if (tutorEmail) {
+
+    } else if (classes) {
+
+    } else {
+        Timeslot.find((err, appts) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!appts) {
+                console.log('no timeslots');
+                res.json({});
+            } else {
+                console.log('timeslots exists');
+                console.log(appts);
+                res.send(appts);
+            }
+        });
+    }
 });
 
 app.listen(3000,  () => {
