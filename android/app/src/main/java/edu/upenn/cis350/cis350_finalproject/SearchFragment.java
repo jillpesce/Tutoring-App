@@ -37,7 +37,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     String[] userNames;
     User currentUser;
     static final int OtherUserProfile_ID = 1;
-    User currentUser;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
