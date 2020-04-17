@@ -42,18 +42,15 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
 
         view = inflater.inflate(R.layout.fragment_view_timeslots, container, false);
 
-//        Button button = (Button) view.findViewById(R.id.new_time);
-//        button.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getActivity(), NewTimeslotActivity.class);
-//                i.putExtra("EMAIL", user.getEmail());
-//                i.putExtra("NAME", user.getName());
-//                i.putExtra("COURSES", new String[0]); // need to change this
-//                getActivity().startActivity(i);
-//            }
-//        });
+        Button button = (Button) view.findViewById(R.id.filter_button);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), FiltersActivity.class);
+                getActivity().startActivity(i);
+            }
+        });
 
         RemoteDataSource ds = new RemoteDataSource();
         setTimeslots = ds.getAllTimeslots();

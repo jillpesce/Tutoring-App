@@ -40,7 +40,7 @@
 
     <LinearLayout
         android:layout_width="350dp"
-        android:layout_height="match_parent"
+        android:layout_height="300dp"
         android:layout_marginLeft="30dp"
         android:orientation="vertical">
 
@@ -52,6 +52,51 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:padding="10dp"
+        android:textSize="18dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/tutor_text"
+        android:text="Filter by tutor:"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical">
+
+        <SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:iconifiedByDefault="false"
+            android:onClick="onSearch" />
+
+        <TextView
+            android:id="@+id/search_results"
+            android:layout_width="match_parent"
+            android:layout_height="681dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:padding="10dp"
+        android:textSize="14dp"
+        android:id="@+id/selected_tutors"
+        android:text="Tutors:"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CLEAR ALL FILTERS"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:onClick="clear"/>
 
 
 </LinearLayout>

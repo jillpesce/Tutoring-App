@@ -18,12 +18,12 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
-import database_schema.Course;
 import database_schema.User;
+import datamanagement.RemoteDataSource;
 
 public class ProfileFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     User user = null;
-    Course selection = null;
+    String selection = null;
     View RootView = null;
 
     @Nullable
@@ -38,6 +38,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         TextView gradYear = RootView.findViewById(R.id.profile_gradYear);
         TextView email = RootView.findViewById(R.id.profile_email);
         TextView courses = RootView.findViewById(R.id.profile_courses);
+        TextView toggle = RootView.findViewById(R.id.toggle_button);
 
         Spinner spin = (Spinner) RootView.findViewById(R.id.spinner);
         spin.setOnItemSelectedListener(this);
@@ -59,6 +60,9 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
                     user.addCourse(selection);
                     TextView courses = (TextView) RootView.findViewById(R.id.profile_courses);
                     courses.setText(parseCourses(user.getCourses()));
+
+                    RemoteDataSource ds = new RemoteDataSource();
+                    ds.addCourse(user);
                 }
             }
         });
@@ -70,34 +74,31 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         gradYear.setText("Graduation Year: " + user.getGradYear());
         email.setText("Email: " + user.getEmail());
         courses.setText("Courses: " + parseCourses(user.getCourses()));
+        toggle.setText("Toggle to " + (user.getIsTutor() ? "Tutee" : "Tutor"));
         return RootView;
     }
 
-    public String parseCourses(ArrayList<Course> courses){
+    public String parseCourses(ArrayList<String> courses){
         String result = "";
-        if(courses != null) {
-            for(Course c : courses) {
-                if(c != null) {
-                    result += c.getName() + ", ";
-                }
-            }
+        for(String c : courses) {
+            result += c + ", ";
         }
         return result;
     }
 
-    public Course[] allCourses() {
-        Course[] allCourses = new Course[]{
-                new Course("CIS 110"),
-                new Course("CIS 120"),
-                new Course("CIS 160"),
-                new Course("CIS 121"),
-                new Course("CIS 262"),
-                new Course("CIS 320")};
+    public String[] allCourses() {
+        String[] allCourses = new String[]{
+                new String("CIS 110"),
+                new String("CIS 120"),
+                new String("CIS 160"),
+                new String("CIS 121"),
+                new String("CIS 262"),
+                new String("CIS 320")};
         return allCourses;
     }
 
-    public String[] courseNames(Course[] c) {
-        //if we want to remove the course names that the tutor hsa already chosen
+    public String[] courseNames(String[] c) {
+        //if we want to remove the course names that the tutor has already chosen
         /*
         String[] names = new String[c.length];
         for (int i = 0; i < allCourses().length; i++) {
@@ -121,10 +122,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         return availableNames;*/
         String[] names = new String[c.length];
         for (int i = 0; i < allCourses().length; i++) {
-            names[i] = allCourses()[i].getName();
+            names[i] = allCourses()[i];
         }
         return names;
     }
+
 
     public void setUser(User user) {
         this.user = user;
