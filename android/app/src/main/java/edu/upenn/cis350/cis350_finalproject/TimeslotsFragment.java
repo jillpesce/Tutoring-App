@@ -49,8 +49,12 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
 
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(), FiltersActivity.class);
-                getActivity().startActivityForResult(i, FILTER_ACTIVITY);
+                String[] c = new String[]{"CIS 121"};
+
+                RemoteDataSource ds = new RemoteDataSource();
+                ds.getFilteredTimeslots("pchloe@seas.upenn.edu", c);
+//                Intent i = new Intent(getActivity(), FiltersActivity.class);
+//                getActivity().startActivityForResult(i, FILTER_ACTIVITY);
             }
         });
 

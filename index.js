@@ -395,12 +395,11 @@ app.get('/findTutorAppointments', (req, res) => {
 });
 
 app.get('/findFilteredTimeslots', (req, res) => {
-    const tutorEmail = req.query.tutorEmail;
-    const classes = req.query.classes;
+    const course = req.query.course;
 
-    console.log("trying to find filtered timeslots");
-    if (tutorEmail && classes) {
-        Timeslot.find( {tutorEmail: tutorEmail,  }, (err, appts) => {
+    console.log("trying to find filtered timeslots with course: " +course);
+    if (course) {
+        Timeslot.find( {courses: course}, (err, appts) => {
             if (err) {
                 console.log(err);
                 res.json({});
@@ -413,25 +412,7 @@ app.get('/findFilteredTimeslots', (req, res) => {
                 res.send(appts);
             }
         });
-	} else if (tutorEmail) {
-
-    } else if (classes) {
-
-    } else {
-        Timeslot.find((err, appts) => {
-            if (err) {
-                console.log(err);
-                res.json({});
-            } else if (!appts) {
-                console.log('no timeslots');
-                res.json({});
-            } else {
-                console.log('timeslots exists');
-                console.log(appts);
-                res.send(appts);
-            }
-        });
-    }
+	}
 });
 
 app.listen(3000,  () => {

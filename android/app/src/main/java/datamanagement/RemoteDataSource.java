@@ -505,6 +505,75 @@ public class RemoteDataSource {
         return null;
     }
 
+    public List<Timeslot> getFilteredTimeslots(String email, String[] courses) {
+        List<Timeslot> timeslots;
+        if (email != null) {
+            timeslots = getTutorTimeslots(email);
+        } else {
+            timeslots = new ArrayList<Timeslot>();
+        }
+
+        for (String s : courses) {
+            List<Timeslot> temp = getCourseTimeslot(s);
+            if (temp != null) {
+                for (Timeslot t : temp) {
+                    if (!timeslots.contains(t)) {
+                        timeslots.add(t);
+                    }
+                }
+            }
+        }
+
+        return timeslots;
+    }
+
+    public List<Timeslot> getCourseTimeslot(String course) {
+        try {
+            String urlString = "http://" + this.host + ":" + this.port + "/findFilteredTimeslots?course=" +course;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+
+                JSONArray appts = (JSONArray) parser.parse(result);
+                List<Timeslot> ts = new ArrayList<Timeslot>();
+                Iterator<JSONObject> iter = appts.iterator();
+
+                while (iter.hasNext()) {
+
+                    JSONObject data = (JSONObject)iter.next();
+
+                    JSONArray temp = (JSONArray)data.get("courses");
+                    Iterator<String> it = temp.iterator();
+                    List<String> co = new ArrayList<String>();
+
+                    while (it.hasNext()) {
+                        String s = (String)it.next();
+                        co.add(s);
+                    }
+
+                    String[] courses = co.toArray(new String[0]);
+                    String tutorName = (String)data.get("tutorName");
+                    String tutorEmail = (String)data.get("tutorEmail");
+                    String date = (String)data.get("date");
+
+                    Timeslot t = new Timeslot(tutorEmail, date, courses, tutorName);
+                    Log.d("NEW TIMESLOT:",t.toString());
+                    ts.add(t);
+                }
+
+                return ts;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Timeslot> getTutorTimeslots(String email) {
         try {
             String urlString = "http://" + this.host + ":" + this.port + "/getTutorTimeslots?tutorEmail=" +email;
