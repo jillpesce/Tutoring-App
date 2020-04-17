@@ -210,6 +210,34 @@ public class RemoteDataSource {
 
     /**
      *
+     * @param u -- user that we want to add new course to
+     * @return true if the save is successful and false otherwise.
+     */
+    public boolean addCourse(User u) {
+        String email = u.getEmail();
+        String name = u.getName();
+        String school = u.getSchool();
+        String major = u.getMajor();
+        String bio = u.getBio();
+        String gradYear = u.getGradYear();
+        String urlString = "http://" + this.host + ":" + this.port + "/addCourse?email=" + email +
+                "&updatedCourses=" + u.getCourses();
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     *
      * @param t -- User we want to save to the database
      * @return true if the save is successful and false otherwise.
      */
@@ -477,6 +505,53 @@ public class RemoteDataSource {
         return null;
     }
 
+    public List<Timeslot> getTutorTimeslots(String email) {
+        try {
+            String urlString = "http://" + this.host + ":" + this.port + "/getTutorTimeslots?tutorEmail=" +email;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+
+                JSONArray appts = (JSONArray) parser.parse(result);
+                List<Timeslot> ts = new ArrayList<Timeslot>();
+                Iterator<JSONObject> iter = appts.iterator();
+
+                while (iter.hasNext()) {
+
+                    JSONObject data = (JSONObject)iter.next();
+
+                    JSONArray temp = (JSONArray)data.get("courses");
+                    Iterator<String> it = temp.iterator();
+                    List<String> co = new ArrayList<String>();
+
+                    while (it.hasNext()) {
+                        String s = (String)it.next();
+                        co.add(s);
+                    }
+
+                    String[] courses = co.toArray(new String[0]);
+                    String tutorName = (String)data.get("tutorName");
+                    String tutorEmail = (String)data.get("tutorEmail");
+                    String date = (String)data.get("date");
+
+                    Timeslot t = new Timeslot(tutorEmail, date, courses, tutorName);
+                    Log.d("NEW TIMESLOT:",t.toString());
+                    ts.add(t);
+                }
+
+                return ts;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public String cancelAppointment(Appointment ap) {
         String status = "failed";
         try {
@@ -487,14 +562,6 @@ public class RemoteDataSource {
             HttpSaveRequest saveRequest = new HttpSaveRequest();
             String result = saveRequest.execute(urlString).get();
 
-//            if (result != null) {
-//                JSONParser parser = new JSONParser();
-//                JSONObject data = (JSONObject) parser.parse(result);
-//                status = (String) data.get("status");
-//                if (!status.equals("success")) {
-//                    status = "error";
-//                }
-//            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

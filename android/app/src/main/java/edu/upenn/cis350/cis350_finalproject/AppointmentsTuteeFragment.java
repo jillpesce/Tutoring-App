@@ -1,7 +1,9 @@
 package edu.upenn.cis350.cis350_finalproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +32,7 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
     List<Appointment> tuteeAppts;
     String tuteeUser;
     User user = null;
+    private static final int AppointmentActivity_ID = 1;
 
     @Nullable
     @Override
@@ -80,7 +84,8 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
         i.putExtra("TUTOR_EMAIL", a.getTutorEmail());
         i.putExtra("TUTOR_NAME", a.getTutor());
         i.putExtra("DATE", a.getDate());
-        getActivity().startActivity(i);
+        i.putExtra("CURR_EMAIL", user.getEmail());
+        getActivity().startActivityForResult(i, AppointmentActivity_ID);
     }
 
 }

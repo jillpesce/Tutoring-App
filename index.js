@@ -4,6 +4,7 @@ var app = express();
 var authRoutes =  require('./routes/auth-routes');
 var profileRoutes =  require('./routes/profile-routes');
 var scoresRoutes =  require('./routes/scores-routes');
+var homeRoutes =  require('./routes/home-routes');
 
 var User = require('./models/User');
 
@@ -43,15 +44,8 @@ mongoose.connect(keys.mongodb.dbURI, () => {
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 app.use('/scores', scoresRoutes);
+app.use('/', homeRoutes);
 
-// create home route
-app.get('/', (req, res) => {
-    if (req.user && req.user.isTutor) {
-        res.render('tutor-home', { user: req.user });
-    } else {
-        res.render('tutee-home', { user: req.user });
-    }
-});
 
 app.get('/aboutUs', (req, res) => {
 	console.log("in aboutUs route");
@@ -99,6 +93,28 @@ app.get('/save', (req, res) => {
             res.json({'result' : 'success'});
         }
     })
+});
+
+app.get('/addCourse', (req, res) => {
+    // console.log('added course');
+    // const email = req.query.email;
+    // const updatedCourses = req.query.updatedCourses;
+    // console.log(updatedCourses);
+    // console.log(email);
+
+    // User.updateOne({email: req.query.email}, updatedCourses).then(() => {
+    //     console.log('Updated - ' + email  + ' with the courses ' + updatedCourses);
+    //     res.redirect('/profile/');
+    // });
+
+    console.log('adding course');
+    var newValues = { $set: {
+        courses: req.query.updatedCourses
+    }};
+    User.updateOne({email: req.query.email}, newValues).then(() => {
+        console.log('Updated - ' + req.query.email);
+        res.redirect('/profile/');
+    });
 });
 
 
@@ -164,7 +180,8 @@ app.post('/editProfile', function(req, res) {
             school: req.body.school,
             gradYear: req.body.gradYear,
             major: req.body.major,
-            bio: req.body.bio
+            bio: req.body.bio,
+            courses: req.body.courses
         }};
         User.updateOne({email: req.user.email}, newValues).then(() => {
             console.log('edited profile for - ' + req.body.email);
@@ -294,6 +311,26 @@ app.get('/getAllTimeslots', (req, res) => {
     });
 });
 
+app.get('/getTutorTimeslots', (req, res) => {
+    const tutorEmail = req.query.tutorEmail;
+    console.log("trying to find tutor timeslots with " + tutorEmail);
+    if (tutorEmail) {
+        Timeslot.find( {tutorEmail: tutorEmail}, (err, timeslots) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!timeslots) {
+                console.log('no timeslots');
+                res.json({});
+            } else {
+                console.log('timeslots exist');
+                console.log(timeslots);
+                res.send(timeslots);
+            }
+        });
+	}
+});
+
 app.get('/findTuteeAppointments', (req, res) => {
     const tuteeEmail = req.query.tuteeEmail;
     console.log("trying to find confirmed tutee appointments with " + tuteeEmail);
@@ -311,7 +348,7 @@ app.get('/findTuteeAppointments', (req, res) => {
                 res.send(appts);
             }
         });
-	}
+    }
 });
 
 app.get('/findTutorAppointments', (req, res) => {

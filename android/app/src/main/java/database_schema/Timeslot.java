@@ -28,6 +28,20 @@ public class Timeslot implements Comparable {
 
     public String getTutorName() { return tutorName; }
 
+    public String getCoursesString() {
+        if (courses.length == 0) {
+            return "None";
+        } else {
+            String c = "";
+            for (String course : courses) {
+                c += course;
+                c += ", ";
+            }
+            c.substring(0, c.length() - 2);
+            return c;
+        }
+    }
+
     @Override
     public int compareTo(Object o) {
         String d1 = this.date;

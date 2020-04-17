@@ -11,7 +11,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = new Intent(this, SignInActivity.class);
-        //Intent intent = new Intent(this, DashboardActivity.class);
+//        Intent intent = new Intent(this, DashboardActivity.class);
         startActivityForResult(intent, 1);
     }
 }

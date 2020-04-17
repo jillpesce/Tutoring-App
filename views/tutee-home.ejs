@@ -11,12 +11,60 @@
     </div>
     <div class="p-5"> 
         <header>
-            <h1>Welcome to our Tutoring App!</h1>
-            <h2>Homepage for Tutees</h2>
+            <h1>Hi <%=user.name%>, what's cookin'? </h1>
+            <h3>Here are your appointments as a tutee:</h3>
+            <br/>
         </header>
         <main>
-            <p>CIS 350 project for Jill, Julie, Chloe, Selina, and Caroline</p>
-            
+            <% if (!appts) {%>
+              <p>No scheduled appointments</p>
+            <% } else {
+            appts.sort((a, b) => (a.date > b.date) ? 1 : -1);
+            console.log("sorted = " + appts);
+            let date = new Date();
+            let today = "" + date.getFullYear() + ("0" + date.getMonth()).slice(-2) + 
+            ("0" + date.getDate()).slice(-2) + ("0" + date.getHours()).slice(-2);
+            console.log("date = " + today); 
+            let pastAppts = [];
+            let upcomingAppts = []; 
+            for (var i = 0; i < appts.length; i++) { 
+              let dateString = appts[i].date;
+              if (appts[i].date <= today) {
+                pastAppts.push(appts[i]);
+              } else {
+                upcomingAppts.push(appts[i]);
+              }
+            }%>
+            <div class="list-group">
+              <% if (!upcomingAppts) { %>
+                <h5>No Upcoming Appointments</h5>
+                <% } else { %>
+                  <h5>Upcoming Appointments</h5>
+                  <%for (var i = 0; i < upcomingAppts.length; i++) { 
+                  let dateString = upcomingAppts[i].date;
+                  let date = new Date(dateString.substring(0, 4), dateString.substring(4, 6), 
+                  dateString.substring(6, 8), dateString.substring(8, 10));%>
+                  <a href="#" class="list-group-item list-group-item-action">
+                  <b>Tutor:</b> <%=upcomingAppts[i].tutorName%> &emsp; <b>Date:</b> <%=date.toUTCString()%>
+                  </a>
+            <% } 
+                }%>
+                <br/>
+            <div class="list-group">
+                <% if (!pastAppts) { %>
+                <h5>No Past Appointments</h5>
+                <% } else { %>
+                  <h5>Past Appointments</h5>
+              <% for (var i = 0; i < pastAppts.length; i++) { 
+                let dateString = pastAppts[i].date;
+                let date = new Date(dateString.substring(0, 4), dateString.substring(4, 6), 
+                dateString.substring(6, 8), dateString.substring(8, 10));%>
+                <a href="#" class="list-group-item list-group-item-action">
+                 <b>Tutor:</b> <%=pastAppts[i].tutorName%> &emsp; <b>Date:</b> <%=date.toUTCString()%>
+                </a>
+            <% } 
+              }
+              }%>
         </main>
     </div>
     <!-- Optional JavaScript -->

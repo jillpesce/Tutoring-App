@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,17 +55,7 @@ public class TutorTimeslotsFragment extends Fragment {
         });
 
         RemoteDataSource ds = new RemoteDataSource();
-        setTimeslots = ds.getAllTimeslots();
-
-
-        for (Timeslot t : setTimeslots) {
-
-            if (!t.getTutor().equals(user.getEmail())) {
-                setTimeslots.remove(t);
-            }
-        }
-
-        Collections.sort(setTimeslots);
+        setTimeslots = ds.getTutorTimeslots(user.getEmail());
 
         return view;
     }
@@ -77,17 +68,11 @@ public class TutorTimeslotsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        Timeslot t1 = new Timeslot("snie@seas.upenn.edu", "2020041310", new String[0],"Selina Nie" );
-//        Timeslot t2 = new Timeslot("juliechn@seas.upenn.edu", "2020041210", new String[0],"Julie Chen" );
-//
-//        ts = new Timeslot[2];
-//        ts[0] = t1;
-//        ts[1] = t2;
-//
-//        setTimeslots = new ArrayList<Timeslot>(Arrays.asList(ts));
-
-//        Collections.sort(setTimeslots);
+        if (setTimeslots != null) {
+            Collections.sort(setTimeslots);
+        } else {
+            setTimeslots = new ArrayList<>();
+        }
 
         String[] desc = new String[setTimeslots.size()];
         int counter = 0;

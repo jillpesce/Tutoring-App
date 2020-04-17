@@ -2,6 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onBackButtonClicked"
+        android:text="Back" />
     <ImageView
         android:id="@+id/profile_pic"
         android:layout_width="120dp"
@@ -30,8 +36,9 @@
         android:textSize="18sp"
         android:textStyle="italic"/>
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/profile_bio"
         android:orientation="vertical"
         android:paddingTop="50dp">
@@ -81,13 +88,73 @@
             android:text="Rate"
             android:layout_gravity="center_vertical|center_horizontal"
             android:onClick="onRateButtonClicked"/>
+
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/linear"
+        android:id="@+id/linear_available"
+        android:gravity="center"
+        android:paddingTop="10dp">
+
+        <Button
+            android:id="@+id/button_prev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_navigate_before_black_24dp"
+            android:onClick="onPrevButtonClicked"/>
+        <TextView
+            android:id="@+id/text_available"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Availability"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"/>
+
+        <Button
+            android:id="@+id/button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:drawableRight="@drawable/ic_navigate_next_black_24dp"
+            android:onClick="onNextButtonclicked"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/timeslot_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_available"
+        android:paddingLeft="10dp"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:id="@+id/timeslot_courses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeslot_date"
+        android:padding="10dp"/>
     <Button
-    android:id="@+id/button"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Back"
-    android:onClick="onBackButtonClicked"/>
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:onClick="onBackButtonClicked"/>
+
+    <Button
+        android:id="@+id/select_appt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeslot_courses"
+        android:text="Select"
+        android:onClick="onSelectButtonClicked"
+        android:layout_centerHorizontal="true"/>
+
+
 
 </RelativeLayout>

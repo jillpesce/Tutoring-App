@@ -1,5 +1,6 @@
 package edu.upenn.cis350.cis350_finalproject;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,11 +27,12 @@ import datamanagement.RemoteDataSource;
 public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     ListView lv;
     View view;
-//    Timeslot[] ts;
     List<Timeslot> setTimeslots;
+    String[] filteredTutors = new String[0];
+    String[] filteredCourses = new String[0];
     String tuteeUser;
-//    String[] timeslotStrings = [];
     User user = null;
+    int FILTER_ACTIVITY = 1;
 
     @Nullable
     @Override
@@ -42,27 +44,24 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
 
         view = inflater.inflate(R.layout.fragment_view_timeslots, container, false);
 
-//        Button button = (Button) view.findViewById(R.id.new_time);
-//        button.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(getActivity(), NewTimeslotActivity.class);
-//                i.putExtra("EMAIL", user.getEmail());
-//                i.putExtra("NAME", user.getName());
-//                i.putExtra("COURSES", new String[0]); // need to change this
-//                getActivity().startActivity(i);
-//            }
-//        });
+        Button button = (Button) view.findViewById(R.id.filter_button);
+        button.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), FiltersActivity.class);
+                getActivity().startActivityForResult(i, FILTER_ACTIVITY);
+            }
+        });
 
         RemoteDataSource ds = new RemoteDataSource();
         setTimeslots = ds.getAllTimeslots();
+
         if (setTimeslots != null) {
             Collections.sort(setTimeslots);
         } else {
             setTimeslots = new ArrayList<>();
         }
-
         return view;
     }
 
@@ -72,19 +71,55 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     }
 
     @Override
+     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == FILTER_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+                filteredCourses=data.getStringArrayExtra("Courses");
+                filteredTutors=data.getStringArrayExtra("Tutors");
+            }
+        }
+     }
+
+     private void filterTimeslots() {
+        List<String> fTutors = Arrays.asList(filteredTutors);
+        List<String> fCourses = Arrays.asList(filteredCourses);
+
+        for (Timeslot t: setTimeslots) {
+            Boolean removed = false;
+            List<String> tCourses = Arrays.asList(t.getCourses());
+
+            // only check if there are selected tutors.
+            if (fTutors.size() != 0) {
+                String tutorName = t.getTutorName();
+                if (!fTutors.contains(tutorName)) {
+                    setTimeslots.remove(t);
+                    removed = true;
+                }
+            }
+
+            // has not been removed in tutor filtering process.
+            if (!removed) {
+                Boolean foundCourseMatch = false;
+                for(String s1 : tCourses) {
+                    for (String s2 : fCourses) {
+                        if (s1.equals(s2)) {
+                            foundCourseMatch = true;
+                        }
+                    }
+                }
+
+                if (!foundCourseMatch) {
+                    setTimeslots.remove(t);
+                }
+            }
+        }
+     }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-//        Timeslot t1 = new Timeslot("snie@seas.upenn.edu", "2020041310", new String[0],"Selina Nie" );
-//        Timeslot t2 = new Timeslot("juliechn@seas.upenn.edu", "2020041210", new String[0],"Julie Chen" );
-//
-//        ts = new Timeslot[2];
-//        ts[0] = t1;
-//        ts[1] = t2;
-//
-//        setTimeslots = new ArrayList<Timeslot>(Arrays.asList(ts));
-
-//        Collections.sort(setTimeslots);
 
         String[] desc = new String[setTimeslots.size()];
         int counter = 0;

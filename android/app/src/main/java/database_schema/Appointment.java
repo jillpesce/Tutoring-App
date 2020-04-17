@@ -50,7 +50,7 @@ public class Appointment implements Comparable {
     @Override
     public int compareTo(Object o) {
         String d1 = this.date;
-        String d2 = ((Timeslot) o).getDate();
+        String d2 = ((Appointment) o).getDate();
         if(d1.compareTo(d2) > 0) {
             return 1;
         } else if(d1.compareTo(d2) < 0) {

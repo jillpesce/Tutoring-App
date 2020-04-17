@@ -35,6 +35,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     ListView listView;
     ArrayAdapter<String> adapter;
     String[] userNames;
+    User currentUser;
     static final int OtherUserProfile_ID = 1;
     User currentUser;
 
