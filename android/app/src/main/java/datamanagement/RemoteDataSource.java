@@ -487,14 +487,6 @@ public class RemoteDataSource {
             HttpSaveRequest saveRequest = new HttpSaveRequest();
             String result = saveRequest.execute(urlString).get();
 
-//            if (result != null) {
-//                JSONParser parser = new JSONParser();
-//                JSONObject data = (JSONObject) parser.parse(result);
-//                status = (String) data.get("status");
-//                if (!status.equals("success")) {
-//                    status = "error";
-//                }
-//            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
