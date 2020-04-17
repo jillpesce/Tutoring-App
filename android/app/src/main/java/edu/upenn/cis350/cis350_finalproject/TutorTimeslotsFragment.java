@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,17 +55,7 @@ public class TutorTimeslotsFragment extends Fragment {
         });
 
         RemoteDataSource ds = new RemoteDataSource();
-        setTimeslots = ds.getAllTimeslots();
-
-
-        for (Timeslot t : setTimeslots) {
-
-            if (!t.getTutor().equals(user.getEmail())) {
-                setTimeslots.remove(t);
-            }
-        }
-
-        Collections.sort(setTimeslots);
+        setTimeslots = ds.getTutorTimeslots(user.getEmail());
 
         return view;
     }
@@ -77,6 +68,11 @@ public class TutorTimeslotsFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (setTimeslots != null) {
+            Collections.sort(setTimeslots);
+        } else {
+            setTimeslots = new ArrayList<>();
+        }
 
         String[] desc = new String[setTimeslots.size()];
         int counter = 0;

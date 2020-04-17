@@ -317,6 +317,26 @@ app.get('/getAllTimeslots', (req, res) => {
     });
 });
 
+app.get('/getTutorTimeslots', (req, res) => {
+    const tutorEmail = req.query.tutorEmail;
+    console.log("trying to find tutor timeslots with " + tutorEmail);
+    if (tutorEmail) {
+        Timeslot.find( {tutorEmail: tutorEmail}, (err, timeslots) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!timeslots) {
+                console.log('no timeslots');
+                res.json({});
+            } else {
+                console.log('timeslots exist');
+                console.log(timeslots);
+                res.send(timeslots);
+            }
+        });
+	}
+});
+
 app.get('/findTuteeAppointments', (req, res) => {
     const tuteeEmail = req.query.tuteeEmail;
     console.log("trying to find confirmed tutee appointments with " + tuteeEmail);

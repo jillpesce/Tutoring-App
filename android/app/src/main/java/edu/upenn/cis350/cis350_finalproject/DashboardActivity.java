@@ -33,9 +33,9 @@ public class DashboardActivity extends AppCompatActivity {
         String email = getIntent().getStringExtra("EMAIL");
         //get the user from the database
 //        // TODO actually get the saved user's email
-//        RemoteDataSource ds = new RemoteDataSource();
-//        this.user = ds.findUser(email);
-        this.user = createFakeUserForNow();
+        RemoteDataSource ds = new RemoteDataSource();
+        this.user = ds.findUser(email);
+//        this.user = createFakeUserForNow();
 
         AppointmentsTuteeFragment selectedFragment = new AppointmentsTuteeFragment();
         FragmentManager fm = getSupportFragmentManager();
