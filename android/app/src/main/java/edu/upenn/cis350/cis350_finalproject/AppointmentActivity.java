@@ -1,5 +1,6 @@
 package edu.upenn.cis350.cis350_finalproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import database_schema.Appointment;
 import database_schema.Date;
+import database_schema.User;
 import datamanagement.RemoteDataSource;
 
 public class AppointmentActivity extends AppCompatActivity {
@@ -17,6 +19,7 @@ public class AppointmentActivity extends AppCompatActivity {
     String tuteeEmail;
     String tuteeName;
     String dateAndTime;
+    User currUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,8 @@ public class AppointmentActivity extends AppCompatActivity {
         tuteeEmail = getIntent().getStringExtra("TUTEE_EMAIL");
         tuteeName = getIntent().getStringExtra("TUTEE_NAME");
         dateAndTime = getIntent().getStringExtra("DATE");
+        String currUserEmail = getIntent().getStringExtra("CURR_EMAIL");
+        currUser = (new RemoteDataSource().findUser(currUserEmail));
 
         Date d = new Date(dateAndTime);
 
@@ -58,7 +63,6 @@ public class AppointmentActivity extends AppCompatActivity {
     }
 
     private void handleApptCancelation() {
-        // TODO: Chloe
         RemoteDataSource rd = new RemoteDataSource();
         Appointment app = new Appointment(this.tutorName, this.tuteeName, this.dateAndTime,
                 this.tutorEmail, this.tuteeEmail);
@@ -68,5 +72,8 @@ public class AppointmentActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
 
+        Intent i = new Intent(this, DashboardActivity.class);
+        i.putExtra("EMAIL", currUser.getEmail());
+        startActivity(i);
     }
 }

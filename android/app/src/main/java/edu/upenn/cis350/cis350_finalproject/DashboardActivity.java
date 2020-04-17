@@ -83,6 +83,7 @@ public class DashboardActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_search:
                     selectedFragment = new SearchFragment();
+                    ((SearchFragment) selectedFragment).setUser(user);
                     break;
             }
             fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
@@ -101,5 +102,9 @@ public class DashboardActivity extends AppCompatActivity {
         Log.d("toggle", "" + user.getIsTutor());
         String text = "Toggle to " + (user.getIsTutor() ? "Tutee" : "Tutor");
         ((TextView) v).setText(text);
+    }
+
+    public User getUser() {
+        return this.user;
     }
 }
