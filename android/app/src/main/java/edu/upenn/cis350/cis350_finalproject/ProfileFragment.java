@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         return result;
     }
 
-    public String[] allCourses() {
+    public static String[] allCourses() {
         String[] allCourses = new String[]{
                 new String("CIS 110"),
                 new String("CIS 120"),
