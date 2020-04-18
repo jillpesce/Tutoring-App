@@ -33,6 +33,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     boolean[] selected;
     List<String> filteredCourses = null;
     String filteredTutor = null;
+    String filteredTutorName = null;
     ListView lv;
     TextView tutors;
 
@@ -62,6 +63,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("Courses", filteredCourses.toArray(new String[0]));
+        returnIntent.putExtra("TutorName", filteredTutorName);
         returnIntent.putExtra("Tutor", filteredTutor);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
@@ -73,7 +75,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
     private void handleClearFilters() {
         filteredTutor = null;
-        tutors.setText("Selected tutor:");
+        tutors.setText("Tutor:");
         selected = new boolean[allCourses.length];
         for (int i = 0; i < allCourses.length; i++) {
             lv.getChildAt(i).setBackgroundColor(0x00000000);
@@ -100,10 +102,10 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
                 User user = rd.findUserName(s);
                 if (user != null) {
                     filteredTutor = user.getEmail();
+                    filteredTutorName = user.getName();
                     tutors.setText("Tutor: " + user.getName());
                 } else {
                     Toast.makeText(FiltersActivity.this, "No User Found.", Toast.LENGTH_SHORT).show();
-                    tutors.setText("Tutor: ");
                 }
                 return false;
             }

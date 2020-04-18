@@ -34,10 +34,12 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     String filteredTutor = null;
     String[] filteredCourses = null;
     String tuteeUser;
+    String filteredTutorName;
     User user = null;
     int FILTER_ACTIVITY = 1;
     ArrayAdapter<String> adapter;
     RemoteDataSource ds = new RemoteDataSource();
+    TextView filters;
 
     @Nullable
     @Override
@@ -49,6 +51,7 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
         view = inflater.inflate(R.layout.fragment_view_timeslots, container, false);
 
         Button button = (Button) view.findViewById(R.id.filter_button);
+        filters = (TextView) view.findViewById(R.id.filter);
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -66,6 +69,29 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     }
 
     private View populateList(String one, String[] two) {
+        String fi = "Filters: ";
+        if (filteredTutorName != null) {
+            fi = fi + filteredTutorName + ", ";
+        }
+
+        if (two != null) {
+            for (String s : two) {
+                fi = fi + s + ", ";
+            }
+        }
+        filters.setText(fi);
+
+        if (one != null) {
+            Log.d("tutor user:", one);
+        } else {
+            Log.d("tutor user:", "null");
+        }
+
+        if (two != null) {
+            Log.d("classes size:", "" + two.length);
+        } else {
+            Log.d("classes size:", "null");
+        }
         setTimeslots = ds.getFilteredTimeslots(one, two);
 
         if (setTimeslots != null) {
@@ -100,6 +126,10 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
         if(requestCode == FILTER_ACTIVITY && resultCode == Activity.RESULT_OK){
             Log.d("INTENT OK", "yuuuuhh");
             filteredCourses=data.getStringArrayExtra("Courses");
+            if (filteredCourses.length == 0) {
+                filteredCourses = null;
+            }
+            filteredTutorName=data.getStringExtra("TutorName");
             filteredTutor=data.getStringExtra("Tutor");
             populateList(filteredTutor,filteredCourses);
         }

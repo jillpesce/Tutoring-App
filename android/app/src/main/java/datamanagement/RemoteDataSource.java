@@ -535,7 +535,7 @@ public class RemoteDataSource {
         }
         if (email != null) {
             timeslots = getTutorTimeslots(email);
-            if (courses.length > 0 && timeslots.size() > 0) {
+            if (courses != null && courses.length > 0 && timeslots.size() > 0) {
                 int size = timeslots.size();
                 int offset = 0;
                 for (int i = 0; i < size; i++) {
