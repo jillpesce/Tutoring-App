@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +25,8 @@ import java.util.List;
 
 import database_schema.Date;
 import database_schema.Timeslot;
+import database_schema.User;
+import datamanagement.RemoteDataSource;
 
 public class FiltersActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     String[] allCourses;
@@ -58,7 +62,6 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("Courses", filteredCourses.toArray(new String[0]));
-        Log.d("COURSES INTENT:", filteredCourses.get(0));
         returnIntent.putExtra("Tutor", "pchloe@seas.upenn.edu");
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
@@ -70,7 +73,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
     private void handleClearFilters() {
         filteredTutor = null;
-        tutors.setText("Tutors:");
+        tutors.setText("Selected tutor:");
         selected = new boolean[allCourses.length];
         for (int i = 0; i < allCourses.length; i++) {
             lv.getChildAt(i).setBackgroundColor(0x00000000);
@@ -86,5 +89,28 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
             lv.getChildAt(position).setBackgroundColor(Color.GREEN);
             selected[position] = true;
         }
+    }
+
+    public void onSearch(View v) {
+        SearchView sv = (SearchView) findViewById(R.id.search_view);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                RemoteDataSource rd = new RemoteDataSource();
+                User user = rd.findUserName(s);
+                if (user != null) {
+                    filteredTutor = user.getEmail();
+                    tutors.setText("Tutor: " + user.getName());
+                } else {
+                    Toast.makeText(FiltersActivity.this, "No User Found.", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 }

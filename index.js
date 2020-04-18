@@ -77,6 +77,25 @@ app.get('/find', (req, res) => {
 	}
 });
 
+app.get('/find', (req, res) => {
+    const name = req.query.name;
+    console.log("finding user with name: " +name);
+    if (email) {
+        User.findOne( {name: name}, (err, user) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!user) {
+                console.log('did NOT find user');
+                res.json({});
+            } else {
+                console.log('found user');
+                res.send(user);
+            }
+        });
+	}
+});
+
 app.get('/save', (req, res) => {
     console.log('hit save endpoint');
     const email = req.query.email;

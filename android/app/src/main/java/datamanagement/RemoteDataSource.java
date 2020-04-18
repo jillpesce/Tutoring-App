@@ -66,6 +66,28 @@ public class RemoteDataSource {
         }
         return null;
     }
+
+    public User findUserName(String name) {
+        try {
+            User user = null;
+            String urlString = "http://" + this.host + ":" + port + "/find?name=" + name;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+                JSONObject data = (JSONObject) parser.parse(result);
+                user = createUser(data);
+            }
+            return user;
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      *
      * @param name -- name of the user we are trying to find
