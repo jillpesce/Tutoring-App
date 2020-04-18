@@ -90,7 +90,6 @@ public class DashboardActivity extends AppCompatActivity {
             fragmentTransaction.commit();
             Log.d("REFRESH", "Should have been refreshed");
         }
-
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -157,8 +156,4 @@ public class DashboardActivity extends AppCompatActivity {
         return this.user;
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
 }
