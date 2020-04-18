@@ -1,5 +1,6 @@
 package edu.upenn.cis350.cis350_finalproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -102,6 +103,7 @@ public class NewTimeslotActivity extends AppCompatActivity {
             RemoteDataSource ds = new RemoteDataSource();
             Timeslot t = new Timeslot(email, date, courses, tutorName);
             ds.saveNewTimeslot(t);
+            setResult(Activity.RESULT_OK, null);
             finish();
         }
     }
