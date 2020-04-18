@@ -56,8 +56,7 @@
             android:id="@+id/search_view_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:onClick="onSearch2" />
+            android:iconifiedByDefault="false" />
 
         <TextView
             android:id="@+id/search_results"

@@ -51,6 +51,29 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allCourses);
         lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allCourses));
         lv.setOnItemClickListener(this);
+
+        SearchView sv = (SearchView) findViewById(R.id.search_view_2);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.d("Got to query submit", s);
+                RemoteDataSource rd = new RemoteDataSource();
+                User user = rd.findUserName(s);
+                if (user != null) {
+                    filteredTutor = user.getEmail();
+                    filteredTutorName = user.getName();
+                    tutors.setText("Tutor: " + user.getName());
+                } else {
+                    Toast.makeText(FiltersActivity.this, "No User Found.", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return true;
+            }
+        });
     }
 
     public void back(View v) {
@@ -93,27 +116,6 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         }
     }
 
-    public void onSearch2(View v) {
-        SearchView sv = (SearchView) findViewById(R.id.search_view_2);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                RemoteDataSource rd = new RemoteDataSource();
-                User user = rd.findUserName(s);
-                if (user != null) {
-                    filteredTutor = user.getEmail();
-                    filteredTutorName = user.getName();
-                    tutors.setText("Tutor: " + user.getName());
-                } else {
-                    Toast.makeText(FiltersActivity.this, "No User Found.", Toast.LENGTH_SHORT).show();
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-    }
+//    public void onSearch2(View v) {
+//    }
 }
