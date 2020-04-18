@@ -60,4 +60,16 @@ public class Timeslot implements Comparable {
         return "Timeslot: " + tutorName +" @ " + date + " with courses " +courses;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        String tE = ((Timeslot)o).getTutor();
+        String d = ((Timeslot)o).getDate();
+
+        if (tE.equals(tutorEmail) && d.equals(date)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

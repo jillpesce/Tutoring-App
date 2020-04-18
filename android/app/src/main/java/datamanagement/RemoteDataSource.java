@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -48,6 +49,28 @@ public class RemoteDataSource {
         try {
             User user = null;
             String urlString = "http://" + this.host + ":" + port + "/find?email=" + email;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+                JSONObject data = (JSONObject) parser.parse(result);
+                user = createUser(data);
+            }
+            return user;
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public User findUserName(String name) {
+        try {
+            User user = null;
+            String urlString = "http://" + this.host + ":" + port + "/findName?name=" + name;
             HttpFindRequest findRequest = new HttpFindRequest();
             String result = findRequest.execute(urlString).get();
             if (result != null) {
@@ -505,6 +528,106 @@ public class RemoteDataSource {
         return null;
     }
 
+    public List<Timeslot> getFilteredTimeslots(String email, String[] courses) {
+        List<Timeslot> timeslots;
+        if (courses !=  null) {
+            List<String> c = Arrays.asList(courses);
+        }
+        if (email != null) {
+            timeslots = getTutorTimeslots(email);
+            if (courses != null && courses.length > 0 && timeslots.size() > 0) {
+                int size = timeslots.size();
+                int offset = 0;
+                for (int i = 0; i < size; i++) {
+                    Timeslot t = timeslots.get(i-offset);
+                    boolean inCourse = false;
+
+                    for (String s1 : courses) {
+                        for (String s2 : t.getCourses()) {
+                            if (s1.equals(s2)) {
+                                inCourse = true;
+                            }
+                        }
+                    }
+
+                    if (!inCourse) {
+                        Log.d("removing: ", t.getTutor() + ",  " +t.getDate());
+                        offset ++;
+                        timeslots.remove(t);
+                    }
+                }
+            }
+        } else if (courses != null){
+            timeslots = new ArrayList<Timeslot>();
+            for (int i = 0; i < courses.length; i++) {
+                String course = courses[i];
+                List<Timeslot> temp = getCourseTimeslot(course);
+                if (temp != null) {
+                    for (int j = 0; j < temp.size(); j++) {
+                        Timeslot t = temp.get(j);
+                        if (!timeslots.contains(t)) {
+                            timeslots.add(t);
+                        }
+                    }
+                }
+            }
+        } else {
+            timeslots = getAllTimeslots();
+        }
+        Log.d("# OF FILTER TS:", "" + timeslots.size());
+        for (Timeslot t : timeslots) {
+            Log.d("FILTERED TIMESLOT:", t.getTutor() + ",  " +t.getDate());
+        }
+        return timeslots;
+    }
+
+    public List<Timeslot> getCourseTimeslot(String course) {
+        try {
+            String urlString = "http://" + this.host + ":" + this.port + "/findFilteredTimeslots?course=" +course;
+            HttpFindRequest findRequest = new HttpFindRequest();
+            String result = findRequest.execute(urlString).get();
+            if (result != null) {
+                JSONParser parser = new JSONParser();
+
+                JSONArray appts = (JSONArray) parser.parse(result);
+                List<Timeslot> ts = new ArrayList<Timeslot>();
+                Iterator<JSONObject> iter = appts.iterator();
+
+                while (iter.hasNext()) {
+
+                    JSONObject data = (JSONObject)iter.next();
+
+                    JSONArray temp = (JSONArray)data.get("courses");
+                    Iterator<String> it = temp.iterator();
+                    List<String> co = new ArrayList<String>();
+
+                    while (it.hasNext()) {
+                        String s = (String)it.next();
+                        co.add(s);
+                    }
+
+                    String[] courses = co.toArray(new String[0]);
+                    String tutorName = (String)data.get("tutorName");
+                    String tutorEmail = (String)data.get("tutorEmail");
+                    String date = (String)data.get("date");
+
+                    Timeslot t = new Timeslot(tutorEmail, date, courses, tutorName);
+                    Log.d("NEW TIMESLOT:",t.toString());
+                    ts.add(t);
+                }
+
+                return ts;
+            }
+        } catch (InterruptedException e) {
+
+        } catch (ExecutionException e){
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Timeslot> getTutorTimeslots(String email) {
         try {
             String urlString = "http://" + this.host + ":" + this.port + "/getTutorTimeslots?tutorEmail=" +email;
@@ -550,6 +673,23 @@ public class RemoteDataSource {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean deleteTimeslot(String tutorEmail, String date) {
+        String urlString = "http://" + this.host + ":" + this.port + "/deleteTimeslot?tutorEmail=" + tutorEmail + "&date=" + date;
+
+        HttpSaveRequest saveRequest = new HttpSaveRequest();
+        try {
+            String result = saveRequest.execute(urlString).get();
+            if (result.equals("success")) {
+                return true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public String cancelAppointment(Appointment ap) {

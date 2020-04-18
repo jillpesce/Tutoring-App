@@ -57,6 +57,7 @@ public class RequestAppointmentActivity extends AppCompatActivity {
     private void handleNewTimeslot() {
         RemoteDataSource ds = new RemoteDataSource();
         Appointment a = new Appointment(tutorName, tuteeName, dateAndTime, tutorEmail, tuteeEmail);
+        ds.deleteTimeslot(tutorEmail,dateAndTime);
         ds.saveNewAppt(a);
         finish();
     }
