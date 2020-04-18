@@ -70,7 +70,7 @@ public class RemoteDataSource {
     public User findUserName(String name) {
         try {
             User user = null;
-            String urlString = "http://" + this.host + ":" + port + "/find?name=" + name;
+            String urlString = "http://" + this.host + ":" + port + "/findName?name=" + name;
             HttpFindRequest findRequest = new HttpFindRequest();
             String result = findRequest.execute(urlString).get();
             if (result != null) {

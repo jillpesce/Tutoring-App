@@ -62,7 +62,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("Courses", filteredCourses.toArray(new String[0]));
-        returnIntent.putExtra("Tutor", "pchloe@seas.upenn.edu");
+        returnIntent.putExtra("Tutor", filteredTutor);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
@@ -103,6 +103,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
                     tutors.setText("Tutor: " + user.getName());
                 } else {
                     Toast.makeText(FiltersActivity.this, "No User Found.", Toast.LENGTH_SHORT).show();
+                    tutors.setText("Tutor: ");
                 }
                 return false;
             }

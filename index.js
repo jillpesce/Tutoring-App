@@ -77,10 +77,10 @@ app.get('/find', (req, res) => {
 	}
 });
 
-app.get('/find', (req, res) => {
+app.get('/findName', (req, res) => {
     const name = req.query.name;
     console.log("finding user with name: " +name);
-    if (email) {
+    if (name) {
         User.findOne( {name: name}, (err, user) => {
             if (err) {
                 console.log(err);
