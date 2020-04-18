@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CIS350_FinalProject</string>
     <string name="action_settings">Settings</string>
+    <string name="server_client_id">245564724547-es47de642hiiej3eeclu3jiji6bpdk79.apps.googleusercontent.com</string>
     <string-array name="schools_array">
         <item>Engineering</item>
         <item>Nursing</item>
@@ -26,5 +27,6 @@
         <item>22:00</item>
         <item>23:00</item>
     </string-array>
+
 
 </resources>

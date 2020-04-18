@@ -298,6 +298,22 @@ app.get('/cancelAppointment', (req, res) => {
     });
 });
 
+app.get('/acceptAppointment', (req, res) => {
+    console.log('hit accept appt endpoint');
+    var tutorEmail = req.query.tutorEmail;
+    var tuteeEmail = req.query.tuteeEmail;
+    var date = req.query.date;
+
+    var newValues = { $set: {
+        confirmed: true
+    }};
+
+    Appointment.updateOne({tutorEmail: tutorEmail, tuteeEmail: tuteeEmail, date: date}, newValues).then(() => {
+        console.log('Confirmed Appointment For - ' + tutorEmail + " with " + tuteeEmail + " on " + date);
+        
+    });
+});
+
 var Appointment = require('./models/Appointment');
 
 app.get('/getAllTimeslots', (req, res) => {
@@ -361,7 +377,7 @@ app.get('/findTutorAppointments', (req, res) => {
     const tutorEmail = req.query.tutorEmail;
     console.log("trying to find confirmed tutee appointments with " + tutorEmail);
     if (tutorEmail) {
-        Appointment.find( {tutorEmail: tutorEmail, confirmed: true}, (err, appts) => {
+        Appointment.find( {tutorEmail: tutorEmail}, (err, appts) => {
             if (err) {
                 console.log(err);
                 res.json({});

@@ -89,6 +89,14 @@
             android:padding="10dp"
             android:text="Time: "/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/acceptAppt"
+            android:text="ACCEPT APPOINTMENT"
+            android:layout_gravity="center"
+            android:onClick="acceptAppt"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -71,7 +71,7 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     }
 
     @Override
-     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == FILTER_ACTIVITY) {
@@ -80,9 +80,9 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
                 filteredTutors=data.getStringArrayExtra("Tutors");
             }
         }
-     }
+    }
 
-     private void filterTimeslots() {
+    private void filterTimeslots() {
         List<String> fTutors = Arrays.asList(filteredTutors);
         List<String> fCourses = Arrays.asList(filteredCourses);
 
@@ -115,7 +115,7 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
                 }
             }
         }
-     }
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

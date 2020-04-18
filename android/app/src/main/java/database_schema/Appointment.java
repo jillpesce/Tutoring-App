@@ -1,8 +1,10 @@
 package database_schema;
 
+import java.io.Serializable;
+
 import database_schema.Date;
 
-public class Appointment implements Comparable {
+public class Appointment implements Comparable, Serializable {
     private String tutorName;
     private String tutorEmail;
     private String tuteeName;

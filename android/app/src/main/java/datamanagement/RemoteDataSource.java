@@ -452,6 +452,9 @@ public class RemoteDataSource {
                     Boolean confirmed = (Boolean)data.get("confirmed");
 
                     Appointment a = new Appointment(tutorName, tuteeName, date, tutorEmail, tuteeEmail);
+                    if(confirmed) {
+                        a.confirmAppointment();
+                    }
                     ap.add(a);
                 }
                 return ap;
@@ -490,6 +493,9 @@ public class RemoteDataSource {
                     Boolean confirmed = (Boolean)data.get("confirmed");
 
                     Appointment a = new Appointment(tutorName, tuteeName, date, tutorEmail, tuteeEmail);
+                    if(confirmed) {
+                        a.confirmAppointment();
+                    }
                     ap.add(a);
                 }
 
@@ -567,6 +573,26 @@ public class RemoteDataSource {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        return status;
+    }
+
+    public String acceptAppointment(Appointment ap) {
+        String status = "failed";
+        try {
+            String urlString = "http://" + this.host + ":" + this.port +
+                    "/acceptAppointment?tutorEmail=" + ap.getTutorEmail()
+                    + "&tuteeEmail=" + ap.getTuteeEmail() + "&date=" + ap.getDate();
+            Log.d("POINT", "point1");
+            HttpSaveRequest saveRequest = new HttpSaveRequest();
+            String result = saveRequest.execute(urlString).get();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        getTuteeAppointments(ap.getTutorEmail());
         return status;
     }
 }
