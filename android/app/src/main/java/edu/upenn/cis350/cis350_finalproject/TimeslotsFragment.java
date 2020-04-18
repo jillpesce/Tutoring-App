@@ -21,6 +21,9 @@ import database_schema.Date;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+
+import com.mongodb.client.model.Filters;
+
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 
@@ -28,17 +31,18 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     ListView lv;
     View view;
     List<Timeslot> setTimeslots;
-    String[] filteredTutors = new String[0];
-    String[] filteredCourses = new String[0];
+    String filteredTutor = null;
+    String[] filteredCourses = null;
     String tuteeUser;
     User user = null;
     int FILTER_ACTIVITY = 1;
+    ArrayAdapter<String> adapter;
+    RemoteDataSource ds = new RemoteDataSource();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         // need to pass TUTEE
         // String tuteeUser = getIntent().getStringExtra("TUTEE");
 
@@ -49,23 +53,39 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
 
             @Override
             public void onClick(View v) {
-                String[] c = new String[]{"CIS 121"};
-
-                RemoteDataSource ds = new RemoteDataSource();
-                ds.getFilteredTimeslots("pchloe@seas.upenn.edu", c);
-//                Intent i = new Intent(getActivity(), FiltersActivity.class);
-//                getActivity().startActivityForResult(i, FILTER_ACTIVITY);
+                String[] c = new String[]{"CIS 160", "CIS 120"};
+                Intent i = new Intent(getActivity(), FiltersActivity.class);
+                startActivityForResult(i, FILTER_ACTIVITY);
+//                filteredTutor = null;
+//                filteredCourses = c;
+//                populateList(null, c);
             }
         });
 
-        RemoteDataSource ds = new RemoteDataSource();
-        setTimeslots = ds.getAllTimeslots();
+        return populateList(filteredTutor, filteredCourses);
+    }
+
+    private View populateList(String one, String[] two) {
+        setTimeslots = ds.getFilteredTimeslots(one, two);
 
         if (setTimeslots != null) {
             Collections.sort(setTimeslots);
         } else {
             setTimeslots = new ArrayList<>();
         }
+
+        String[] desc = new String[setTimeslots.size()];
+        int counter = 0;
+        for (Timeslot t : setTimeslots) {
+            Date d = new Date(t.getDate());
+            desc[counter] = d.getFullDescription() + " with " + t.getTutorName();
+            counter ++;
+        }
+
+        lv = (ListView) view.findViewById(R.id.timeslots);
+        lv.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, desc));
+        lv.setOnItemClickListener(this);
+
         return view;
     }
 
@@ -77,47 +97,11 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     @Override
      public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == FILTER_ACTIVITY) {
-            if(resultCode == Activity.RESULT_OK){
-                filteredCourses=data.getStringArrayExtra("Courses");
-                filteredTutors=data.getStringArrayExtra("Tutors");
-            }
-        }
-     }
-
-     private void filterTimeslots() {
-        List<String> fTutors = Arrays.asList(filteredTutors);
-        List<String> fCourses = Arrays.asList(filteredCourses);
-
-        for (Timeslot t: setTimeslots) {
-            Boolean removed = false;
-            List<String> tCourses = Arrays.asList(t.getCourses());
-
-            // only check if there are selected tutors.
-            if (fTutors.size() != 0) {
-                String tutorName = t.getTutorName();
-                if (!fTutors.contains(tutorName)) {
-                    setTimeslots.remove(t);
-                    removed = true;
-                }
-            }
-
-            // has not been removed in tutor filtering process.
-            if (!removed) {
-                Boolean foundCourseMatch = false;
-                for(String s1 : tCourses) {
-                    for (String s2 : fCourses) {
-                        if (s1.equals(s2)) {
-                            foundCourseMatch = true;
-                        }
-                    }
-                }
-
-                if (!foundCourseMatch) {
-                    setTimeslots.remove(t);
-                }
-            }
+        if(requestCode == FILTER_ACTIVITY && resultCode == Activity.RESULT_OK){
+            Log.d("INTENT OK", "yuuuuhh");
+            filteredCourses=data.getStringArrayExtra("Courses");
+            filteredTutor=data.getStringExtra("Tutor");
+            populateList(filteredTutor,filteredCourses);
         }
      }
 
@@ -125,22 +109,19 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        String[] desc = new String[setTimeslots.size()];
-        int counter = 0;
-        for (Timeslot t : setTimeslots) {
-            Date d = new Date(t.getDate());
-            desc[counter] = d.getFullDescription() + " with " + t.getTutorName();
-            counter ++;
-        }
+//        String[] desc = new String[setTimeslots.size()];
+//        int counter = 0;
+//        for (Timeslot t : setTimeslots) {
+//            Date d = new Date(t.getDate());
+//            desc[counter] = d.getFullDescription() + " with " + t.getTutorName();
+//            counter ++;
+//        }
 
 //        String[] timeslots = {"March 18, 2020 at 6:00PM", "March 18, 2020 at 6:30PM", "March 18, 2020 at 7:00PM", "March 18, 2020 at 7:30PM"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, desc);
-
-        lv = (ListView) view.findViewById(R.id.timeslots);
-
-        lv.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, desc));
-        lv.setOnItemClickListener(this);
+//        lv = (ListView) view.findViewById(R.id.timeslots);
+//        lv.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, desc));
+//        lv.setOnItemClickListener(this);
     }
 
     @Override

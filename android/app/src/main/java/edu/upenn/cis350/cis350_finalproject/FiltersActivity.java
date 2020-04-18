@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,8 @@ import database_schema.Timeslot;
 public class FiltersActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     String[] allCourses;
     boolean[] selected;
-    List<String> filteredCourses;
-    List<String> filteredTutors;
+    List<String> filteredCourses = null;
+    String filteredTutor = null;
     ListView lv;
     TextView tutors;
 
@@ -37,7 +38,6 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_filters);
         allCourses = ProfileFragment.allCourses();
         selected = new boolean[allCourses.length];
-        filteredTutors = new ArrayList<String>();
         filteredCourses = new ArrayList<String>();
 
         tutors = (TextView) findViewById(R.id.selected_tutors);
@@ -49,6 +49,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     }
 
     public void back(View v) {
+
         for (int i = 0; i < allCourses.length; i++) {
             if(selected[i]) {
                 filteredCourses.add(allCourses[i]);
@@ -57,7 +58,8 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("Courses", filteredCourses.toArray(new String[0]));
-        returnIntent.putExtra("Tutors", filteredTutors.toArray(new String[0]));
+        Log.d("COURSES INTENT:", filteredCourses.get(0));
+        returnIntent.putExtra("Tutor", "pchloe@seas.upenn.edu");
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
@@ -67,7 +69,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     }
 
     private void handleClearFilters() {
-        filteredTutors = new ArrayList<String>();
+        filteredTutor = null;
         tutors.setText("Tutors:");
         selected = new boolean[allCourses.length];
         for (int i = 0; i < allCourses.length; i++) {

@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -507,23 +508,54 @@ public class RemoteDataSource {
 
     public List<Timeslot> getFilteredTimeslots(String email, String[] courses) {
         List<Timeslot> timeslots;
+        if (courses !=  null) {
+            List<String> c = Arrays.asList(courses);
+        }
         if (email != null) {
             timeslots = getTutorTimeslots(email);
-        } else {
-            timeslots = new ArrayList<Timeslot>();
-        }
+            if (courses.length > 0 && timeslots.size() > 0) {
+                int size = timeslots.size();
+                int offset = 0;
+                for (int i = 0; i < size; i++) {
+                    Timeslot t = timeslots.get(i-offset);
+                    boolean inCourse = false;
 
-        for (String s : courses) {
-            List<Timeslot> temp = getCourseTimeslot(s);
-            if (temp != null) {
-                for (Timeslot t : temp) {
-                    if (!timeslots.contains(t)) {
-                        timeslots.add(t);
+                    for (String s1 : courses) {
+                        for (String s2 : t.getCourses()) {
+                            if (s1.equals(s2)) {
+                                inCourse = true;
+                            }
+                        }
+                    }
+
+                    if (!inCourse) {
+                        Log.d("removing: ", t.getTutor() + ",  " +t.getDate());
+                        offset ++;
+                        timeslots.remove(t);
                     }
                 }
             }
+        } else if (courses != null){
+            timeslots = new ArrayList<Timeslot>();
+            for (int i = 0; i < courses.length; i++) {
+                String course = courses[i];
+                List<Timeslot> temp = getCourseTimeslot(course);
+                if (temp != null) {
+                    for (int j = 0; j < temp.size(); j++) {
+                        Timeslot t = temp.get(j);
+                        if (!timeslots.contains(t)) {
+                            timeslots.add(t);
+                        }
+                    }
+                }
+            }
+        } else {
+            timeslots = getAllTimeslots();
         }
-
+        Log.d("# OF FILTER TS:", "" + timeslots.size());
+        for (Timeslot t : timeslots) {
+            Log.d("FILTERED TIMESLOT:", t.getTutor() + ",  " +t.getDate());
+        }
         return timeslots;
     }
 
