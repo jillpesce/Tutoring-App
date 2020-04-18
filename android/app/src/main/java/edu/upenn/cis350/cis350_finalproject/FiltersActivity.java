@@ -5,13 +5,16 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,12 +25,15 @@ import java.util.List;
 
 import database_schema.Date;
 import database_schema.Timeslot;
+import database_schema.User;
+import datamanagement.RemoteDataSource;
 
 public class FiltersActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
     String[] allCourses;
     boolean[] selected;
-    List<String> filteredCourses;
-    List<String> filteredTutors;
+    List<String> filteredCourses = null;
+    String filteredTutor = null;
+    String filteredTutorName = null;
     ListView lv;
     TextView tutors;
 
@@ -37,7 +43,6 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_filters);
         allCourses = ProfileFragment.allCourses();
         selected = new boolean[allCourses.length];
-        filteredTutors = new ArrayList<String>();
         filteredCourses = new ArrayList<String>();
 
         tutors = (TextView) findViewById(R.id.selected_tutors);
@@ -49,6 +54,7 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     }
 
     public void back(View v) {
+
         for (int i = 0; i < allCourses.length; i++) {
             if(selected[i]) {
                 filteredCourses.add(allCourses[i]);
@@ -57,7 +63,8 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
 
         Intent returnIntent = new Intent();
         returnIntent.putExtra("Courses", filteredCourses.toArray(new String[0]));
-        returnIntent.putExtra("Tutors", filteredTutors.toArray(new String[0]));
+        returnIntent.putExtra("TutorName", filteredTutorName);
+        returnIntent.putExtra("Tutor", filteredTutor);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
@@ -67,8 +74,8 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     }
 
     private void handleClearFilters() {
-        filteredTutors = new ArrayList<String>();
-        tutors.setText("Tutors:");
+        filteredTutor = null;
+        tutors.setText("Tutor:");
         selected = new boolean[allCourses.length];
         for (int i = 0; i < allCourses.length; i++) {
             lv.getChildAt(i).setBackgroundColor(0x00000000);
@@ -84,5 +91,29 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
             lv.getChildAt(position).setBackgroundColor(Color.GREEN);
             selected[position] = true;
         }
+    }
+
+    public void onSearch(View v) {
+        SearchView sv = (SearchView) findViewById(R.id.search_view);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                RemoteDataSource rd = new RemoteDataSource();
+                User user = rd.findUserName(s);
+                if (user != null) {
+                    filteredTutor = user.getEmail();
+                    filteredTutorName = user.getName();
+                    tutors.setText("Tutor: " + user.getName());
+                } else {
+                    Toast.makeText(FiltersActivity.this, "No User Found.", Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 }

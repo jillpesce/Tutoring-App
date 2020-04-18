@@ -13,8 +13,7 @@ public class User implements Serializable, Comparable<User> {
     private ArrayList<String> courses;
     private boolean isTutor;
 
-    public User(String email, String name, String school, String major, String gradYear, String bio)
-    {
+    public User(String email, String name, String school, String major, String gradYear, String bio) {
         this.email = email;
         this.name = name;
         this.school = school;
@@ -23,6 +22,7 @@ public class User implements Serializable, Comparable<User> {
         this.bio = bio;
         this.courses = new ArrayList<String>();
         this.isTutor = false;
+
     }
 
     public String getName() { return this.name; }

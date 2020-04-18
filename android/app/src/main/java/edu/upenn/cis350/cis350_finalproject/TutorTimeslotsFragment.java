@@ -85,9 +85,7 @@ public class TutorTimeslotsFragment extends Fragment {
 //        String[] timeslots = {"March 18, 2020 at 6:00PM", "March 18, 2020 at 6:30PM", "March 18, 2020 at 7:00PM", "March 18, 2020 at 7:30PM"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, desc);
-
         lv = (ListView) view.findViewById(R.id.timeslots);
-
         lv.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, desc));
 //        lv.setOnItemClickListener(this);
     }

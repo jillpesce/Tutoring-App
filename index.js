@@ -40,12 +40,6 @@ mongoose.connect(keys.mongodb.dbURI, () => {
     console.log('connected to mongodb');
 });
 
-// mongoose.connect(keys.mongodb.dbURI, {
-//     useUnifiedTopology: true,
-//     useNewUrlParser: true})
-//     .then(() => console.log("connected to mongodb"))
-//     .catch(err => console.error("An error has occured", err));
-
 //set up routes
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
@@ -63,6 +57,25 @@ app.get('/find', (req, res) => {
     console.log(email);
     if (email) {
         User.findOne( {email: email}, (err, user) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!user) {
+                console.log('did NOT find user');
+                res.json({});
+            } else {
+                console.log('found user');
+                res.send(user);
+            }
+        });
+	}
+});
+
+app.get('/findName', (req, res) => {
+    const name = req.query.name;
+    console.log("finding user with name: " +name);
+    if (name) {
+        User.findOne( {name: name}, (err, user) => {
             if (err) {
                 console.log(err);
                 res.json({});
@@ -353,6 +366,23 @@ app.get('/getTutorTimeslots', (req, res) => {
 	}
 });
 
+app.get('/deleteTimeslot', (req, res) => {
+    const tutorEmail = req.query.tutorEmail;
+    const time = req.query.date;
+    console.log("deleting timeslot with " + tutorEmail +", " +time);
+    if (tutorEmail && time) {
+        Timeslot.deleteMany( {tutorEmail: tutorEmail, date: time}, function(err, result) {
+            if (err) {
+                console.log("error:" + err)
+                res.send(err);
+            } else {
+                console.log("success:" + result)
+                res.send(result);
+            }
+        });
+	}
+});
+
 app.get('/findTuteeAppointments', (req, res) => {
     const tuteeEmail = req.query.tuteeEmail;
     console.log("trying to find confirmed tutee appointments with " + tuteeEmail);
@@ -386,6 +416,87 @@ app.get('/findTutorAppointments', (req, res) => {
                 res.json({});
             } else {
                 console.log('appointments exists');
+                console.log(appts);
+                res.send(appts);
+            }
+        });
+	}
+});
+
+app.get('/getRatings', (req, res) => {
+    console.log('hit getRatings endpoint');
+    User.findOne( {email: req.query.email}, (err, user) => {
+        if (err) {
+            console.log('hit ERROR in getRatings');
+            console.log(err);
+            res.json({});
+        } else if (!user) {
+            console.log('did NOT find user');
+            res.json({});
+        } else {
+            console.log('found user');
+            console.log('users ratings', user.ratings);
+            console.log('users name', user.name);
+            console.log('users bio', user.bio);
+            res.json({'ratings' : user.ratings})
+        }
+    });
+});
+
+app.get('/saveRating', (req, res) => {
+    console.log('hit saveRating endpoint');
+    console.log('users email', req.query.email);
+    const rating = req.query.rating;
+    console.log('rating' + rating);
+    //const oldRatings = [];
+    User.findOne( {email: req.query.email}, (err, user) => {
+        if (err) {
+            console.log(err);
+        } else if (!user) {
+            console.log('did NOT find user');
+        } else {
+            console.log("USER: ", user);
+            console.log('found user');
+            console.log('users ratings', user.ratings);
+            console.log('users name', user.name);
+            console.log('users bio', user.bio);
+            ratings = user.ratings;
+            //oldRatings.push(user.ratings);
+
+            console.log("old Ratings: ", ratings);
+            ratings.push(parseInt(rating));
+            console.log("newRatings: ", ratings);
+            var newValues = { $set: {
+                ratings: ratings
+            }};
+            User.updateOne({email: req.query.email}, newValues).then((err) => {
+                if (err) {
+                    console.log('ratings update fail');
+                    console.log(err);
+                    res.json({'result' : 'fail'});
+                } else {
+                    console.log('ratings updated for ' + email);
+                    res.json({'result' : 'success'});
+                }
+            });
+        }
+    });
+});
+    
+app.get('/findFilteredTimeslots', (req, res) => {
+    const course = req.query.course;
+
+    console.log("trying to find filtered timeslots with course: " +course);
+    if (course) {
+        Timeslot.find( {courses: course}, (err, appts) => {
+            if (err) {
+                console.log(err);
+                res.json({});
+            } else if (!appts) {
+                console.log('no filtered timeslots');
+                res.json({});
+            } else {
+                console.log('filtered timeslots exists');
                 console.log(appts);
                 res.send(appts);
             }
