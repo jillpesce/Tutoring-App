@@ -36,7 +36,7 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     String tuteeUser;
     String filteredTutorName;
     User user = null;
-    int FILTER_ACTIVITY = 1;
+    int FILTER_ACTIVITY = 5;
     ArrayAdapter<String> adapter;
     RemoteDataSource ds = new RemoteDataSource();
     TextView filters;

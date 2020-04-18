@@ -93,8 +93,8 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
         }
     }
 
-    public void onSearch(View v) {
-        SearchView sv = (SearchView) findViewById(R.id.search_view);
+    public void onSearch2(View v) {
+        SearchView sv = (SearchView) findViewById(R.id.search_view_2);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

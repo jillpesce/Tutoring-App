@@ -50,7 +50,7 @@ public class TutorTimeslotsFragment extends Fragment {
                 i.putExtra("EMAIL", user.getEmail());
                 i.putExtra("NAME", user.getName());
                 i.putExtra("COURSES", new String[0]); // need to change this
-                getActivity().startActivity(i);
+                getActivity().startActivityForResult(i, 3);
             }
         });
 
