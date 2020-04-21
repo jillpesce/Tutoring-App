@@ -36,6 +36,8 @@
         	android:usesCleartextTraffic="true"/>
         <activity android:name=".OtherUserProfileActivity"
             android:usesCleartextTraffic="true"/>
+        <activity android:name=".ReviewUserActivity"
+            android:usesCleartextTraffic="true"/>
     </application>
 
 </manifest>

@@ -10,13 +10,16 @@ import org.json.simple.parser.ParseException;
 import org.json.simple.*;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.net.*;
 import java.util.concurrent.ExecutionException;
@@ -196,10 +199,12 @@ public class RemoteDataSource {
         String major = (String) data.get("major");
         String gradYear = (String) data.get("gradYear");
         String bio = (String) data.get("bio");
+        String picture = (String) data.get("picture");
         if (email == null || email.isEmpty()) {
             return null;
         }
         User user = new User(email, name, school, major, gradYear, bio);
+        user.setPicture(picture);
         return user;
     }
 
@@ -739,10 +744,11 @@ public class RemoteDataSource {
      * @param u -- User we want to save to the database
      * @return true if the save is successful and false otherwise.
      */
-    public boolean saveRating(User u, int rating) {
+    public boolean saveRating(User u, int rating, String review) {
         Log.d("saveRating", "saving rating! in app");
         String email = u.getEmail();
-        String urlString = "http://" + this.host + ":" + this.port + "/saveRating?email=" + email + "&rating=" + rating;
+        String urlString = "http://" + this.host + ":" + this.port + "/saveRating?email=" + email
+                + "&rating=" + rating + "&review=" + review;
         HttpSaveRequest saveRequest = new HttpSaveRequest();
         try {
             String result = saveRequest.execute(urlString).get();
@@ -760,7 +766,7 @@ public class RemoteDataSource {
     /**
      * @return allUsersFromTheDatabase
      */
-    public ArrayList<Integer> getUserRatings(User u) {
+    public List<List<String>> getUserRatings(User u) {
         try {
             String email = u.getEmail();
             String urlString = "http://" + this.host + ":" + port + "/getRatings?email=" + email;
@@ -769,16 +775,31 @@ public class RemoteDataSource {
             if (result != null) {
 
                 JSONParser parser = new JSONParser();
-                JSONObject ratingsJSON = (JSONObject) parser.parse(result);
-                JSONArray ratingsArray = (JSONArray)ratingsJSON.get("ratings");
-                ArrayList<Integer> r = new ArrayList<Integer>();
+                JSONObject data = (JSONObject) parser.parse(result);
+                JSONArray ratingsArray = (JSONArray)data.get("ratings");
+                JSONArray reviewsArray = (JSONArray) data.get("reviews");
+                ArrayList<String> ratings = new ArrayList<String>();
+                ArrayList<String> reviews = new ArrayList<String>();
                 Iterator<Integer> it = ratingsArray.iterator();
 
                 while (it.hasNext()) {
+                    //Long l = it.next();
+                    //String rating = "" + it.next();
                     int i = Integer.parseInt("" + it.next());
-                    r.add(i);
+                    ratings.add("" + i);
                 }
-                return r;
+
+                Iterator<String> it2 = reviewsArray.iterator();
+                while (it2.hasNext()) {
+                    String review = it2.next();
+                    reviews.add(review);
+                }
+                List<List<String>> returnVal = new ArrayList<List<String>>();
+                returnVal.add(ratings);
+                returnVal.add(reviews);
+                return returnVal;
+                //return createRatingReviewMap(reviews, ratings);
+                //return ratings;
             }
         } catch (InterruptedException e) {
 
@@ -787,6 +808,15 @@ public class RemoteDataSource {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return new ArrayList<Integer>();
+        return new  ArrayList<List<String>>();
+    }
+
+    private Map<String, Integer> createRatingReviewMap(List<String> reviews, List<Integer> ratings) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        int len = Math.min(reviews.size(), ratings.size());
+        for (int i = 0; i < len; i++) {
+            map.put(reviews.get(i), ratings.get(i));
+        }
+        return map;
     }
 }

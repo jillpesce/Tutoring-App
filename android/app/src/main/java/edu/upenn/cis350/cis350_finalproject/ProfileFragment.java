@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -39,6 +42,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         TextView email = RootView.findViewById(R.id.profile_email);
         TextView courses = RootView.findViewById(R.id.profile_courses);
         TextView toggle = RootView.findViewById(R.id.toggle_button);
+        ImageView profilePic = RootView.findViewById(R.id.profile_pic);
 
         Spinner spin = (Spinner) RootView.findViewById(R.id.spinner);
         spin.setOnItemSelectedListener(this);
@@ -75,6 +79,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         email.setText("Email: " + user.getEmail());
         courses.setText("Courses: " + parseCourses(user.getCourses()));
         toggle.setText("Toggle to " + (user.getIsTutor() ? "Tutee" : "Tutor"));
+        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+            String imageUrl = user.getPicture();
+            Picasso.get().load(imageUrl).into(profilePic);
+        } else {
+            profilePic.setImageResource(R.drawable.ic_person_black_24dp);
+        }
         return RootView;
     }
 
