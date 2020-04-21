@@ -323,7 +323,7 @@ app.get('/acceptAppointment', (req, res) => {
 
     Appointment.updateOne({tutorEmail: tutorEmail, tuteeEmail: tuteeEmail, date: date}, newValues).then(() => {
         console.log('Confirmed Appointment For - ' + tutorEmail + " with " + tuteeEmail + " on " + date);
-        
+        res.redirect('/findTutorAppointments/');
     });
 });
 
@@ -387,7 +387,7 @@ app.get('/findTuteeAppointments', (req, res) => {
     const tuteeEmail = req.query.tuteeEmail;
     console.log("trying to find confirmed tutee appointments with " + tuteeEmail);
     if (tuteeEmail) {
-        Appointment.find( {tuteeEmail: tuteeEmail, confirmed: true}, (err, appts) => {
+        Appointment.find( {tuteeEmail: tuteeEmail}, (err, appts) => {
             if (err) {
                 console.log(err);
                 res.json({});

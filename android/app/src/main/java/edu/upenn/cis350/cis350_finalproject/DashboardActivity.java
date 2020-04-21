@@ -73,7 +73,24 @@ public class DashboardActivity extends AppCompatActivity {
             fragmentTransaction.attach(currentFragment);
             fragmentTransaction.commit();
             Log.d("REFRESH", "Should have been refreshed");
+        } else if ((requestCode == 5) && (resultCode == Activity.RESULT_OK)) {
+            // after filter
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("timeslot_tutee_frag");
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(currentFragment);
+            fragmentTransaction.attach(currentFragment);
+            fragmentTransaction.commit();
+            Log.d("REFRESH", "Should have been refreshed");
+        } else if ((requestCode == 3) && (resultCode == Activity.RESULT_OK)) {
+            // after add new timeslot
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag("timeslot_tutor_frag");
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.detach(currentFragment);
+            fragmentTransaction.attach(currentFragment);
+            fragmentTransaction.commit();
+            Log.d("REFRESH", "Should have been refreshed");
         }
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -105,11 +122,11 @@ public class DashboardActivity extends AppCompatActivity {
                     if (user.getIsTutor()) {
                         selectedFragment = new TutorTimeslotsFragment();
                         ((TutorTimeslotsFragment) selectedFragment).setUser(user);
-                        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+                        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment, "timeslot_tutor_frag").commit();
                     } else {
                         selectedFragment = new TimeslotsFragment();
                         ((TimeslotsFragment) selectedFragment).setUser(user);
-                        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
+                        fm.beginTransaction().replace(R.id.frame_layout, selectedFragment, "timeslot_tutee_frag").commit();
                     }
                     break;
                 case R.id.nav_search:
@@ -139,5 +156,4 @@ public class DashboardActivity extends AppCompatActivity {
     public User getUser() {
         return this.user;
     }
-
 }

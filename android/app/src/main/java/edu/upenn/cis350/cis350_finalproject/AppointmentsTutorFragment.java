@@ -64,7 +64,11 @@ public class AppointmentsTutorFragment extends Fragment implements OnItemClickLi
         int counter = 0;
         for (Appointment a : tutorAppts) {
             Date d = new Date(a.getDate());
-            desc[counter] = d.getFullDescription() + " with " + a.getTutor();
+            if(a.getConfirmed()) {
+                desc[counter] = d.getFullDescription() + " with " + a.getTutee() + " ---- CONFIRMED";
+            } else {
+                desc[counter] = d.getFullDescription() + " with " + a.getTutee() + " ---- UNCONFIRMED" ;
+            }
             counter ++;
         }
 
