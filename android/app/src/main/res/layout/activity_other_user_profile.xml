@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onBackButtonClicked"
@@ -15,8 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:padding="5dp"
-        android:background="@color/colorPrimaryDark"/>
+        android:padding="2dp"
+        android:background="@color/colorPrimary"/>
     <TextView
         android:id="@+id/profile_name"
         android:layout_width="wrap_content"
@@ -41,53 +43,38 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profile_bio"
         android:orientation="vertical"
-        android:paddingTop="20dp">
+        android:paddingTop="10dp">
         <TextView
             android:id="@+id/profile_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email: "
-            android:padding="10dp" />
+            android:paddingLeft="10dp" />
         <TextView
             android:id="@+id/profile_school"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="School: "
-            android:padding="10dp"/>
+            android:paddingLeft="10dp"/>
         <TextView
             android:id="@+id/profile_major"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Major: "
-            android:padding="10dp"/>
+            android:paddingLeft="10dp"/>
         <TextView
             android:id="@+id/profile_gradYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Graduation Year: "
-            android:padding="10dp"/>
+            android:paddingLeft="10dp"/>
         <TextView
             android:id="@+id/profile_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rating: 0"
-            android:padding="10dp"/>
-
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:numStars="5"
-            android:stepSize="1"/>
-
-        <Button
-            android:id="@+id/rateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rate"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:onClick="onRateButtonClicked"/>
+            android:text="Average Rating: "
+            android:paddingLeft="10dp"
+            />
 
     </LinearLayout>
 
@@ -133,12 +120,6 @@
         android:layout_below="@+id/linear_available"
         android:paddingLeft="10dp"
         android:layout_centerHorizontal="true"/>
-    <TextView
-        android:id="@+id/timeslot_courses"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/timeslot_date"
-        android:padding="10dp"/>
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -150,11 +131,32 @@
         android:id="@+id/select_appt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/timeslot_courses"
+        android:layout_below="@+id/timeslot_date"
         android:text="Select"
         android:onClick="onSelectButtonClicked"
         android:layout_centerHorizontal="true"/>
-
-
-
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/reviewsLinear"
+        android:layout_below="@id/select_appt">
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reviews:"
+            android:padding="5dp" />
+        <Button
+            android:id="@+id/reviewButton"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Add Review"
+            android:onClick="onReviewButtonClicked" />
+    </LinearLayout>
+    <ListView
+        android:id="@+id/reviews_list"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/reviewsLinear"/>
 </RelativeLayout>
