@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <title>Awards & Achievements</title>
+    </head>
+    <body>
+        <%- include("partials/nav-bar.ejs") %>
+        <header class="p-5">
+            <h1>Awards & Achievements</h1>
+        </header>
+        <main class="pl-5 pb-5 pr-5">
+            <p>The TutoringApp Team would like to thank you for using our app.  We hope you have enjoyed your experience with it and continue your use.  
+                To express our gratitude, we given you a few awards!  Check them out below :)</p>
+                <br> 
+                <br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card text-center" style="height: 100%">
+                            <div class="card-header">Quality</div>
+                            <% if (quality == "bronze") {%>
+                                <br>
+                                <img src="http://localhost:3000/img/bronze.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">You're a bronze medal user! This means you have an average rating 
+                                        below 3.  Keep your ratings up to get to silver medal status!</p>
+                                </div>
+                            <% } else if (quality == "silver") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/silver.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">Congrats, you're a silver medal user! This means you have an average 
+                                        rating between 3 and 4.  Keep your ratings up to get to gold medal status!</p>
+                                </div>
+                            <% } else if (quality == "gold") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/gold.png" class="card-img-top pl-2 pb-2 pr-2p" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">Woohoo, you're a gold medal user! This means you have an average rating 
+                                        between 4 and 5.  Keep up the good work, hot stuff!!!</p>
+                                </div>
+                            <% } else if (quality == "platinum") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/platinum.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">HOLY COW YOU ARE A PLATINUM LEVEL USER.  This means you have a PERFECT 
+                                        rating of 5.0!!! You're a star and no one can tell you otherwise.</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card text-center" style="height: 100%">
+                            <div class="card-header">Experience</div>
+                            <% if (experience == "none") {%>
+                                <br>
+                                <img src="http://localhost:3000/img/sadface.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <p class="card-text">Don't worry, love.  You haven't unlocked this accomplishment simply because 
+                                        you haven't scheduled and had any tutoring appointments yet! Go to our app, book youself 
+                                        some appointments, and you'll get that experience medal in no time :)</p>
+                                </div>
+                            <% } else if (experience == "10") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/10sessions.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">Wowza! You've participated in 10 or more tutoring sessions.  Keep it up!</p>
+                                </div>
+                            <% } else if (experience == "25") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/25sessions.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">:ooooooooooomg you've participated in 25 or more tutoring sessions.  That's hype yo.</p>
+                                </div>
+                            <% } else if (experience == "50") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/50sessions.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">HOLY MOLY!!! 50 TUTORING SESSIONS! Ur insaneeeeeeee.</p>
+                                </div>
+                            <% } else if (experience == "100") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/100sessions.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">I don't even know how you were able to do this. 100 SESSIONS!!! I wanna be you.</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card text-center" style="height: 100%">
+                            <div class="card-header">Excellence</div>
+                            <% if (excellence == "none") {%>
+                                <br>
+                                <img src="http://localhost:3000/img/sadface.png" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">I believe in you! Even though you havent unlocked this achievement yet, 
+                                        you're well on your way.  Keep using the app!</p>
+                                </div>
+                            <% } else if (excellence == "good") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/good.jpg" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">Bro, you're good.  Like so good.  Like don't even worry about it, man. </p>
+                                </div>
+                            <% } else if (excellence == "great") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/great.jpeg" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">Tony the Tiger once said "They'reeeee great!" and I think he was talking 
+                                        about you.  Seriously.  You're great, and more than 15 people agree with me!</p>
+                                </div>
+                            <% } else if (excellence == "fantastic") { %>
+                                <br>
+                                <img src="http://localhost:3000/img/fantastic.jpg" class="card-img-top pl-2 pb-2 pr-2" alt="...">
+                                <div class="card-body">
+                                    <br>
+                                    <p class="card-text">The sticker says it all.  You're a little weird, kinda funny looking, 
+                                        but most definitely fantastic.  Give yourself a pat on the back.</p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+        </main>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script>
+          window.intercomSettings = {
+            app_id: "r0n07msw"
+          };
+        </script>
+
+        <script>
+        // We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/r0n07msw'
+        (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/r0n07msw';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+        </script>
+    </body>
+</html>

@@ -4,6 +4,7 @@ var app = express();
 var authRoutes =  require('./routes/auth-routes');
 var profileRoutes =  require('./routes/profile-routes');
 var scoresRoutes =  require('./routes/scores-routes');
+var awardsRoutes =  require('./routes/awards-routes');
 var homeRoutes =  require('./routes/home-routes');
 
 var User = require('./models/User');
@@ -44,6 +45,7 @@ mongoose.connect(keys.mongodb.dbURI, () => {
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 app.use('/scores', scoresRoutes);
+app.use('/awards', awardsRoutes);
 app.use('/', homeRoutes);
 
 
