@@ -53,4 +53,16 @@ router.get('/', authCheck, (req, res) => {
         }
 });
 
+router.get('/getUser', (req, res) => {
+    const email = req.query.email;
+    User.findOne( { email: email }, function(err, user) {
+        if (err) {
+            console.log(err);
+            return res.sendStatus(500);
+        }
+        console.log(user);
+        res.render('other-profile', { user: user });    
+    });
+});
+
 module.exports = router;

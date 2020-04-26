@@ -40,12 +40,6 @@ mongoose.connect(keys.mongodb.dbURI, () => {
     console.log('connected to mongodb');
 });
 
-// mongoose.connect(keys.mongodb.dbURI, {
-//     useUnifiedTopology: true,
-//     useNewUrlParser: true})
-//     .then(() => console.log("connected to mongodb"))
-//     .catch(err => console.error("An error has occured", err));
-
 //set up routes
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
@@ -102,17 +96,6 @@ app.get('/save', (req, res) => {
 });
 
 app.get('/addCourse', (req, res) => {
-    // console.log('added course');
-    // const email = req.query.email;
-    // const updatedCourses = req.query.updatedCourses;
-    // console.log(updatedCourses);
-    // console.log(email);
-
-    // User.updateOne({email: req.query.email}, updatedCourses).then(() => {
-    //     console.log('Updated - ' + email  + ' with the courses ' + updatedCourses);
-    //     res.redirect('/profile/');
-    // });
-
     console.log('adding course');
     var newValues = { $set: {
         courses: req.query.updatedCourses
