@@ -10,6 +10,7 @@ public class User implements Serializable, Comparable<User> {
     private String major;
     private String gradYear;
     private String bio;
+    private String picture;
     private ArrayList<String> courses;
     private boolean isTutor;
 
@@ -46,6 +47,18 @@ public class User implements Serializable, Comparable<User> {
     }
 
     public void addCourse(String c) { courses.add(c); }
+
+    public void setPicture(String pic) {
+        this.picture = pic;
+    }
+
+    public String getPicture() {
+        if (this.picture == null) {
+            return "";
+        } else {
+            return this.picture;
+        }
+    }
 
     public boolean hasCourse(String c) {
         for (int i = 0; i < courses.size(); i++) {

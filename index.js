@@ -5,6 +5,7 @@ var authRoutes =  require('./routes/auth-routes');
 var profileRoutes =  require('./routes/profile-routes');
 var scoresRoutes =  require('./routes/scores-routes');
 var favoritesRoutes =  require('./routes/favorites-routes');
+var awardsRoutes =  require('./routes/awards-routes');
 var homeRoutes =  require('./routes/home-routes');
 
 var User = require('./models/User');
@@ -46,6 +47,7 @@ app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 app.use('/scores', scoresRoutes);
 app.use('/favorites', favoritesRoutes);
+app.use('/awards', awardsRoutes);
 app.use('/', homeRoutes);
 
 
@@ -117,17 +119,6 @@ app.get('/save', (req, res) => {
 });
 
 app.get('/addCourse', (req, res) => {
-    // console.log('added course');
-    // const email = req.query.email;
-    // const updatedCourses = req.query.updatedCourses;
-    // console.log(updatedCourses);
-    // console.log(email);
-
-    // User.updateOne({email: req.query.email}, updatedCourses).then(() => {
-    //     console.log('Updated - ' + email  + ' with the courses ' + updatedCourses);
-    //     res.redirect('/profile/');
-    // });
-
     console.log('adding course');
     var newValues = { $set: {
         courses: req.query.updatedCourses
@@ -439,9 +430,8 @@ app.get('/getRatings', (req, res) => {
         } else {
             console.log('found user');
             console.log('users ratings', user.ratings);
-            console.log('users name', user.name);
-            console.log('users bio', user.bio);
-            res.json({'ratings' : user.ratings})
+            console.log('user reviews', user.reviews);
+            res.json({'ratings' : user.ratings, 'reviews' : user.reviews});
         }
     });
 });
@@ -450,7 +440,9 @@ app.get('/saveRating', (req, res) => {
     console.log('hit saveRating endpoint');
     console.log('users email', req.query.email);
     const rating = req.query.rating;
+    const review = req.query.review;
     console.log('rating' + rating);
+    console.log('review' + review);
     //const oldRatings = [];
     User.findOne( {email: req.query.email}, (err, user) => {
         if (err) {
@@ -458,19 +450,19 @@ app.get('/saveRating', (req, res) => {
         } else if (!user) {
             console.log('did NOT find user');
         } else {
-            console.log("USER: ", user);
-            console.log('found user');
-            console.log('users ratings', user.ratings);
-            console.log('users name', user.name);
-            console.log('users bio', user.bio);
             ratings = user.ratings;
+            reviews = user.reviews;
             //oldRatings.push(user.ratings);
 
             console.log("old Ratings: ", ratings);
+            console.log('old reviews: '. reviews);
             ratings.push(parseInt(rating));
+            reviews.push(review);
             console.log("newRatings: ", ratings);
+            console.log("newReviews: ", reviews);
             var newValues = { $set: {
-                ratings: ratings
+                ratings: ratings,
+                reviews: reviews
             }};
             User.updateOne({email: req.query.email}, newValues).then((err) => {
                 if (err) {

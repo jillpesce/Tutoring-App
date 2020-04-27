@@ -1,6 +1,8 @@
 package edu.upenn.cis350.cis350_finalproject;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +10,20 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -25,6 +34,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
     User user = null;
     String selection = null;
     View RootView = null;
+    Boolean darkmode = false;
 
     @Nullable
     @Override
@@ -39,6 +49,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         TextView email = RootView.findViewById(R.id.profile_email);
         TextView courses = RootView.findViewById(R.id.profile_courses);
         TextView toggle = RootView.findViewById(R.id.toggle_button);
+        ImageView profilePic = RootView.findViewById(R.id.profile_pic);
+        TextView darkmodeButton = RootView.findViewById(R.id.darkmodetoggle);
 
         Spinner spin = (Spinner) RootView.findViewById(R.id.spinner);
         spin.setOnItemSelectedListener(this);
@@ -75,7 +87,23 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         email.setText("Email: " + user.getEmail());
         courses.setText("Courses: " + parseCourses(user.getCourses()));
         toggle.setText("Toggle to " + (user.getIsTutor() ? "Tutee" : "Tutor"));
+        darkmodeButton.setText("ENABLE " + ((darkmode) ? "LIGHTMODE" : "DARKMODE"));
+        if (user.getPicture() != null && !user.getPicture().isEmpty()) {
+            String imageUrl = user.getPicture();
+            Picasso.get().load(imageUrl).into(profilePic);
+        } else {
+            profilePic.setImageResource(R.drawable.ic_person_black_24dp);
+        }
         return RootView;
+    }
+
+
+    private void refreshFragment() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        if (Build.VERSION.SDK_INT >= 26) {
+            ft.setReorderingAllowed(false);
+        }
+        ft.detach(this).attach(this).commit();
     }
 
     public String parseCourses(ArrayList<String> courses){
@@ -132,6 +160,10 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemSelec
         this.user = user;
         Log.d("PROFILE", "frag:" + user.getName());
         //setUserFields();
+    }
+
+    public void setDarkmode(Boolean state) {
+        darkmode = state;
     }
 
     @Override

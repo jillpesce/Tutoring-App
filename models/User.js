@@ -13,7 +13,8 @@ var userSchema = new Schema({
     isTutor: Boolean, 
     isNewUser: Boolean,
     courses: Array,
-    ratings: Array
+    ratings: Array,
+    reviews: Array
 });
 
 // export userSchema as a class called User

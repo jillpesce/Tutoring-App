@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,9 @@ import database_schema.Date;
 import database_schema.User;
 import datamanagement.RemoteDataSource;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class AppointmentActivity extends AppCompatActivity {
     String tutorEmail;
     String tutorName;
@@ -26,6 +30,8 @@ public class AppointmentActivity extends AppCompatActivity {
     User currUser;
     Boolean confirmed;
     Appointment a;
+    Date d;
+    Boolean isTutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +45,9 @@ public class AppointmentActivity extends AppCompatActivity {
         confirmed = getIntent().getBooleanExtra("CONFIRMED", false);
         String currUserEmail = getIntent().getStringExtra("CURR_EMAIL");
         currUser = (new RemoteDataSource().findUser(currUserEmail));
+        isTutor = getIntent().getBooleanExtra("ISTUTOR", false);
         a = (Appointment) getIntent().getSerializableExtra("APPOINTMENT");
-        Date d = new Date(dateAndTime);
+        d = new Date(dateAndTime);
 
         TextView torName = (TextView) findViewById(R.id.tutorName);
         torName.setText("Tutor: " +tutorName);
@@ -63,9 +70,11 @@ public class AppointmentActivity extends AppCompatActivity {
         Button button =(Button)findViewById(R.id.acceptAppt);
         if (confirmed || currUserEmail.equals(tuteeEmail)){
             button.setVisibility(View.GONE);
-        }else {
+        } else {
             button.setVisibility(View.VISIBLE);
         }
+
+
     }
 
     public void back(View v) {
@@ -109,4 +118,27 @@ public class AppointmentActivity extends AppCompatActivity {
         setResult(RESULT_OK, i);
         finish();
     }
+
+    public void addtoCalendar(View v) {
+        handleAddEvent();
+    }
+
+    private void handleAddEvent() {
+        GregorianCalendar calDate = new GregorianCalendar(d.getYearInt(), d.getMonthInt(), d.getDayInt(), d.getHourInt(), 0);
+
+        Calendar calendarEvent = Calendar.getInstance();
+        Intent i = new Intent(Intent.ACTION_EDIT);
+        i.setType("vnd.android.cursor.item/event");
+        if (isTutor) {
+            i.putExtra(CalendarContract.Events.TITLE, "Tutoring appointment with " +tuteeName);
+        } else {
+            i.putExtra(CalendarContract.Events.TITLE, "Tutoring appointment with " +tutorName);
+        }
+        i.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                calDate.getTimeInMillis());
+        i.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                calDate.getTimeInMillis() + 60 * 60 * 1000);
+        startActivity(i);
+    }
+
 }

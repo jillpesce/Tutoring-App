@@ -97,6 +97,14 @@
             android:layout_gravity="center"
             android:onClick="acceptAppt"/>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addtocalendar"
+            android:text="ADD TO CALENDAR"
+            android:layout_gravity="center"
+            android:onClick="addtoCalendar"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
