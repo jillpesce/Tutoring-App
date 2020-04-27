@@ -7,7 +7,8 @@ var appointmentScheme = new Schema({
     tuteeEmail: String,
     tuteeName: String, 
     date: String,
-    confirmed: Boolean
+    confirmed: Boolean,
+    course: String
 });
 
 // export userSchema as a class called User

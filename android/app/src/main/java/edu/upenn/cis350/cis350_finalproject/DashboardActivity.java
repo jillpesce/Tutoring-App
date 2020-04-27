@@ -156,5 +156,5 @@ public class DashboardActivity extends AppCompatActivity {
     public User getUser() {
         return this.user;
     }
-    
+
 }

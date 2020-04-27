@@ -4,6 +4,7 @@ var app = express();
 var authRoutes =  require('./routes/auth-routes');
 var profileRoutes =  require('./routes/profile-routes');
 var scoresRoutes =  require('./routes/scores-routes');
+var favoritesRoutes =  require('./routes/favorites-routes');
 var homeRoutes =  require('./routes/home-routes');
 
 var User = require('./models/User');
@@ -44,6 +45,7 @@ mongoose.connect(keys.mongodb.dbURI, () => {
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
 app.use('/scores', scoresRoutes);
+app.use('/favorites', favoritesRoutes);
 app.use('/', homeRoutes);
 
 
@@ -279,7 +281,8 @@ app.get('/bookAppointment', (req, res) => {
         tuteeEmail: req.query.tuteeemail,
         tuteeName: req.query.tuteename, 
         date: req.query.date,
-        confirmed: false
+        confirmed: false,
+        course: ""
     });
 
     newAppointment.save((err) => {

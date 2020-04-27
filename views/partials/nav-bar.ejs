@@ -25,6 +25,11 @@
                     <a class="nav-link" href="/scores">Scores</a><span class="sr-only">(current)</span>
                 </li>
             <% } %>
+            <% if (user && !user.isTutor) { %>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/favorites">Favorites</a><span class="sr-only">(current)</span>
+                </li>
+            <% } %>
             <li class="nav-item active">
                 <a class="nav-link" href="/aboutUs">About Us</a><span class="sr-only">(current)</span>
             </li>
