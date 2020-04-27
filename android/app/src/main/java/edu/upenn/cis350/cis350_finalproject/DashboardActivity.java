@@ -2,6 +2,7 @@ package edu.upenn.cis350.cis350_finalproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,10 +29,22 @@ import datamanagement.RemoteDataSource;
 
 public class DashboardActivity extends AppCompatActivity {
     private User user = null;
+    private Boolean darkmode = false;
+    private static final String PREFS_NAME = "prefs";
+    private static final String PREF_DARK_THEME = "dark_theme";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        darkmode = preferences.getBoolean(PREF_DARK_THEME, false);
+        if(darkmode) {
+            setTheme(R.style.AppTheme_Dark_NoActionBar);
+        } else {
+            setTheme(R.style.AppTheme_NoActionBar);
+        }
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_dashboard);
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -119,6 +132,7 @@ public class DashboardActivity extends AppCompatActivity {
                 case R.id.nav_profile:
                     selectedFragment = new ProfileFragment();
                     ((ProfileFragment) selectedFragment).setUser(user);
+                    ((ProfileFragment) selectedFragment).setDarkmode(darkmode);
                     fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     break;
                 case R.id.nav_schedule:
@@ -159,4 +173,17 @@ public class DashboardActivity extends AppCompatActivity {
     public User getUser() {
         return this.user;
     }
+
+    public void onDarkmodeToggle(View v) {
+        String text = "ENABLE " + (darkmode ? "LIGHTMODE" : "DARKMODE");
+        ((TextView) v).setText(text);
+        darkmode = !darkmode;
+        SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putBoolean(PREF_DARK_THEME, darkmode);
+        editor.apply();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
 }
