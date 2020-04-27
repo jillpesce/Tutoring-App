@@ -44,7 +44,7 @@
                         let dateString = upcomingAppts[i].date;
                         let date = new Date(dateString.substring(0, 4), dateString.substring(4, 6), 
                         dateString.substring(6, 8), dateString.substring(8, 10));%>
-                        <a href="#" class="list-group-item list-group-item-action">
+                        <a href='/getUser?email=<%=upcomingAppts[i].tuteeEmail%>&past=0' class="list-group-item list-group-item-action">
                         <b>Tutee:</b> <%=upcomingAppts[i].tuteeName%> &emsp; <b>Date:</b> <%=date.toUTCString()%>
                         </a>
                   <% } 
@@ -59,7 +59,7 @@
                       let dateString = pastAppts[i].date;
                       let date = new Date(dateString.substring(0, 4), dateString.substring(4, 6), 
                       dateString.substring(6, 8), dateString.substring(8, 10));%>
-                      <a href="#" class="list-group-item list-group-item-action">
+                      <a href='/getUser?email=<%=pastAppts[i].tuteeEmail%>&past=1' class="list-group-item list-group-item-action">
                        <b>Tutee:</b> <%=pastAppts[i].tuteeName%> &emsp; <b>Date:</b> <%=date.toUTCString()%>
                       </a>
                   <% } 

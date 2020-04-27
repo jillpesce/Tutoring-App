@@ -4,10 +4,13 @@
         <meta charset="utf-8">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/addons/rating.min.css">
+        <script src="https://kit.fontawesome.com/f2be69bc6a.js" crossorigin="anonymous"></script>
         <title>Profile</title>
     </head>
     <body>
         <%- include("partials/nav-bar.ejs") %>
+        <%var rating = 0;%>
         <div class="container">
             <div class="row align-items-center my-5">
                 <div class="col-lg-7">
@@ -20,25 +23,29 @@
                         <li>School: <%= user.school %> </li>
                         <li>Major: <%= user.major %> </li>
                         <li>Graduation Year: <%= user.gradYear %> </li>
-                        <li>Rating: <span id="rating">
-                            <%if (user.ratings.length > 0) {%>
-                                <%= (user.ratings.reduce((total, currVal) => {return total + currVal;}, 0)/user.ratings.length).toFixed(2) %>
-                            <%} else { %>
-                                N/A
-                            <%}%>
-                        </span></li>
+                        <li>Rating: <span id="rating"></span></li>
                     </ul>
-                    <a type="button" class="btn btn-primary" href='editProfile'>Edit profile</a>
+                    <% if (past == "1") {  %>
+                        <div class="container">
+                            <span id="rate" class="empty-stars mdb-rating"></span>
+                        </div>
+
+                     <% } %>   
+                    <script>
+                        function changeRating(i) {
+                        rating = i;
+                    }</script>
                 </div>
             </div>
         </div>
         
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script>
+        <script src="js/addons/rating.min.js"></script>
+       <script>
           window.intercomSettings = {
             app_id: "r0n07msw"
           };
@@ -47,6 +54,33 @@
         <script>
         // We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/r0n07msw'
         (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/r0n07msw';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+        </script>
+        <script>
+            // Rating Initialization
+            var currRating;
+            $(document).ready(function() {
+                console.log("<%= user.ratings %>");
+                var originalRatings = JSON.parse("[<%= user.ratings %>]");
+                updateRating(originalRatings);
+                $('#rate').mdbRate();
+                $('#rate').on('click', ()=>{
+                    $('#rate').css('pointer-events', 'None');
+                    $.getJSON(`/saveRating?email=<%= user.email %>&rating=${currRating}`);
+                    updateRating(originalRatings.concat(currRating));
+                });
+                $('#rate').on('mouseover', (e)=>{
+                    currRating = parseInt(e.target.getAttribute("data-index")) + 1;
+                });
+            });
+
+            function updateRating(ratings) {
+                console.log(ratings);
+                if (ratings.length > 0) {
+                    $('#rating').text((ratings.reduce((total, currVal) => {return total + currVal;}, 0)/ratings.length).toFixed(2));
+                } else {
+                    $('#rating').text("N/A");
+                }
+            }
         </script>
     </body>
 </html>

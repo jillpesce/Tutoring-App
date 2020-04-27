@@ -117,17 +117,6 @@ app.get('/save', (req, res) => {
 });
 
 app.get('/addCourse', (req, res) => {
-    // console.log('added course');
-    // const email = req.query.email;
-    // const updatedCourses = req.query.updatedCourses;
-    // console.log(updatedCourses);
-    // console.log(email);
-
-    // User.updateOne({email: req.query.email}, updatedCourses).then(() => {
-    //     console.log('Updated - ' + email  + ' with the courses ' + updatedCourses);
-    //     res.redirect('/profile/');
-    // });
-
     console.log('adding course');
     var newValues = { $set: {
         courses: req.query.updatedCourses
