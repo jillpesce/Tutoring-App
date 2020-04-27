@@ -32,9 +32,16 @@ public class AppointmentActivity extends AppCompatActivity {
     Appointment a;
     Date d;
     Boolean isTutor;
+    boolean darkmode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        darkmode = getIntent().getBooleanExtra("DARKMODE", false);
+        if(darkmode) {
+            setTheme(R.style.DarkMode);
+        } else {
+            setTheme(R.style.AppTheme_NoActionBar);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
         tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL");

@@ -37,6 +37,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     String[] userNames;
     User currentUser;
     static final int OtherUserProfile_ID = 1;
+    boolean darkmode;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,11 +90,16 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         String email = text.substring(text.indexOf(":") + 2);
         intent.putExtra("PROFILE USER", email);
         intent.putExtra("CURR USER EMAIL", currentUser.getEmail());
+        intent.putExtra("DARKMODE", darkmode);
         getActivity().startActivityForResult(intent, OtherUserProfile_ID);
     }
 
     public void setUser(User u) {
         this.currentUser = u;
+    }
+
+    public void setDarkmode(boolean darkmode) {
+        this.darkmode = darkmode;
     }
 
 }

@@ -40,9 +40,16 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     ListView reviewsList;
     ArrayAdapter<String> adapter;
     List<String> reviews;
+    boolean darkmode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        darkmode = getIntent().getBooleanExtra("DARKMODE", false);
+        if(darkmode) {
+            setTheme(R.style.DarkMode);
+        } else {
+            setTheme(R.style.AppTheme_NoActionBar);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_user_profile);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -199,6 +206,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         intent.putExtra("TUTEE_EMAIL", currentUser.getEmail());
         intent.putExtra("TUTEE_NAME", currentUser.getName());
         intent.putExtra("DATE", timeslots.get(timeslotIndex).getDate());
+        intent.putExtra("DARKMODE", darkmode);
         startActivity(intent);
     }
 
@@ -212,6 +220,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
             Intent i = new Intent(this, ReviewUserActivity.class);
             i.putExtra("CURR USER EMAIL", currentUser.getEmail());
             i.putExtra("PROFILE USER EMAIL", profileUser.getEmail());
+            i.putExtra("DARKMODE", darkmode);
             startActivityForResult(i, ReviewActivity_ID);
             //startActivity(i);
         }

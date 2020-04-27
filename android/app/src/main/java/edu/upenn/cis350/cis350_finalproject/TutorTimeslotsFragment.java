@@ -30,6 +30,7 @@ public class TutorTimeslotsFragment extends Fragment {
     String tuteeUser;
 //    String[] timeslotStrings = [];
     User user = null;
+    boolean darkmode;
 
     @Nullable
     @Override
@@ -50,6 +51,7 @@ public class TutorTimeslotsFragment extends Fragment {
                 i.putExtra("EMAIL", user.getEmail());
                 i.putExtra("NAME", user.getName());
                 i.putExtra("COURSES", new String[0]); // need to change this
+                i.putExtra("DARKMODE", darkmode);
                 getActivity().startActivityForResult(i, 3);
             }
         });
@@ -63,6 +65,10 @@ public class TutorTimeslotsFragment extends Fragment {
     public void setUser(User user) {
         this.user = user;
         //setUserFields();
+    }
+
+    public void setDarkmode(boolean darkmode) {
+        this.darkmode = darkmode;
     }
 
     @Override

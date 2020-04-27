@@ -36,9 +36,16 @@ public class FiltersActivity extends AppCompatActivity implements AdapterView.On
     String filteredTutorName = null;
     ListView lv;
     TextView tutors;
+    boolean darkmode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        darkmode = getIntent().getBooleanExtra("DARKMODE", false);
+        if(darkmode) {
+            setTheme(R.style.DarkMode);
+        } else {
+            setTheme(R.style.AppTheme_NoActionBar);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filters);
         allCourses = ProfileFragment.allCourses();

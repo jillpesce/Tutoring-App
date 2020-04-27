@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="darkColorPrimary" format="reference"/>
+    <attr name="darkColorPrimaryDark" format="reference"/>
+    <attr name="darkColorAccent" format="reference" />
+    <attr name="darkPrimaryText" format="reference" />
+    <attr name="darkButtonNormal" format="reference" />
+    <attr name="darkButtonHighlight" format="reference" />
+    <attr name="darkButtonText" format="reference" />
+
+</resources>

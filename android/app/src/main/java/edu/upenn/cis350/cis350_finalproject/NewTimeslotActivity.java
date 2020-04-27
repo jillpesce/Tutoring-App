@@ -30,12 +30,20 @@ public class NewTimeslotActivity extends AppCompatActivity {
     int year;
     int hour;
     DatePicker picker;
+    boolean darkmode;
     String[] courses;
     private long lastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("INTENT", "jkdlsjf we got here");
+        darkmode = getIntent().getBooleanExtra("DARKMODE", false);
+        if(darkmode) {
+            setTheme(R.style.DarkMode);
+        } else {
+            setTheme(R.style.AppTheme_NoActionBar);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_timeslot);
         tutorEmail = getIntent().getStringExtra("EMAIL");

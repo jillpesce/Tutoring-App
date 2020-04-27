@@ -40,6 +40,7 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
     ArrayAdapter<String> adapter;
     RemoteDataSource ds = new RemoteDataSource();
     TextView filters;
+    boolean darkmode;
 
     @Nullable
     @Override
@@ -58,6 +59,7 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
             public void onClick(View v) {
                 String[] c = new String[]{"CIS 160", "CIS 120"};
                 Intent i = new Intent(getActivity(), FiltersActivity.class);
+                i.putExtra("DARKMODE", darkmode);
                 startActivityForResult(i, FILTER_ACTIVITY);
 //                filteredTutor = null;
 //                filteredCourses = c;
@@ -120,6 +122,10 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
         //setUserFields();
     }
 
+    public void setDarkmode(boolean darkmode) {
+        this.darkmode = darkmode;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -163,6 +169,7 @@ public class TimeslotsFragment extends Fragment implements OnItemClickListener {
         i.putExtra("TUTOR_EMAIL", t.getTutor());
         i.putExtra("TUTOR_NAME", t.getTutorName());
         i.putExtra("DATE", t.getDate());
+        i.putExtra("DARKMODE", darkmode);
         getActivity().startActivity(i);
     }
 

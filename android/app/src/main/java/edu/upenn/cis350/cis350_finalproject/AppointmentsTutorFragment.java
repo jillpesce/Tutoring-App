@@ -33,6 +33,7 @@ public class AppointmentsTutorFragment extends Fragment implements OnItemClickLi
     String tuteeUser;
 //    String[] timeslotStrings = [];
     User user = null;
+    boolean darkmode;
 
     @Nullable
     @Override
@@ -54,6 +55,10 @@ public class AppointmentsTutorFragment extends Fragment implements OnItemClickLi
     public void setUser(User user) {
         this.user = user;
         //setUserFields();
+    }
+
+    public void setDarkmode(boolean darkmode) {
+        this.darkmode = darkmode;
     }
 
     @Override
@@ -101,6 +106,7 @@ public class AppointmentsTutorFragment extends Fragment implements OnItemClickLi
         i.putExtra("CURR_EMAIL", user.getEmail());
         i.putExtra("CONFIRMED", a.getConfirmed());
         i.putExtra("ISTUTOR", true);
+        i.putExtra("DARKMODE", darkmode);
         getActivity().startActivityForResult(i, 2);
     }
 }

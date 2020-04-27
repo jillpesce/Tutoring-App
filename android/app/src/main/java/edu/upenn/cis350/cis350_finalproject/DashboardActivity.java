@@ -38,7 +38,7 @@ public class DashboardActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         darkmode = preferences.getBoolean(PREF_DARK_THEME, false);
         if(darkmode) {
-            setTheme(R.style.AppTheme_Dark_NoActionBar);
+            setTheme(R.style.DarkMode);
         } else {
             setTheme(R.style.AppTheme_NoActionBar);
         }
@@ -59,6 +59,7 @@ public class DashboardActivity extends AppCompatActivity {
         AppointmentsTuteeFragment selectedFragment = new AppointmentsTuteeFragment();
         FragmentManager fm = getSupportFragmentManager();
         selectedFragment.setUser(user);
+        selectedFragment.setDarkmode(darkmode);
         fm.beginTransaction().replace(R.id.frame_layout, selectedFragment, "appt_tutee_frag").commit();
 
         BottomNavigationView bottomNav = findViewById(R.id.btm_nav);
@@ -120,11 +121,13 @@ public class DashboardActivity extends AppCompatActivity {
                     if (user.getIsTutor()) {
                         selectedFragment = new AppointmentsTutorFragment();
                         ((AppointmentsTutorFragment) selectedFragment).setUser(user);
+                        ((AppointmentsTutorFragment) selectedFragment).setDarkmode(darkmode);
                         fm.beginTransaction().replace(R.id.frame_layout, selectedFragment,
                                 "appt_tutor_frag").commit();
                     } else {
                         selectedFragment = new AppointmentsTuteeFragment();
                         ((AppointmentsTuteeFragment) selectedFragment).setUser(user);
+                        ((AppointmentsTuteeFragment) selectedFragment).setDarkmode(darkmode);
                         fm.beginTransaction().replace(R.id.frame_layout, selectedFragment,
                                 "appt_tutee_frag").commit();
                     }
@@ -139,16 +142,19 @@ public class DashboardActivity extends AppCompatActivity {
                     if (user.getIsTutor()) {
                         selectedFragment = new TutorTimeslotsFragment();
                         ((TutorTimeslotsFragment) selectedFragment).setUser(user);
+                        ((TutorTimeslotsFragment) selectedFragment).setDarkmode(darkmode);
                         fm.beginTransaction().replace(R.id.frame_layout, selectedFragment, "timeslot_tutor_frag").commit();
                     } else {
                         selectedFragment = new TimeslotsFragment();
                         ((TimeslotsFragment) selectedFragment).setUser(user);
+                        ((TimeslotsFragment) selectedFragment).setDarkmode(darkmode);
                         fm.beginTransaction().replace(R.id.frame_layout, selectedFragment, "timeslot_tutee_frag").commit();
                     }
                     break;
                 case R.id.nav_search:
                     selectedFragment = new SearchFragment();
                     ((SearchFragment) selectedFragment).setUser(user);
+                    ((SearchFragment) selectedFragment).setDarkmode(darkmode);
                     fm.beginTransaction().replace(R.id.frame_layout, selectedFragment).commit();
                     break;
             }

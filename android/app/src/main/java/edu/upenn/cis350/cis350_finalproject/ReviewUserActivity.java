@@ -16,9 +16,16 @@ import datamanagement.RemoteDataSource;
 public class ReviewUserActivity extends AppCompatActivity {
     User currentUser;
     User profileUser;
+    boolean darkmode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        darkmode = getIntent().getBooleanExtra("DARKMODE", false);
+        if(darkmode) {
+            setTheme(R.style.DarkMode);
+        } else {
+            setTheme(R.style.AppTheme_NoActionBar);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_user);
 

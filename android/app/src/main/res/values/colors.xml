@@ -4,7 +4,13 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="darkColorPrimary">#1e2756</color>
-    <color name="darkColorPrimaryDark">#141831</color>
-    <color name="darkColorAccent">#2aac4b</color>
+    <color name="darkColorPrimary">#FF8C7A</color>
+    <color name="darkColorPrimaryDark">#3D3D66</color>
+    <color name="darkColorAccent">#CC9B85</color>
+    <color name="darkPrimaryText">#D8D8D8</color>
+    <color name="darkButtonNormal">#10B9A2</color>
+    <color name="darkButtonHighlight">#20CAB2</color>
+    <color name="darkButtonText">#FFFFFF</color>
+    <color name="darkBackground">#252542</color>
+    <color name="topbar">#262644</color>
 </resources>

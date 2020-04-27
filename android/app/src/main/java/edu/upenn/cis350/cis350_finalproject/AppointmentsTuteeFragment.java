@@ -33,6 +33,7 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
     String tuteeUser;
     User user = null;
     private static final int AppointmentActivity_ID = 1;
+    boolean darkmode;
 
     @Nullable
     @Override
@@ -53,6 +54,10 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setDarkmode(boolean darkmode) {
+        this.darkmode = darkmode;
     }
 
     @Override
@@ -91,6 +96,7 @@ public class AppointmentsTuteeFragment extends Fragment implements OnItemClickLi
         i.putExtra("CURR_EMAIL", user.getEmail());
         i.putExtra("CONFIRMED", false);
         i.putExtra("ISTUTOR", false);
+        i.putExtra("DARKMODE", darkmode);
         getActivity().startActivityForResult(i, AppointmentActivity_ID);
     }
 
