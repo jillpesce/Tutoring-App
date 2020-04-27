@@ -55,9 +55,9 @@ router.get('/', authCheck, (req, res) => {
             console.log("numFives: " + numFives);
             console.log("excellence: " + excellence);
             // Experience: tutored 10 sessions, tutored 25 sessions, tutored 50 sessions, tutored 100 sessions
-            function findAppts() {
+            async function findAppts() {
                 var appts = [];
-                return new Promise(function(resolve, reject) {
+                var promise = new Promise(function(resolve, reject) {
                     Appointment.find( {tutorEmail: email, confirmed: true}, (err, tutorAppts) => {
                         console.log("TUTORappts.length: " + tutorAppts.length);
                         if (err) {
@@ -79,21 +79,28 @@ router.get('/', authCheck, (req, res) => {
                             console.log(err);
                         } else if (!tuteeAppts) {
                             console.log('no appointments');
+                            resolve(appts.length);
                         } else if (tuteeAppts.length == 0) {
                             console.log('no appointments');
+                            resolve(appts.length);
                         } else {
                             console.log('appointments exists');
                             for (var i = 0; i < tuteeAppts.length; i++) {
                                 appts.push(tuteeAppts[i]);
                             }
+                            console.log("RESOLVING");
                             resolve(appts.length);
                         }
                     });
                 });
-            };
-            async function assignExperience(appts) {
-                var apptsNum = await findAppts();
+                var result = await promise;
+                console.log("result: " + result);
+                return result;
+            }
 
+            async function assignExperience() {
+                console.log("IN ASYNC FUNC  wiaitng for appts.length");
+                var apptsNum = await findAppts();
                 console.log("IN ASYNC FUNC appts.length: " + apptsNum);
                 if (apptsNum < 10) {
                     experience = "none";
