@@ -9,6 +9,4 @@ Penn offers a lot of great resources in terms of tutoring, but the process is to
 Download and run on emulator or device 
 
 ### Web App: 
-`npm install`
-
-`npm start` from root directory
+`node index` from root directory
